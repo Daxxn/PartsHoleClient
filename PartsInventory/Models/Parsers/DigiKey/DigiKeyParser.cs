@@ -60,8 +60,10 @@ namespace PartsInventory.Models.Parsers.DigiKey
             {
                part.ParseProp(page.Props[i], line.Data[i]);
             }
+            part.Datasheet = DatasheetFinder.SearchDatasheetsTest(part.PartNumber);
             model.Parts.Add(part);
          }
+
          return model;
       }
 

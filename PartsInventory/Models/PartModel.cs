@@ -16,7 +16,7 @@ namespace PartsInventory.Models
       private int? _reference = null;
       private uint _qty = 0;
       private decimal _unitPrice = 0;
-      private decimal _extPrice = 0;
+      //private decimal _extPrice = 0;
       private uint _backorder = 0;
 
       private string? _datasheet = null;
@@ -210,6 +210,16 @@ namespace PartsInventory.Models
          set
          {
             _binLocation = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string[]? Tags
+      {
+         get => _tags;
+         set
+         {
+            _tags = value;
             OnPropertyChanged();
          }
       }

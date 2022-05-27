@@ -20,6 +20,7 @@ namespace PartsInventory
       protected override void OnStartup(StartupEventArgs e)
       {
          MainViewModel.Instance.Open();
+         DatasheetFinder.OnStartup();
          base.OnStartup(e);
       }
       protected override void OnExit(ExitEventArgs e)
