@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="PartsInventory.Views.InvoiceParserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PartsInventory.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="Loaded_Event">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" Command="{Binding Path=OpenInvoicesCmd}">Open Invoices</Button>
+                        <Button Grid.Row="1" Command="{Binding Path=OpenAllInvoicesCmd}">Open All Invoices</Button>
+                        <Button Grid.Row="3" Command="{Binding Path=ClearInvoicesCmd}">Clear Invoices</Button>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="3">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Command="{Binding Path=AddToPartsCmd}">Add To Parts</Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <ListView Grid.Column="1" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="b"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Padding="0,0,10,0">Order ID</TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=OrderNumber}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Supplier</TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=SupplierType}"/>
+                            <Expander Grid.Row="2" Grid.ColumnSpan="2" Header="Parts">
+                                <DataGrid ItemsSource="{Binding Path=Parts, Mode=OneWay}" CanUserAddRows="False" CanUserDeleteRows="False"/>
+                            </Expander>
+                            <TextBlock Grid.Column="0" Grid.Row="3">SubTotal</TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=SubTotal}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -13,5 +13,15 @@ namespace PartsInventory
    /// </summary>
    public partial class App : Application
    {
+      protected override void OnStartup(StartupEventArgs e)
+      {
+         //Add Auto-Load
+         base.OnStartup(e);
+      }
+      protected override void OnExit(ExitEventArgs e)
+      {
+         // Add Auto-Save
+         base.OnExit(e);
+      }
    }
 }

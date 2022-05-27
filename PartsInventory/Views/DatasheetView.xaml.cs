@@ -14,22 +14,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory
+namespace PartsInventory.Views
 {
    /// <summary>
-   /// Interaction logic for MainWindow.xaml
+   /// Interaction logic for DatasheetView.xaml
    /// </summary>
-   public partial class MainWindow : Window
+   public partial class DatasheetView : UserControl
    {
-      public MainViewModel VM { get; init; }
-      public MainWindow()
+      public DatasheetViewModel VM { get; private set; }
+      public DatasheetView()
       {
-         VM = new MainViewModel();
-         DataContext = VM;
          InitializeComponent();
-         PartsView.DataContext = VM.PartsInventoryVM;
-         InvoiceView.DataContext = VM.InvoiceParserVM;
-         DatasheetView.DataContext = VM.DatasheetVM;
+      }
+
+      private void Loaded_Event(object sender, RoutedEventArgs e)
+      {
+         if (DataContext is not DatasheetViewModel vm) throw new Exception("DatasheetView loaded incorrect view model.");
+         VM = vm;
       }
    }
 }

@@ -4,9 +4,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PartsInventory"
+        xmlns:views="clr-namespace:PartsInventory.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowState="Maximized"
+        Title="Parts Inventory" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <Menu>
+            <MenuItem Header="File"/>
+        </Menu>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Inventory">
+                <views:PartsInventoryView x:Name="PartsView"/>
+            </TabItem>
+            <TabItem Header="Invoices">
+                <views:InvoiceParserView x:Name="InvoiceView"/>
+            </TabItem>
+            <TabItem Header="Datasheet">
+                <views:DatasheetView x:Name="DatasheetView"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

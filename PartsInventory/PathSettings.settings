@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PartsInventory" GeneratedClassName="PathSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PartInvoiceDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Documents\Electrical\PartInvoices</Value>
+    </Setting>
+    <Setting Name="DigiKeyDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\DigiKey</Value>
+    </Setting>
+    <Setting Name="MouserDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\Mouser</Value>
+    </Setting>
+    <Setting Name="SettingsPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Documents\PartsInventory\settings.json</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
