@@ -1,7 +1,11 @@
-﻿using System;
+﻿using JsonReaderLibrary;
+using PartsInventory.Models;
+using PartsInventory.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,12 +19,12 @@ namespace PartsInventory
    {
       protected override void OnStartup(StartupEventArgs e)
       {
-         //Add Auto-Load
+         MainViewModel.Instance.Open();
          base.OnStartup(e);
       }
       protected override void OnExit(ExitEventArgs e)
       {
-         // Add Auto-Save
+         MainViewModel.Instance.Save();
          base.OnExit(e);
       }
    }

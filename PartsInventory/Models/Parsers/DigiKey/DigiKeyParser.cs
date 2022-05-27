@@ -38,10 +38,10 @@ namespace PartsInventory.Models.Parsers.DigiKey
          throw new NotImplementedException();
       }
 
-      public OrderModel Parse()
+      public InvoiceModel Parse()
       {
          using StreamReader reader = new(FilePath);
-         OrderModel model = new();
+         InvoiceModel model = new();
          GetOrderDetails(model, FilePath);
          Queue<string> lines = new();
          while (!reader.EndOfStream) lines.Enqueue(reader.ReadLine());
@@ -65,7 +65,7 @@ namespace PartsInventory.Models.Parsers.DigiKey
          return model;
       }
 
-      public Task<OrderModel> ParseAsync()
+      public Task<InvoiceModel> ParseAsync()
       {
          throw new NotImplementedException();
       }
@@ -79,7 +79,7 @@ namespace PartsInventory.Models.Parsers.DigiKey
          return values;
       }
 
-      public void GetOrderDetails(OrderModel model, string path)
+      public void GetOrderDetails(InvoiceModel model, string path)
       {
          model.Path = path;
          model.SupplierType = SupplierType.DigiKey;

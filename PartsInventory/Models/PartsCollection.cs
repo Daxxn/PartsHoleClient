@@ -12,7 +12,7 @@ namespace PartsInventory.Models
    {
       #region Local Props
       private ObservableCollection<PartModel> _parts = new();
-      private ObservableCollection<uint> _invoiceIDs = new();
+      private ObservableCollection<InvoiceModel> _invoices = new();
       #endregion
 
       #region Constructors
@@ -20,15 +20,25 @@ namespace PartsInventory.Models
       #endregion
 
       #region Methods
-      public void AddParts(IList<uint> invoiceIDs, IList<PartModel> parts)
+      public void AddInvoices(IList<InvoiceModel> invoices)
       {
-         foreach (var id in invoiceIDs)
+         foreach (var invoice in invoices)
          {
-            InvoiceIDs.Add(id);
-         }
-         foreach (var part in parts)
-         {
-            Parts.Add(part);
+            if (!Invoices.Any(inv => inv.OrderNumber == invoice.OrderNumber))
+            {
+               Invoices.Add(invoice);
+               foreach (var part in invoice.Parts)
+               {
+                  if (Parts.FirstOrDefault(p => p.Equals(part), null) is PartModel pt)
+                  {
+                     pt.Quantity += part.Quantity;
+                  }
+                  else
+                  {
+                     Parts.Add(part);
+                  }
+               }
+            }
          }
       }
       #endregion
@@ -44,12 +54,12 @@ namespace PartsInventory.Models
          }
       }
 
-      public ObservableCollection<uint> InvoiceIDs
+      public ObservableCollection<InvoiceModel> Invoices
       {
-         get => _invoiceIDs;
+         get => _invoices;
          set
          {
-            _invoiceIDs = value;
+            _invoices = value;
             OnPropertyChanged();
          }
       }

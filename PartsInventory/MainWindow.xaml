@@ -15,7 +15,10 @@
         </Grid.RowDefinitions>
 
         <Menu>
-            <MenuItem Header="File"/>
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Command="{Binding Path=OpenCmd}"/>
+                <MenuItem Header="Save" Command="{Binding Path=SaveCmd}"/>
+            </MenuItem>
         </Menu>
 
         <TabControl Grid.Row="1">

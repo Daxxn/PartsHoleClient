@@ -16,7 +16,7 @@ namespace PartsInventory.Models
       Mouser
    };
 
-   public class OrderModel : Model
+   public class InvoiceModel : Model
    {
       #region Local Props
       private uint _orderNumber = 0;
@@ -27,9 +27,9 @@ namespace PartsInventory.Models
       #endregion
 
       #region Constructors
-      public OrderModel() { }
+      public InvoiceModel() { }
 
-      public OrderModel(OrderCSVPage order)
+      public InvoiceModel(OrderCSVPage order)
       {
          Parts = new(ParseOrder(order));
       }

@@ -51,17 +51,40 @@ namespace PartsInventory.Models
             case "Unit Price":
                UnitPrice = ParseDec(value);
                break;
-            case "Extended Price":
-               var val = value.Replace("$", "");
-               ExtendedPrice = ParseDec(val);
-               break;
             case "Backorder":
                Backorder = ParseUint(value);
                break;
 
+            // Dont really need it. The unit price & quantity are enough.
+            // Keep for now, just in case.
+            //case "Extended Price":
+            //   var val = value.Replace("$", "");
+            //   ExtendedPrice = ParseDec(val);
+            //   break;
+
             default:
                break;
          }
+      }
+
+      public bool Equals(PartModel part)
+      {
+         if (Reference is not null)
+         {
+            if (Reference == part.Reference)
+            {
+               return true;
+            }
+         }
+         if (PartNumber == part.PartNumber)
+         {
+            return true;
+         }
+         if (SupplierPartNumber == part.SupplierPartNumber)
+         {
+            return true;
+         }
+         return false;
       }
 
       private static int? ParseInt(string input)
@@ -158,12 +181,7 @@ namespace PartsInventory.Models
 
       public decimal ExtendedPrice
       {
-         get => _extPrice;
-         set
-         {
-            _extPrice = value;
-            OnPropertyChanged();
-         }
+         get => _unitPrice * _qty;
       }
 
       public uint Backorder

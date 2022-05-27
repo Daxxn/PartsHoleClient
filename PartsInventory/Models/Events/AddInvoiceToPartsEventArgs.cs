@@ -8,13 +8,11 @@ namespace PartsInventory.Models.Events
 {
    public class AddInvoiceToPartsEventArgs : EventArgs
    {
-      public IList<PartModel> NewParts { get; init; }
-      public IList<uint> InvoiceID { get; init; }
+      public IList<InvoiceModel> NewInvoices { get; init; }
 
-      public AddInvoiceToPartsEventArgs(IList<uint> id, IList<PartModel> newParts)
+      public AddInvoiceToPartsEventArgs(IList<InvoiceModel> newInvoices)
       {
-         InvoiceID = id;
-         NewParts = newParts;
+         NewInvoices = newInvoices;
       }
    }
 }

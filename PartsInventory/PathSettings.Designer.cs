@@ -70,5 +70,41 @@ namespace PartsInventory {
                 this["SettingsPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Daxxn\\Documents\\Electrical\\Datasheets")]
+        public string DatasheetsPath {
+            get {
+                return ((string)(this["DatasheetsPath"]));
+            }
+            set {
+                this["DatasheetsPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Daxxn\\Documents\\PartsInventory")]
+        public string AppDataPath {
+            get {
+                return ((string)(this["AppDataPath"]));
+            }
+            set {
+                this["AppDataPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data.json")]
+        public string AppDataFileName {
+            get {
+                return ((string)(this["AppDataFileName"]));
+            }
+            set {
+                this["AppDataFileName"] = value;
+            }
+        }
     }
 }

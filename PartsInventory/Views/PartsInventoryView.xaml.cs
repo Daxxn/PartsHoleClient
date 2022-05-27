@@ -1,4 +1,6 @@
-﻿using PartsInventory.ViewModels;
+﻿using Microsoft.Win32;
+using PartsInventory.Models;
+using PartsInventory.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,42 @@ namespace PartsInventory.Views
       {
          if (DataContext is not PartsInventoryViewModel vm) throw new Exception("PartsView loaded incorrect view model.");
          VM = vm;
+      }
+
+      private void Datasheet_Click(object sender, RoutedEventArgs e)
+      {
+         if (sender is Button btn)
+         {
+            if (btn.DataContext is PartModel part)
+            {
+               VM.OpenDatasheet(this, part);
+            }
+         }
+      }
+
+      private void BrowseDatasheet_Click(object sender, RoutedEventArgs e)
+      {
+         if (sender is Button btn)
+         {
+            if (btn.DataContext is PartModel part)
+            {
+               if (part is null) return;
+               OpenFileDialog dialog = new()
+               {
+                  Title = $"Browse for {part.PartNumber} Datasheet",
+                  Filter = "PDF|*.pdf|All Files|*.*",
+                  InitialDirectory = PathSettings.Default.DatasheetsPath,
+                  Multiselect = false,
+                  DereferenceLinks = true
+               };
+
+               if (dialog.ShowDialog() == true)
+               {
+                  part.Datasheet = dialog.FileName;
+                  VM.OpenDatasheet(sender, part);
+               }
+            }
+         }
       }
    }
 }

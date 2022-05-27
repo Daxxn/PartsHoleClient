@@ -1,6 +1,7 @@
 ﻿using PartsInventory.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,12 @@ namespace PartsInventory.Views
       {
          if (DataContext is not DatasheetViewModel vm) throw new Exception("DatasheetView loaded incorrect view model.");
          VM = vm;
+         VM.DocLoadedEvent += VM_DocLoadedEvent;
+      }
+
+      private void VM_DocLoadedEvent(object? sender, Stream doc)
+      {
+         DatasheetViewer.Load(doc);
       }
    }
 }

@@ -21,9 +21,9 @@ namespace PartsInventory.Models.Parsers.Mouser
       #endregion
 
       #region Methods
-      public OrderModel Parse()
+      public InvoiceModel Parse()
       {
-         OrderModel model = new();
+         InvoiceModel model = new();
          GetOrderDetails(model, FilePath);
 
          PdfLoadedDocument doc = new(FilePath);
@@ -42,12 +42,12 @@ namespace PartsInventory.Models.Parsers.Mouser
          return model;
       }
 
-      public Task<OrderModel> ParseAsync()
+      public Task<InvoiceModel> ParseAsync()
       {
          throw new NotImplementedException();
       }
 
-      public void GetOrderDetails(OrderModel model, string path)
+      public void GetOrderDetails(InvoiceModel model, string path)
       {
          model.Path = path;
          var name = Path.GetFileNameWithoutExtension(path);

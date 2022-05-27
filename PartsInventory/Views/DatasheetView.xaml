@@ -13,6 +13,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <pdf:PdfViewerControl Grid.Row="1" x:Name="DatasheetViewer" ItemSource="{Binding Path=Document}"/>
+        <pdf:PdfViewerControl Grid.Row="1" x:Name="DatasheetViewer" ItemSource="{Binding Path=DocStream}"/>
     </Grid>
 </UserControl>

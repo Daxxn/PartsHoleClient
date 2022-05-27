@@ -14,5 +14,14 @@
     <Setting Name="SettingsPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Users\Daxxn\Documents\PartsInventory\settings.json</Value>
     </Setting>
+    <Setting Name="DatasheetsPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Documents\Electrical\Datasheets</Value>
+    </Setting>
+    <Setting Name="AppDataPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Documents\PartsInventory</Value>
+    </Setting>
+    <Setting Name="AppDataFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

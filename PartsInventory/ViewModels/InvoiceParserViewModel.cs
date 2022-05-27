@@ -17,9 +17,11 @@ namespace PartsInventory.ViewModels
    public class InvoiceParserViewModel : ViewModel
    {
       #region Local Props
-      public event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent;
-      private ObservableCollection<OrderModel> _invoices = new();
-      private OrderModel? _selectedInvoice = null;
+      public event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent = (s, e) => { };
+      private ObservableCollection<InvoiceModel> _invoices = new();
+      private InvoiceModel? _selectedInvoice = null;
+
+      private bool _invoicesAdded = false;
 
       #region Commands
       public Command OpenInvoicesCmd { get; init; }
@@ -41,6 +43,7 @@ namespace PartsInventory.ViewModels
             SelectedInvoice = null;
          });
          AddToPartsCmd = new(AddToParts);
+         AddToPartsEvent += This_AddToPartsEvent;
       }
       #endregion
 
@@ -83,16 +86,25 @@ namespace PartsInventory.ViewModels
       {
          foreach (var path in paths)
          {
-            var ext = Path.GetExtension(path);
-            if (ext == ".csv")
+            var name = Path.GetFileNameWithoutExtension(path);
+            if (int.TryParse(name, out int orderNum))
             {
-               DigiKeyParser parser = new(path);
-               Invoices.Add(parser.Parse());
-            }
-            else if (ext == ".pdf")
-            {
-               MouserParser parser = new(path);
-               Invoices.Add(parser.Parse());
+               if (!Invoices.Any(inv => inv.OrderNumber == orderNum))
+               {
+                  var ext = Path.GetExtension(path);
+                  if (ext == ".csv")
+                  {
+                     DigiKeyParser parser = new(path);
+                     Invoices.Add(parser.Parse());
+                     InvoicesAdded = false;
+                  }
+                  else if (ext == ".pdf")
+                  {
+                     MouserParser parser = new(path);
+                     Invoices.Add(parser.Parse());
+                     InvoicesAdded = false;
+                  }
+               }
             }
          }
       }
@@ -100,20 +112,17 @@ namespace PartsInventory.ViewModels
       private void AddToParts()
       {
          if (Invoices.Count == 0) return;
+         AddToPartsEvent?.Invoke(this, new(Invoices));
+      }
 
-         List<PartModel> newParts = new();
-         List<uint> invoiceIDs = new();
-         foreach (var inv in Invoices)
-         {
-            invoiceIDs.Add(inv.OrderNumber);
-            newParts.AddRange(inv.Parts);
-         }
-         AddToPartsEvent?.Invoke(this, new(invoiceIDs, newParts));
+      private void This_AddToPartsEvent(object? sender, AddInvoiceToPartsEventArgs e)
+      {
+         InvoicesAdded = true;
       }
       #endregion
 
       #region Full Props
-      public ObservableCollection<OrderModel> Invoices
+      public ObservableCollection<InvoiceModel> Invoices
       {
          get => _invoices;
          set
@@ -123,12 +132,22 @@ namespace PartsInventory.ViewModels
          }
       }
 
-      public OrderModel? SelectedInvoice
+      public InvoiceModel? SelectedInvoice
       {
          get => _selectedInvoice;
          set
          {
             _selectedInvoice = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public bool InvoicesAdded
+      {
+         get => _invoicesAdded;
+         set
+         {
+            _invoicesAdded = value;
             OnPropertyChanged();
          }
       }

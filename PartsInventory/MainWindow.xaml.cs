@@ -24,7 +24,7 @@ namespace PartsInventory
       public MainViewModel VM { get; init; }
       public MainWindow()
       {
-         VM = new MainViewModel();
+         VM = MainViewModel.Instance;
          DataContext = VM;
          InitializeComponent();
          PartsView.DataContext = VM.PartsInventoryVM;

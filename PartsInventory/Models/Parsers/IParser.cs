@@ -8,9 +8,9 @@ namespace PartsInventory.Models.Parsers
 {
    public interface IParser
    {
-      OrderModel Parse();
-      Task<OrderModel> ParseAsync();
+      InvoiceModel Parse();
+      Task<InvoiceModel> ParseAsync();
 
-      void GetOrderDetails(OrderModel model, string path);
+      void GetOrderDetails(InvoiceModel model, string path);
    }
 }
