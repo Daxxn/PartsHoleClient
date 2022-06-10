@@ -23,5 +23,8 @@
     <Setting Name="AppDataFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data.json</Value>
     </Setting>
+    <Setting Name="BinLocFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BinLocations.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

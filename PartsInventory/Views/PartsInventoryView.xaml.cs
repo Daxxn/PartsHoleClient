@@ -23,17 +23,12 @@ namespace PartsInventory.Views
    /// </summary>
    public partial class PartsInventoryView : UserControl
    {
-      public PartsInventoryViewModel VM { get; private set; }
+      private PartsInventoryViewModel VM { get; init; }
       public PartsInventoryView()
       {
-
+         VM = MainViewModel.Instance.PartsInventoryVM;
+         DataContext = VM;
          InitializeComponent();
-      }
-
-      private void Loaded_Event(object sender, RoutedEventArgs e)
-      {
-         if (DataContext is not PartsInventoryViewModel vm) throw new Exception("PartsView loaded incorrect view model.");
-         VM = vm;
       }
 
       private void Datasheet_Click(object sender, RoutedEventArgs e)
@@ -68,6 +63,17 @@ namespace PartsInventory.Views
                   part.Datasheet = dialog.FileName;
                   VM.OpenDatasheet(sender, part);
                }
+            }
+         }
+      }
+
+      private void BinEdit_Click(object sender, RoutedEventArgs e)
+      {
+         if (sender is Button btn)
+         {
+            if (btn.DataContext is BinModel bin)
+            {
+               VM.SelectedBin = bin;
             }
          }
       }

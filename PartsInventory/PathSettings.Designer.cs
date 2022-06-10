@@ -106,5 +106,17 @@ namespace PartsInventory {
                 this["AppDataFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BinLocations.json")]
+        public string BinLocFileName {
+            get {
+                return ((string)(this["BinLocFileName"]));
+            }
+            set {
+                this["BinLocFileName"] = value;
+            }
+        }
     }
 }

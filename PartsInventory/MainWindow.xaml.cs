@@ -21,15 +21,12 @@ namespace PartsInventory
    /// </summary>
    public partial class MainWindow : Window
    {
-      public MainViewModel VM { get; init; }
+      private MainViewModel VM { get; init; }
       public MainWindow()
       {
          VM = MainViewModel.Instance;
          DataContext = VM;
          InitializeComponent();
-         PartsView.DataContext = VM.PartsInventoryVM;
-         InvoiceView.DataContext = VM.InvoiceParserVM;
-         DatasheetView.DataContext = VM.DatasheetVM;
       }
    }
 }

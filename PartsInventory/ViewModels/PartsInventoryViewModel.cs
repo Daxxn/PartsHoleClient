@@ -16,6 +16,8 @@ namespace PartsInventory.ViewModels
       private PartsCollection? _partsCollection = null;
       private InvoiceModel? _selectedInvoice = null;
       private PartModel? _selectedPart = null;
+      private BinModel? _selectedBin = null;
+      private string? _selectedBinName = null;
 
       #region commands
       public Command AddPartCmd { get; init; }
@@ -84,6 +86,26 @@ namespace PartsInventory.ViewModels
          set
          {
             _selectedInvoice = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public BinModel? SelectedBin
+      {
+         get => _selectedBin;
+         set
+         {
+            _selectedBin = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string? SelectedBinName
+      {
+         get => _selectedBinName;
+         set
+         {
+            _selectedBinName = value;
             OnPropertyChanged();
          }
       }

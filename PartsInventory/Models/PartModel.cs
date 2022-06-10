@@ -21,7 +21,7 @@ namespace PartsInventory.Models
 
       private string? _datasheet = null;
       private string[]? _tags = null;
-      private BinModel? _binLocation = null;
+      private BinModel _binLocation = new();
       #endregion
 
       #region Constructors
@@ -204,7 +204,7 @@ namespace PartsInventory.Models
          }
       }
 
-      public BinModel? BinLocation
+      public BinModel BinLocation
       {
          get => _binLocation;
          set

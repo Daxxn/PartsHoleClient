@@ -18,6 +18,7 @@ namespace PartsInventory.ViewModels
       private DatasheetViewModel _datasheetVM = new();
       private PartsInventoryViewModel _partsInventoryVM = new();
       private InvoiceParserViewModel _invoiceParserVM = new();
+      private PackageViewModel _packageVM = new();
 
       #region Commands
       public Command SaveCmd { get; init; }
@@ -114,6 +115,16 @@ namespace PartsInventory.ViewModels
          set
          {
             _invoiceParserVM = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PackageViewModel PackageVM
+      {
+         get => _packageVM;
+         set
+         {
+            _packageVM = value;
             OnPropertyChanged();
          }
       }

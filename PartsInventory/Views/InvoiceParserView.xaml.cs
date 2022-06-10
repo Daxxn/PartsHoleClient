@@ -21,16 +21,12 @@ namespace PartsInventory.Views
    /// </summary>
    public partial class InvoiceParserView : UserControl
    {
-      public InvoiceParserViewModel VM { get; private set; }
+      private InvoiceParserViewModel VM { get; init; }
       public InvoiceParserView()
       {
+         VM = MainViewModel.Instance.InvoiceParserVM;
+         DataContext = VM;
          InitializeComponent();
-      }
-
-      private void Loaded_Event(object sender, RoutedEventArgs e)
-      {
-         if (DataContext is not InvoiceParserViewModel vm) throw new Exception("InvoiceView loaded incorrect view model.");
-         VM = vm;
       }
    }
 }
