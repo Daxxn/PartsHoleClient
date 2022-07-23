@@ -31,27 +31,27 @@ namespace PartsInventory.Models
       #region Methods
       public void ParseProp(string prop, string value)
       {
-         switch (prop)
+         switch (prop.ToLower())
          {
-            case "Quantity":
+            case "quantity":
                Quantity = ParseUint(value);
                break;
-            case "Part Number":
+            case "part number":
                SupplierPartNumber = value;
                break;
-            case "Manufacturer Part Number":
+            case "manufacturer part number":
                PartNumber = value;
                break;
-            case "Description":
+            case "description":
                Description = value;
                break;
-            case "Customer Reference":
+            case "customer reference":
                Reference = ParseInt(value);
                break;
-            case "Unit Price":
+            case "unit price":
                UnitPrice = ParseDec(value);
                break;
-            case "Backorder":
+            case "backorder":
                Backorder = ParseUint(value);
                break;
 

@@ -28,9 +28,6 @@
             <TabItem Header="Invoices">
                 <views:InvoiceParserView x:Name="InvoiceView"/>
             </TabItem>
-            <TabItem Header="Datasheet">
-                <views:DatasheetView x:Name="DatasheetView"/>
-            </TabItem>
             <TabItem Header="Project BOM">
                 <views:ProjectBOMView x:Name="ProjectBOMView" />
             </TabItem>

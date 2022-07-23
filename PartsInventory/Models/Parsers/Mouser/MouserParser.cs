@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Syncfusion.Pdf;
-using Syncfusion.Pdf.Parsing;
 
 namespace PartsInventory.Models.Parsers.Mouser
 {
@@ -21,25 +19,32 @@ namespace PartsInventory.Models.Parsers.Mouser
       #endregion
 
       #region Methods
+      /// <summary>
+      /// Need to find a better PDF file parser..
+      /// </summary>
+      /// <returns>Parsed Invoice</returns>
+      /// <exception cref="NotImplementedException"></exception>
       public InvoiceModel Parse()
       {
-         InvoiceModel model = new();
-         GetOrderDetails(model, FilePath);
+         //InvoiceModel model = new();
+         //GetOrderDetails(model, FilePath);
 
-         PdfLoadedDocument doc = new(FilePath);
-         string text = doc.Pages[0].ExtractText();
+         //PdfLoadedDocument doc = new(FilePath);
+         //string text = doc.Pages[0].ExtractText();
 
 
-         var lines = GetPartData(text);
-         IList<string>? partNumbers = FindPartNumbers(text);
-         if (partNumbers is null) return model;
+         //var lines = GetPartData(text);
+         //IList<string>? partNumbers = FindPartNumbers(text);
+         //if (partNumbers is null) return model;
 
-         foreach (var pn in partNumbers)
-         {
-            model.Parts.Add(new() { PartNumber = pn });
-         }
+         //foreach (var pn in partNumbers)
+         //{
+         //   model.Parts.Add(new() { PartNumber = pn });
+         //}
 
-         return model;
+         //return model;
+
+         throw new NotImplementedException();
       }
 
       public Task<InvoiceModel> ParseAsync()

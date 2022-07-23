@@ -15,7 +15,6 @@ namespace PartsInventory.ViewModels
    {
       #region Local Props
       private static MainViewModel _instance = new();
-      private DatasheetViewModel _datasheetVM = new();
       private PartsInventoryViewModel _partsInventoryVM = new();
       private InvoiceParserViewModel _invoiceParserVM = new();
       private PackageViewModel _packageVM = new();
@@ -31,7 +30,6 @@ namespace PartsInventory.ViewModels
       private MainViewModel()
       {
          InvoiceParserVM.AddToPartsEvent += PartsInventoryVM.NewPartsEventHandler;
-         PartsInventoryVM.OpenDatasheetEvent += DatasheetVM.OpenDatasheetEventHandler;
          SaveCmd = new(Save);
          OpenCmd = new(Open);
       }
@@ -47,10 +45,6 @@ namespace PartsInventory.ViewModels
          else if (index == 1)
          {
             return InvoiceParserVM;
-         }
-         else if (index == 2)
-         {
-            return DatasheetVM;
          }
          else throw new ArgumentException("Index is not a valid view model.");
       }
@@ -90,16 +84,6 @@ namespace PartsInventory.ViewModels
       #endregion
 
       #region Full Props
-      public DatasheetViewModel DatasheetVM
-      {
-         get => _datasheetVM;
-         set
-         {
-            _datasheetVM = value;
-            OnPropertyChanged();
-         }
-      }
-
       public PartsInventoryViewModel PartsInventoryVM
       {
          get => _partsInventoryVM;
