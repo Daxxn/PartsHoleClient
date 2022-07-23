@@ -4,53 +4,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PartsInventory.Models.KiCAD;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.KiCAD
 {
-   public class ProjectModel : Model
+   public class LibSourceModel : Model
    {
       #region Local Props
-      private string _name = "New Project";
-      private RevisionModel _rev = new();
-      private BOMModel _bom = new();
+      private string _lib = "";
+      private string _part = "";
+      private string _desc = "";
       #endregion
 
       #region Constructors
-      public ProjectModel() { }
+      public LibSourceModel() { }
       #endregion
 
       #region Methods
-
+      public override string ToString()
+      {
+         return $"{Library}:{Part}";
+      }
       #endregion
 
       #region Full Props
-      public string Name
+      public string Library
       {
-         get => _name;
+         get => _lib;
          set
          {
-            _name = value;
+            _lib = value;
             OnPropertyChanged();
          }
       }
 
-      public RevisionModel REV
+      public string Part
       {
-         get => _rev;
+         get => _part;
          set
          {
-            _rev = value;
+            _part = value;
             OnPropertyChanged();
          }
       }
 
-      public BOMModel BOM
+      public string Description
       {
-         get => _bom;
+         get => _desc;
          set
          {
-            _bom = value;
+            _desc = value;
             OnPropertyChanged();
          }
       }

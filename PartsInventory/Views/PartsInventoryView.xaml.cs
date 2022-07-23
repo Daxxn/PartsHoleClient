@@ -3,6 +3,7 @@ using PartsInventory.Models;
 using PartsInventory.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,15 @@ namespace PartsInventory.Views
          {
             if (btn.DataContext is PartModel part)
             {
-               VM.OpenDatasheet(this, part);
+               if (!string.IsNullOrEmpty(part.Datasheet))
+               {
+                  ProcessStartInfo proc = new()
+                  {
+                     FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                     Arguments = part.Datasheet,
+                  };
+                  Process.Start(proc);
+               }
             }
          }
       }

@@ -42,23 +42,6 @@
                         <Button Grid.Row="2" Command="{Binding Path=RemovePartCmd}">Remove Part</Button>
                     </Grid>
                 </Border>
-
-                <Border Grid.Row="2">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock>Invoices</TextBlock>
-                        <ListView Grid.Row="1" ItemsSource="{Binding Path=PartsCollection.Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=OrderNumber}"/>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                </Border>
             </Grid>
         </Border>
 
@@ -70,6 +53,7 @@
             CanUserDeleteRows="False"
             AutoGenerateColumns="False"
             CellStyle="{StaticResource PartsCell}"
+            RowStyle="{StaticResource PartsRow}"
             AlternatingRowBackground="AliceBlue"
         >
             <DataGrid.Columns>
@@ -136,7 +120,19 @@
                 <DataGridTemplateColumn Header="Datasheet" MinWidth="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Margin="10,5" Click="Datasheet_Click">Open</Button>
+                            <Button Margin="10,5" Click="Datasheet_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Datasheet}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                Open
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -158,15 +154,74 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Expander Grid.Column="2" Header="BIN" ExpandDirection="Left">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-            </Grid>
-        </Expander>
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Expander Grid.Column="0" Header="Invoice" ExpandDirection="Left">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock>All Invoices</TextBlock>
+                            <ListView Grid.Row="1" ItemsSource="{Binding Path=PartsCollection.Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=OrderNumber}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Padding="0,0,10,0">Order #</TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Padding="0,0,10,0">Parts</TextBlock>
+
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=SelectedInvoice.OrderNumber}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=SelectedInvoice.Parts.Count}"/>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid
+                            Grid.Row="1"
+                            ItemsSource="{Binding Path=SelectedInvoice.Parts}"
+                            SelectedItem="{Binding Path=SelectedPart}"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            CellStyle="{StaticResource PartsCell}"
+                            AlternatingRowBackground="AliceBlue"
+                        />
+                    </Grid>
+                </Grid>
+            </Expander>
+            
+        </Grid>
     </Grid>
 </UserControl>

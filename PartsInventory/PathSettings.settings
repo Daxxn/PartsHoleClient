@@ -26,5 +26,8 @@
     <Setting Name="BinLocFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">BinLocations.json</Value>
     </Setting>
+    <Setting Name="KiCADProjects" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Documents\Electrical\KiCAD\Designs</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1,6 +1,7 @@
 ﻿using MVVMLibrary;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,7 @@ namespace PartsInventory.Models
    public class RevisionModel : Model
    {
       #region Local Props
-      private uint _main = 0;
-      private uint _sub = 0;
+      private ObservableCollection<uint> _values = new();
       #endregion
 
       #region Constructors
@@ -19,29 +19,72 @@ namespace PartsInventory.Models
       #endregion
 
       #region Methods
+      public static RevisionModel? Parse(string input)
+      {
+         if (string.IsNullOrEmpty(input)) return null;
+         RevisionModel rev = new();
+         if (input.StartsWith("REV"))
+         {
+            input = input.Replace("REV", "");
+         }
+
+         if (input.Contains('.'))
+         {
+            string[] spl = input.Split('.', StringSplitOptions.TrimEntries);
+            foreach (var n in spl)
+            {
+               if (uint.TryParse(n, out uint num))
+               {
+                  rev.Values.Add(num);
+               }
+               else
+               {
+                  rev.Values.Add(0);
+               }
+            }
+         }
+         else
+         {
+            if (uint.TryParse(input, out uint num))
+            {
+               rev.Values.Add(num);
+            }
+            else
+            {
+               rev.Values.Add(0);
+            }
+         }
+         return rev;
+      }
       public override string ToString()
       {
-         return $"REV{Main}{(Sub == 0 ? "" : $".{Sub}")}";
+         StringBuilder sb = new StringBuilder("REV");
+         if (Values.Count > 0)
+         {
+            for (int i = 0; i < Values.Count; i++)
+            {
+               sb.Append(Values[i]);
+               if (Values.Count - 1 >= i)
+               {
+                  sb.Append('.');
+               }
+            }
+         }
+         else
+         {
+            sb.Append("00");
+         }
+         return sb.ToString();
       }
       #endregion
 
       #region Full Props
-      public uint Main
+      public ObservableCollection<uint> Values
       {
-         get => _main;
+         get => _values;
          set
          {
-            _main = value;
-            OnPropertyChanged();
-         }
-      }
-
-      public uint Sub
-      {
-         get => _sub;
-         set
-         {
-            _sub = value;
+            _values = value;
             OnPropertyChanged();
          }
       }

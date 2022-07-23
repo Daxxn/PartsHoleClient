@@ -19,7 +19,17 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Command="{Binding Path=ParseProjectCmd}">Parse</Button>
+                <Button Grid.Row="1" Command="{Binding Path=BuildBOMCmd}">Build BOM</Button>
+                <Button Grid.Row="2" Command="{Binding Path=AllocatePartsCmd}">Allocate</Button>
+
+
+                <Button Grid.Row="6" Padding="0" FontSize="10" Command="{Binding Path=ClearProjectCmd}">Clear</Button>
             </Grid>
         </Border>
 
@@ -42,7 +52,47 @@
                         <TextBlock Grid.Column="1" Text="{Binding Path=Project.REV}"/>
                     </Grid>
                 </Border>
-                
+                <DataGrid
+                    Grid.Row="1"
+                    ItemsSource="{Binding Path=Project.Components}"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="REF" Binding="{Binding Path=Ref}"/>
+                        <DataGridTextColumn Header="Value" Binding="{Binding Path=Value}"/>
+                        <DataGridTextColumn Header="Footprint" Binding="{Binding Path=Footprint}"/>
+                        <DataGridTemplateColumn Header="Datasheet">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Text="{Binding Path=DatasheetDisp}"/>
+                                        <Button Grid.Column="1" Click="Datasheet_Click">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=DatasheetDisp}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            Open
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Library" Binding="{Binding Path=LibrarySource}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Border>
     </Grid>

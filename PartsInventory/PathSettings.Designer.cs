@@ -118,5 +118,17 @@ namespace PartsInventory {
                 this["BinLocFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Daxxn\\Documents\\Electrical\\KiCAD\\Designs")]
+        public string KiCADProjects {
+            get {
+                return ((string)(this["KiCADProjects"]));
+            }
+            set {
+                this["KiCADProjects"] = value;
+            }
+        }
     }
 }

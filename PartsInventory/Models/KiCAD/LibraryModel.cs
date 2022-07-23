@@ -4,20 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PartsInventory.Models.KiCAD;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.KiCAD
 {
-   public class ProjectModel : Model
+   public class LibraryModel : Model
    {
       #region Local Props
-      private string _name = "New Project";
-      private RevisionModel _rev = new();
-      private BOMModel _bom = new();
+      private string _name = "";
+      private string _path = "";
       #endregion
 
       #region Constructors
-      public ProjectModel() { }
+      public LibraryModel() { }
       #endregion
 
       #region Methods
@@ -35,22 +33,12 @@ namespace PartsInventory.Models
          }
       }
 
-      public RevisionModel REV
+      public string Path
       {
-         get => _rev;
+         get => _path;
          set
          {
-            _rev = value;
-            OnPropertyChanged();
-         }
-      }
-
-      public BOMModel BOM
-      {
-         get => _bom;
-         set
-         {
-            _bom = value;
+            _path = value;
             OnPropertyChanged();
          }
       }
