@@ -29,5 +29,8 @@
     <Setting Name="KiCADProjects" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Users\Daxxn\Documents\Electrical\KiCAD\Designs</Value>
     </Setting>
+    <Setting Name="BOMs" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Documents\Electrical\Project BOMs</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

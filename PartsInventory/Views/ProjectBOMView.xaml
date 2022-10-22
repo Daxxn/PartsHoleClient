@@ -54,15 +54,15 @@
                 </Border>
                 <DataGrid
                     Grid.Row="1"
-                    ItemsSource="{Binding Path=Project.Components}"
+                    ItemsSource="{Binding Path=BOM.Parts}"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     CanUserDeleteRows="False"
                 >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="REF" Binding="{Binding Path=Ref}"/>
-                        <DataGridTextColumn Header="Value" Binding="{Binding Path=Value}"/>
-                        <DataGridTextColumn Header="Footprint" Binding="{Binding Path=Footprint}"/>
+                        <DataGridTextColumn Header="REF" Binding="{Binding Path=ReferenceDesignator}"/>
+                        <DataGridTextColumn Header="Value" Binding="{Binding Path=Value.Display}"/>
+                        <DataGridTextColumn Header="Package" Binding="{Binding Path=Package.Name}"/>
                         <DataGridTemplateColumn Header="Datasheet">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -90,7 +90,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Library" Binding="{Binding Path=LibrarySource}"/>
+                        <DataGridTextColumn Header="Library" Binding="{Binding Path=Library}"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Path=Type}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

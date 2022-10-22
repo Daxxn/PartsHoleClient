@@ -1,19 +1,22 @@
-﻿using Microsoft.Win32;
+﻿using CSVParserLibrary;
+using Microsoft.Win32;
 using MVVMLibrary;
-using PartsInventory.Models;
+using PartsInventory.Models.BOM;
 using PartsInventory.Models.KiCAD;
+using PartsInventory.Models.Parsers.BOM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PartsInventory.ViewModels
 {
    public class ProjectBOMViewModel : ViewModel
    {
       #region Local Props
-      private KicadModel? _proj = null;
+      private BOMModel? _bom = null;
 
       #region Commands
       public Command ParseProjectCmd { get; init; }
@@ -25,7 +28,7 @@ namespace PartsInventory.ViewModels
       public ProjectBOMViewModel()
       {
          ParseProjectCmd = new(ParseProject);
-         ClearProjectCmd = new(() => Project = null);
+         ClearProjectCmd = new(() => BOM = null);
       }
       #endregion
 
@@ -34,26 +37,34 @@ namespace PartsInventory.ViewModels
       {
          OpenFileDialog dialog = new()
          {
-            InitialDirectory = PathSettings.Default.KiCADProjects,
+            InitialDirectory = PathSettings.Default.BOMs,
             Multiselect = false,
             Title = "Open KiCAD Project (.xml)",
-            Filter = "Project File|*.xml|All Files|*.*"
+            Filter = "BOM File|*.csv|All Files|*.*"
          };
 
          if (dialog.ShowDialog() == true)
          {
-            Project = ProjectParser.Parse(dialog.FileName);
+            try
+            {
+               var parser = new BOMParser(dialog.FileName);
+               BOM = parser.Parse();
+            }
+            catch (Exception e)
+            {
+               MessageBox.Show(e.Message);
+            }
          }
       }
       #endregion
 
       #region Full Props
-      public KicadModel? Project
+      public BOMModel? BOM
       {
-         get => _proj;
+         get => _bom;
          set
          {
-            _proj = value;
+            _bom = value;
             OnPropertyChanged();
          }
       }

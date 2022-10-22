@@ -12,7 +12,7 @@ namespace PartsInventory {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
     internal sealed partial class PathSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static PathSettings defaultInstance = ((PathSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new PathSettings())));
@@ -128,6 +128,18 @@ namespace PartsInventory {
             }
             set {
                 this["KiCADProjects"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Daxxn\\Documents\\Electrical\\Project BOMs")]
+        public string BOMs {
+            get {
+                return ((string)(this["BOMs"]));
+            }
+            set {
+                this["BOMs"] = value;
             }
         }
     }

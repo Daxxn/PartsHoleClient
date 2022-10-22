@@ -1,5 +1,6 @@
 ﻿using CSVParserLibrary;
 using CSVParserLibrary.Models;
+using PartsInventory.Models.BOM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,26 +13,61 @@ namespace PartsInventory.Models.Parsers.BOM
    public class BOMParser : ICSVParser
    {
       #region Local Props
-      public string FilePath { get; set; }
+      public string FilePath { get; set; } = "";
       #endregion
 
       #region Constructors
       public BOMParser() { }
+      public BOMParser(string path) => FilePath = path;
       #endregion
 
       #region Methods
-      public void GetOrderDetails(BOMModel model, string path)
+      public int GetMetadata(BOMModel model, List<string> lines)
       {
-
+         var index = lines.IndexOf("end");
+         if (index != -1)
+         {
+            for (int i = index + 1; i < lines.Count; i++)
+            {
+               var split = RemoveQuotes(lines[i].Split(",", StringSplitOptions.TrimEntries));
+               if (split.Length == 2)
+               {
+                  switch (split[0])
+                  {
+                     case "Source":
+                        model.Source = split[1];
+                        break;
+                     case "PartCount":
+                        if (int.TryParse(split[1], out int partCount))
+                        {
+                           model.PartCount = partCount;
+                        }
+                        break;
+                     case "Date":
+                        if (DateTime.TryParse(split[1], out DateTime date))
+                        {
+                           model.Date = date;
+                        }
+                        break;
+                     default:
+                        break;
+                  }
+               }
+            }
+         }
+         return index;
       }
 
       public BOMModel Parse()
       {
          using StreamReader reader = new(FilePath);
          BOMModel model = new();
-         GetOrderDetails(model, FilePath);
+         List<string> allLines = new();
          Queue<string> lines = new();
-         while (!reader.EndOfStream) lines.Enqueue(reader.ReadLine());
+         while (!reader.EndOfStream) allLines.Add(reader.ReadLine());
+         int endIndex = GetMetadata(model, allLines);
+         allLines.RemoveRange(endIndex, allLines.Count - endIndex);
+         lines = new(allLines);
          var page = ParseCSV(lines) as BOMPage;
 
          if (page is null) return model;

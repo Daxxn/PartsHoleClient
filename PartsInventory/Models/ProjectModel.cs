@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PartsInventory.Models.KiCAD;
+using PartsInventory.Models.BOM;
 
 namespace PartsInventory.Models
 {
