@@ -146,7 +146,7 @@ namespace PartsInventory.Models.BOM
                Package = PackageModel.Parse(value);
                break;
             case "Datasheet":
-               Datasheet = value;
+               Datasheet = new(value);
                break;
             case "Pins":
                if (uint.TryParse(value, out uint pinCount))

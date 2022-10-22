@@ -1,6 +1,7 @@
 ﻿using MVVMLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace PartsInventory.Models
       //private decimal _extPrice = 0;
       private uint _backorder = 0;
 
-      private string? _datasheet = null;
+      private Datasheet? _datasheet = null;
       private string[]? _tags = null;
       private BinModel _binLocation = new();
       #endregion
@@ -194,7 +195,7 @@ namespace PartsInventory.Models
          }
       }
 
-      public string? Datasheet
+      public Datasheet? Datasheet
       {
          get => _datasheet;
          set

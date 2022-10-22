@@ -37,7 +37,7 @@ namespace PartsInventory {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\DigiKey")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DigiKey")]
         public string DigiKeyDir {
             get {
                 return ((string)(this["DigiKeyDir"]));
@@ -49,7 +49,7 @@ namespace PartsInventory {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\Mouser")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Mouser")]
         public string MouserDir {
             get {
                 return ((string)(this["MouserDir"]));

@@ -123,10 +123,10 @@
                             <Button Margin="10,5" Click="Datasheet_Click">
                                 <Button.Style>
                                     <Style TargetType="Button">
-                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="Visibility" Value="Hidden"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=Datasheet}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            <DataTrigger Binding="{Binding Path=Datasheet.IsGoodPath}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -144,7 +144,7 @@
                                     TextWrapping="WrapWithOverflow"
                                     MaxLines="30"
                                     TextAlignment="Right"
-                                    Text="{Binding Path=Datasheet, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding Path=Datasheet.Path, UpdateSourceTrigger=PropertyChanged}"
                                 />
                                 <Button Click="BrowseDatasheet_Click">Browse</Button>
                             </StackPanel>

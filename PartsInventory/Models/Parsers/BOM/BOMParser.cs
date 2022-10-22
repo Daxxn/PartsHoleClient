@@ -22,7 +22,7 @@ namespace PartsInventory.Models.Parsers.BOM
       #endregion
 
       #region Methods
-      public int GetMetadata(BOMModel model, List<string> lines)
+      public int GetMetadata(BOMModel model, ProjectModel proj, List<string> lines)
       {
          var index = lines.IndexOf("end");
          if (index != -1)
@@ -35,18 +35,18 @@ namespace PartsInventory.Models.Parsers.BOM
                   switch (split[0])
                   {
                      case "Source":
-                        model.Source = split[1];
+                        proj.Source = split[1];
                         break;
                      case "PartCount":
                         if (int.TryParse(split[1], out int partCount))
                         {
-                           model.PartCount = partCount;
+                           proj.PartCount = partCount;
                         }
                         break;
                      case "Date":
                         if (DateTime.TryParse(split[1], out DateTime date))
                         {
-                           model.Date = date;
+                           proj.Date = date;
                         }
                         break;
                      default:
@@ -58,14 +58,14 @@ namespace PartsInventory.Models.Parsers.BOM
          return index;
       }
 
-      public BOMModel Parse()
+      public BOMModel Parse(ProjectModel proj)
       {
          using StreamReader reader = new(FilePath);
          BOMModel model = new();
          List<string> allLines = new();
          Queue<string> lines = new();
          while (!reader.EndOfStream) allLines.Add(reader.ReadLine());
-         int endIndex = GetMetadata(model, allLines);
+         int endIndex = GetMetadata(model, proj, allLines);
          allLines.RemoveRange(endIndex, allLines.Count - endIndex);
          lines = new(allLines);
          var page = ParseCSV(lines) as BOMPage;
@@ -83,11 +83,11 @@ namespace PartsInventory.Models.Parsers.BOM
          return model;
       }
 
-      public async Task<BOMModel> ParseAsync()
+      public async Task<BOMModel> ParseAsync(ProjectModel proj)
       {
          return await Task.Run(() =>
          {
-            return Parse();
+            return Parse(proj);
          });
       }
 

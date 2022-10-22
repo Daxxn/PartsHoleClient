@@ -66,8 +66,8 @@ namespace PartsInventory.ViewModels
 
       private void OpenAllInvoices()
       {
-         List<string> paths = new(Directory.GetFiles(PathSettings.Default.DigiKeyDir));
-         paths.AddRange(Directory.GetDirectories(PathSettings.Default.MouserDir));
+         List<string> paths = new(Directory.GetFiles(Path.Combine(PathSettings.Default.PartInvoiceDir, PathSettings.Default.DigiKeyDir)));
+         //paths.AddRange(Directory.GetDirectories(PathSettings.Default.MouserDir));
 
          ParseInvoices(paths.ToArray());
 
@@ -98,6 +98,7 @@ namespace PartsInventory.ViewModels
                      Invoices.Add(parser.Parse());
                      InvoicesAdded = false;
                   }
+                  // Not working. Switching over to EXCEL parser.
                   else if (ext == ".pdf")
                   {
                      MouserParser parser = new(path);

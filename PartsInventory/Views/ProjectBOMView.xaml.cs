@@ -1,4 +1,6 @@
-﻿using PartsInventory.Models.KiCAD;
+﻿using PartsInventory.Models;
+using PartsInventory.Models.BOM;
+using PartsInventory.Models.KiCAD;
 using PartsInventory.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -35,14 +37,15 @@ namespace PartsInventory.Views
       {
          if (sender is Button btn)
          {
-            if (btn.DataContext is ComponentModel comp)
+            if (btn.DataContext is PartModel comp)
             {
-               if (!string.IsNullOrEmpty(comp.Datasheet))
+               if (comp.Datasheet?.Path is null) return;
+               if (comp.Datasheet.IsGoodPath)
                {
                   ProcessStartInfo proc = new()
                   {
                      FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
-                     Arguments = comp.Datasheet,
+                     Arguments = comp.Datasheet.Path.AbsoluteUri,
                   };
                   Process.Start(proc);
                }

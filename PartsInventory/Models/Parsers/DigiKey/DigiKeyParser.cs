@@ -49,7 +49,8 @@ namespace PartsInventory.Models.Parsers.DigiKey
 
          var subTotalLine = page.Lines[^1];
          page.Lines.RemoveAt(page.Lines.Count - 1);
-         if (decimal.TryParse(subTotalLine.Data[^1].Replace("$", ""), out decimal subTot)) {
+         if (decimal.TryParse(subTotalLine.Data[^1].Replace("$", ""), out decimal subTot))
+         {
             model.SubTotal = subTot;
          }
 
@@ -60,7 +61,7 @@ namespace PartsInventory.Models.Parsers.DigiKey
             {
                part.ParseProp(page.Props[i], line.Data[i]);
             }
-            part.Datasheet = DatasheetFinder.SearchDatasheetsTest(part.PartNumber);
+            part.Datasheet = new(DatasheetFinder.SearchDatasheetsTest(part.PartNumber));
             model.Parts.Add(part);
          }
 
@@ -86,8 +87,7 @@ namespace PartsInventory.Models.Parsers.DigiKey
          model.Path = path;
          model.SupplierType = SupplierType.DigiKey;
          var name = Path.GetFileNameWithoutExtension(path);
-         var success = uint.TryParse(name, out uint orderNum);
-         if (success) model.OrderNumber = orderNum;
+         if (uint.TryParse(name, out uint orderNum)) model.OrderNumber = orderNum;
       }
       #endregion
 

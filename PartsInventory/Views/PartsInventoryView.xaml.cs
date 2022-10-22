@@ -38,12 +38,13 @@ namespace PartsInventory.Views
          {
             if (btn.DataContext is PartModel part)
             {
-               if (!string.IsNullOrEmpty(part.Datasheet))
+               if (part.Datasheet?.Path is null) return;
+               if (!part.Datasheet.Path.IsFile)
                {
                   ProcessStartInfo proc = new()
                   {
                      FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
-                     Arguments = part.Datasheet,
+                     Arguments = part.Datasheet.Path.AbsoluteUri,
                   };
                   Process.Start(proc);
                }
@@ -69,7 +70,7 @@ namespace PartsInventory.Views
 
                if (dialog.ShowDialog() == true)
                {
-                  part.Datasheet = dialog.FileName;
+                  part.Datasheet = new(dialog.FileName);
                   VM.OpenDatasheet(sender, part);
                }
             }

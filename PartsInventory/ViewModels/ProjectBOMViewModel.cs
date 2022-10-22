@@ -1,6 +1,7 @@
 ﻿using CSVParserLibrary;
 using Microsoft.Win32;
 using MVVMLibrary;
+using PartsInventory.Models;
 using PartsInventory.Models.BOM;
 using PartsInventory.Models.KiCAD;
 using PartsInventory.Models.Parsers.BOM;
@@ -16,7 +17,7 @@ namespace PartsInventory.ViewModels
    public class ProjectBOMViewModel : ViewModel
    {
       #region Local Props
-      private BOMModel? _bom = null;
+      private ProjectModel? _project = null;
 
       #region Commands
       public Command ParseProjectCmd { get; init; }
@@ -28,7 +29,7 @@ namespace PartsInventory.ViewModels
       public ProjectBOMViewModel()
       {
          ParseProjectCmd = new(ParseProject);
-         ClearProjectCmd = new(() => BOM = null);
+         ClearProjectCmd = new(() => Project = null);
       }
       #endregion
 
@@ -48,7 +49,8 @@ namespace PartsInventory.ViewModels
             try
             {
                var parser = new BOMParser(dialog.FileName);
-               BOM = parser.Parse();
+               Project = new(dialog.FileName);
+               Project.BOM = parser.Parse(Project);
             }
             catch (Exception e)
             {
@@ -59,12 +61,12 @@ namespace PartsInventory.ViewModels
       #endregion
 
       #region Full Props
-      public BOMModel? BOM
+      public ProjectModel? Project
       {
-         get => _bom;
+         get => _project;
          set
          {
-            _bom = value;
+            _project = value;
             OnPropertyChanged();
          }
       }
