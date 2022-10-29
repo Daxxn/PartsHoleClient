@@ -10,6 +10,9 @@
 
   <ItemGroup>
     <None Remove="Resources\PartInventoryLogo.png" />
+    <None Remove="Resources\PartNumberTemplateREV1.png" />
+    <None Remove="Resources\PartNumberTemplateREV1.svg" />
+    <None Remove="Resources\PartNumberTemplates.svg" />
     <None Remove="Resources\PartsInventoryLogo.ico" />
     <None Remove="Resources\PartsInventoryLogo.svg" />
   </ItemGroup>
@@ -41,6 +44,12 @@
 
   <ItemGroup>
     <Resource Include="Resources\PartInventoryLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\PartNumberTemplateREV1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\PartNumberTemplateREV1.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\PartsInventoryLogo.ico">

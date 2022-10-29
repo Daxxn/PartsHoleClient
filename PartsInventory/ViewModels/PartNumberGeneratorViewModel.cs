@@ -86,6 +86,11 @@ namespace PartsInventory.ViewModels
       {
          AllParts = e;
       }
+
+      public void PartNumberCreated_PNTemp(object sender, PartNumber e)
+      {
+         NewPartNumber = e;
+      }
       #endregion
       #endregion
 

@@ -11,28 +11,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace PartsInventory.Views
 {
    /// <summary>
-   /// Interaction logic for PartNumberGeneratorView.xaml
+   /// Interaction logic for PartNumberTemplateDialog.xaml
    /// </summary>
-   public partial class PartNumberGeneratorView : UserControl
+   public partial class PartNumberTemplateDialog : Window
    {
-      private PartNumberGeneratorViewModel VM { get; init; }
-      public PartNumberGeneratorView()
+      public PartNumberTemplateViewModel VM { get; set; }
+      public PartNumberTemplateDialog()
       {
-         VM = MainViewModel.Instance.PartNumGenVM;
+         VM = MainViewModel.Instance.PartNumTempVM;
          DataContext = VM;
          InitializeComponent();
+
+         VM.CreatePartNumber += VM_CreatePartNumber;
       }
 
-      private void OpenTemplateView_Click(object sender, RoutedEventArgs e)
+      private void VM_CreatePartNumber(object? sender, Models.PartNumber e)
       {
-         var dialog = new PartNumberTemplateDialog();
-         dialog.ShowDialog();
+         Close();
       }
    }
 }

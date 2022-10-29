@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models
 {
+   #region Enums
    public enum PartNumberType
    {
       Other,
@@ -102,6 +103,8 @@ namespace PartsInventory.Models
       Keylock = 1111,
       Navigation = 1112
    }
+   #endregion
+
    public class PartNumber : Model, IComparable<PartNumber>
    {
       #region Local Props

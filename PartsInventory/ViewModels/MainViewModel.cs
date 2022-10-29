@@ -20,6 +20,7 @@ namespace PartsInventory.ViewModels
       private PackageViewModel _packageVM = new();
       private ProjectBOMViewModel _projectBOMVM = new();
       private PartNumberGeneratorViewModel _partNumGenVM = new();
+      private PartNumberTemplateViewModel _partNumTempVM = new();
 
       #region Events
       public static EventHandler<PartsCollection> PartsChangedEvent;
@@ -43,6 +44,7 @@ namespace PartsInventory.ViewModels
          PartsChangedEvent += PartNumGenVM.PartsChanged_Main;
 
          PartsInventoryVM.SelectedPartChanged += PartNumGenVM.SelectedPartChanged_Inv;
+         PartNumTempVM.CreatePartNumber += PartNumGenVM.PartNumberCreated_PNTemp;
       }
       #endregion
 
@@ -129,6 +131,16 @@ namespace PartsInventory.ViewModels
          set
          {
             _partNumGenVM = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PartNumberTemplateViewModel PartNumTempVM
+      {
+         get => _partNumTempVM;
+         set
+         {
+            _partNumTempVM = value;
             OnPropertyChanged();
          }
       }
