@@ -19,6 +19,11 @@ namespace PartsInventory.ViewModels
       private InvoiceParserViewModel _invoiceParserVM = new();
       private PackageViewModel _packageVM = new();
       private ProjectBOMViewModel _projectBOMVM = new();
+      private PartNumberGeneratorViewModel _partNumGenVM = new();
+
+      #region Events
+      public static EventHandler<PartsCollection> PartsChangedEvent;
+      #endregion
 
       #region Commands
       public Command SaveCmd { get; init; }
@@ -32,23 +37,16 @@ namespace PartsInventory.ViewModels
          InvoiceParserVM.AddToPartsEvent += PartsInventoryVM.NewPartsEventHandler;
          SaveCmd = new(Save);
          OpenCmd = new(Open);
+
+         PartsChangedEvent += ProjectBOMVM.PartsChanged_Main;
+         PartsChangedEvent += PartsInventoryVM.PartsChanged_Main;
+         PartsChangedEvent += PartNumGenVM.PartsChanged_Main;
+
+         PartsInventoryVM.SelectedPartChanged += PartNumGenVM.SelectedPartChanged_Inv;
       }
       #endregion
 
       #region Methods
-      public ViewModel GetViewModel(int index)
-      {
-         if (index == 0)
-         {
-            return PartsInventoryVM;
-         }
-         else if (index == 1)
-         {
-            return InvoiceParserVM;
-         }
-         else throw new ArgumentException("Index is not a valid view model.");
-      }
-
       public void Save()
       {
          try
@@ -73,7 +71,8 @@ namespace PartsInventory.ViewModels
             if (File.Exists(partsSavePath))
             {
                var parts = JsonReader.OpenJsonFile<PartsCollection>(partsSavePath);
-               PartsInventoryVM.PartsCollection = parts;
+               //PartsInventoryVM.PartsCollection = parts;
+               PartsChangedEvent?.Invoke(this, parts);
             }
          }
          catch (Exception e)
@@ -120,6 +119,16 @@ namespace PartsInventory.ViewModels
          set
          {
             _projectBOMVM = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PartNumberGeneratorViewModel PartNumGenVM
+      {
+         get => _partNumGenVM;
+         set
+         {
+            _partNumGenVM = value;
             OnPropertyChanged();
          }
       }

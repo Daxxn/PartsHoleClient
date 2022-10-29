@@ -44,6 +44,13 @@ namespace PartsInventory.Models
       #endregion
 
       #region Full Props
+      public PartModel? this[PartNumber pn]
+      {
+         get
+         {
+            return Parts.FirstOrDefault((p) => p.Reference?.Equals(pn) == true);
+         }
+      }
       public ObservableCollection<PartModel> Parts
       {
          get => _parts;

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PartsInventory.Views"
              xmlns:models="clr-namespace:PartsInventory.Models"
+             xmlns:conv="clr-namespace:PartsInventory.Utils.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -13,6 +14,8 @@
             ObjectType="{x:Type models:BinModel}"
             MethodName="GetBins"
         />
+
+        <conv:PartNumberConverter x:Key="PartNumberConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -57,9 +60,29 @@
             AlternatingRowBackground="AliceBlue"
         >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Qty" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=Quantity}"/>
-                <DataGridTextColumn Header="Part #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
-                <DataGridTextColumn Header="My Part #" Binding="{Binding Path=Reference}"/>
+                <DataGridTextColumn Header="Qty" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=Quantity}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="Total purchased from supplier."/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Alloc" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=AllocatedQty}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="Parts actively used in a project."/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Slpg" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=Slippage}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="Lost or damaged parts."/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="MF Part #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Part #" Binding="{Binding Path=Reference, Converter={StaticResource PartNumberConverter}}"/>
                 <DataGridTextColumn Header="Supplier Part #" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Unit Price" Binding="{Binding Path=UnitPrice}"/>
                 <DataGridTextColumn Header="Extended Price" Binding="{Binding Path=ExtendedPrice}"/>

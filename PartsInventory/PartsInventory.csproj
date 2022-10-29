@@ -5,7 +5,14 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\PartsInventoryLogo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\PartInventoryLogo.png" />
+    <None Remove="Resources\PartsInventoryLogo.ico" />
+    <None Remove="Resources\PartsInventoryLogo.svg" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -30,6 +37,18 @@
     <ProjectReference Include="..\..\..\Libraries\CSVParserLibrary\CSVParserLibrary\CSVParserLibrary.csproj" />
     <ProjectReference Include="..\..\..\Libraries\JsonReaderLibrary\JsonReaderLibrary\JsonReaderLibrary.csproj" />
     <ProjectReference Include="..\..\..\Libraries\MVVMLibrary\MVVMLibrary\MVVMLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\PartInventoryLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\PartsInventoryLogo.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\PartsInventoryLogo.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

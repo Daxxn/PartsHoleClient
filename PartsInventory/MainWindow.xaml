@@ -7,6 +7,7 @@
         xmlns:views="clr-namespace:PartsInventory.Views"
         mc:Ignorable="d"
         WindowState="Maximized"
+        Icon="./Resources/PartsInventoryLogo.ico"
         Title="Parts Inventory" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,6 +20,10 @@
                 <MenuItem Header="Open" Command="{Binding Path=OpenCmd}"/>
                 <MenuItem Header="Save" Command="{Binding Path=SaveCmd}"/>
             </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Electrical Calcs" Click="ElectricalCalc_Click"/>
+                <MenuItem Header="Saturn PCB Toolkit" Click="Saturn_Click"/>
+            </MenuItem>
         </Menu>
 
         <TabControl Grid.Row="1">
@@ -30,6 +35,9 @@
             </TabItem>
             <TabItem Header="Project BOM">
                 <views:ProjectBOMView x:Name="ProjectBOMView" />
+            </TabItem>
+            <TabItem Header="PN Creation">
+                <views:PartNumberGeneratorView x:Name="PartNumberGenView"/>
             </TabItem>
         </TabControl>
     </Grid>

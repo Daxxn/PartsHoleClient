@@ -142,5 +142,30 @@ namespace PartsInventory {
                 this["BOMs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Daxxn\\Code\\C#\\Projects\\ElectricalCalculators\\ElectricalCalculators\\bin\\D" +
+            "ebug\\net6.0-windows\\ElectricalCalculators.exe")]
+        public string ElectricalCalcExe {
+            get {
+                return ((string)(this["ElectricalCalcExe"]));
+            }
+            set {
+                this["ElectricalCalcExe"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Daxxn\\SaturnPCB\\PCB Toolkit V8.10.exe")]
+        public string SaturnPCBExe {
+            get {
+                return ((string)(this["SaturnPCBExe"]));
+            }
+            set {
+                this["SaturnPCBExe"] = value;
+            }
+        }
     }
 }

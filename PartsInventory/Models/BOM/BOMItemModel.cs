@@ -166,6 +166,9 @@ namespace PartsInventory.Models.BOM
                   Symbol = value;
                }
                break;
+            case "PartNumber":
+               Reference = new(value);
+               break;
             default:
                break;
          }
@@ -207,7 +210,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
-      public PackageModel Package
+      public PackageModel? Package
       {
          get => _package;
          set

@@ -13,6 +13,7 @@ namespace PartsInventory.ViewModels
    {
       #region Local Props
       public event EventHandler<PartModel> OpenDatasheetEvent = (s,e) => { };
+      public event EventHandler<PartModel?> SelectedPartChanged = (s,e) => { };
       private PartsCollection? _partsCollection = null;
       private InvoiceModel? _selectedInvoice = null;
       private PartModel? _selectedPart = null;
@@ -57,6 +58,11 @@ namespace PartsInventory.ViewModels
 
          PartsCollection.Parts.Remove(SelectedPart);
       }
+
+      public void PartsChanged_Main(object sender, PartsCollection e)
+      {
+         PartsCollection = e;
+      }
       #endregion
 
       #region Full Props
@@ -77,6 +83,7 @@ namespace PartsInventory.ViewModels
          {
             _selectedPart = value;
             OnPropertyChanged();
+            SelectedPartChanged?.Invoke(this, value);
          }
       }
 

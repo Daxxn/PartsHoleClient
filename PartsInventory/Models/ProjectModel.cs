@@ -15,10 +15,11 @@ namespace PartsInventory.Models
       #region Local Props
       private string _name = "New Project";
       private string? _rev = null;
-      private BOMModel _bom = new();
+      private BOMModel? _bom = null;
       private string? _source = null;
       private int? _partCount = null;
       private DateTime? _date = null;
+      private PartsCollection? _parts = null;
       #endregion
 
       #region Constructors
@@ -74,7 +75,7 @@ namespace PartsInventory.Models
          }
       }
 
-      public BOMModel BOM
+      public BOMModel? BOM
       {
          get => _bom;
          set
@@ -110,6 +111,16 @@ namespace PartsInventory.Models
          set
          {
             _date = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PartsCollection? Parts
+      {
+         get => _parts;
+         set
+         {
+            _parts = value;
             OnPropertyChanged();
          }
       }

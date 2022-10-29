@@ -14,8 +14,10 @@ namespace PartsInventory.Models
       private string _supplierPartNumber = "";
       private string _partNumber = "";
       private string? _desc = null;
-      private int? _reference = null;
+      private PartNumber? _reference = null;
       private uint _qty = 0;
+      private uint _alloc = 0;
+      private uint _slip = 0;
       private decimal _unitPrice = 0;
       //private decimal _extPrice = 0;
       private uint _backorder = 0;
@@ -47,7 +49,7 @@ namespace PartsInventory.Models
                Description = value;
                break;
             case "customer reference":
-               Reference = ParseInt(value);
+               Reference = new(value);
                break;
             case "unit price":
                UnitPrice = ParseDec(value);
@@ -86,6 +88,24 @@ namespace PartsInventory.Models
             return true;
          }
          return false;
+      }
+
+      public bool Search(string text, bool matchCase)
+      {
+         if (matchCase) text = text.ToLower();
+         var reference = ConvertCase(Reference?.ToString(), matchCase);
+         if (reference?.Contains(text) == true) return true;
+         var pn = ConvertCase(PartNumber, matchCase);
+         if (pn?.Contains(text) == true) return true;
+         var supplPN = ConvertCase(SupplierPartNumber, matchCase);
+         if (supplPN?.Contains(text) == true) return true;
+
+         return false;
+      }
+
+      private static string? ConvertCase(string? input, bool matchCase)
+      {
+         return matchCase && input is not null ? input.ToLower() : input;
       }
 
       private static int? ParseInt(string input)
@@ -150,7 +170,7 @@ namespace PartsInventory.Models
          }
       }
 
-      public int? Reference
+      public PartNumber? Reference
       {
          get => _reference;
          set
@@ -166,6 +186,26 @@ namespace PartsInventory.Models
          set
          {
             _qty = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public uint AllocatedQty
+      {
+         get => _alloc;
+         set
+         {
+            _alloc = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public uint Slippage
+      {
+         get => _slip;
+         set
+         {
+            _slip = value;
             OnPropertyChanged();
          }
       }

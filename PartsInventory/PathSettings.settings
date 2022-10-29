@@ -32,5 +32,11 @@
     <Setting Name="BOMs" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Users\Daxxn\Documents\Electrical\Project BOMs</Value>
     </Setting>
+    <Setting Name="ElectricalCalcExe" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\Code\C#\Projects\ElectricalCalculators\ElectricalCalculators\bin\Debug\net6.0-windows\ElectricalCalculators.exe</Value>
+    </Setting>
+    <Setting Name="SaturnPCBExe" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Daxxn\SaturnPCB\PCB Toolkit V8.10.exe</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

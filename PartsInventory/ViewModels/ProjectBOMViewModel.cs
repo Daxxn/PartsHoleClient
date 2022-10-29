@@ -17,11 +17,14 @@ namespace PartsInventory.ViewModels
    public class ProjectBOMViewModel : ViewModel
    {
       #region Local Props
+      private PartsCollection? _allParts = null;
       private ProjectModel? _project = null;
+      private int _currentTab = 0;
 
       #region Commands
       public Command ParseProjectCmd { get; init; }
       public Command ClearProjectCmd { get; init; }
+      public Command AllocateCmd { get; init; }
       #endregion
       #endregion
 
@@ -30,17 +33,19 @@ namespace PartsInventory.ViewModels
       {
          ParseProjectCmd = new(ParseProject);
          ClearProjectCmd = new(() => Project = null);
+         AllocateCmd = new(Allocate);
       }
       #endregion
 
       #region Methods
       private void ParseProject()
       {
+         CurrentTab = 0;
          OpenFileDialog dialog = new()
          {
             InitialDirectory = PathSettings.Default.BOMs,
             Multiselect = false,
-            Title = "Open KiCAD Project (.xml)",
+            Title = "Open BOM (.csv)",
             Filter = "BOM File|*.csv|All Files|*.*"
          };
 
@@ -58,6 +63,65 @@ namespace PartsInventory.ViewModels
             }
          }
       }
+
+      private void Allocate()
+      {
+         if (Project is null) return;
+         if (Project.BOM is null) return;
+         if (AllParts is null) return;
+
+         Project.Parts = new();
+         foreach (var bom in Project.BOM.Parts)
+         {
+            if (bom.Reference == null) continue;
+            var foundParts = AllParts.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
+            if (foundParts.Length > 0)
+            {
+               foreach (var part in foundParts)
+               {
+                  part.AllocatedQty = bom.Quantity;
+                  Project.Parts.Parts.Add(part);
+
+               }
+            }
+         }
+      }
+
+      public async void Loaded(object sender, EventArgs e)
+      {
+         await Task.Run(() =>
+         {
+            try
+            {
+               // Need to add auto-save and auto-load of the last BOM.
+               // Also need to replace the settings with the Settings Library.
+            }
+            catch (Exception e)
+            {
+               MessageBox.Show(e.Message);
+            }
+         });
+      }
+
+      public async void Exit(object sender, EventArgs e)
+      {
+         await Task.Run(() =>
+         {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+               MessageBox.Show(e.Message);
+            }
+         });
+      }
+
+      public void PartsChanged_Main(object sender, PartsCollection e)
+      {
+         AllParts = e;
+      }
       #endregion
 
       #region Full Props
@@ -67,6 +131,26 @@ namespace PartsInventory.ViewModels
          set
          {
             _project = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public int CurrentTab
+      {
+         get => _currentTab;
+         set
+         {
+            _currentTab = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PartsCollection? AllParts
+      {
+         get => _allParts;
+         set
+         {
+            _allParts = value;
             OnPropertyChanged();
          }
       }

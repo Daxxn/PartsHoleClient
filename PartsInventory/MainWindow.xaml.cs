@@ -1,7 +1,9 @@
 ﻿using PartsInventory.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +29,16 @@ namespace PartsInventory
          VM = MainViewModel.Instance;
          DataContext = VM;
          InitializeComponent();
+      }
+
+      private void ElectricalCalc_Click(object sender, RoutedEventArgs e)
+      {
+         Process.Start(PathSettings.Default.ElectricalCalcExe);
+      }
+
+      private void Saturn_Click(object sender, RoutedEventArgs e)
+      {
+         Process.Start(PathSettings.Default.SaturnPCBExe);
       }
    }
 }

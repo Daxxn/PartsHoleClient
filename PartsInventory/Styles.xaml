@@ -18,6 +18,12 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="ValueDisplayBlock">
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Padding" Value="2,0"/>
+        <Setter Property="Margin" Value="0,2"/>
+    </Style>
+
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="AliceBlue"/>
     </Style>
