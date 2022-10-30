@@ -6,10 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\PartsInventoryLogo.ico</ApplicationIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>PartInventoryLogo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\PartInventoryLogo.png" />
     <None Remove="Resources\PartNumberTemplateREV1.png" />
     <None Remove="Resources\PartNumberTemplateREV1.svg" />
     <None Remove="Resources\PartNumberTemplates.svg" />
@@ -19,6 +21,14 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +43,10 @@
     <None Update="PathSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>PathSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Resources\PartInventoryLogo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
