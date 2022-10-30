@@ -151,6 +151,7 @@ namespace PartsInventory.Models.BOM
             case "Pins":
                if (uint.TryParse(value, out uint pinCount))
                {
+                  Package ??= new();
                   Package.PinCount = pinCount;
                }
                break;

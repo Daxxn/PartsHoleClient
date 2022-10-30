@@ -1,4 +1,5 @@
 ﻿using MVVMLibrary;
+using PartsInventory.Models.Passives;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,8 @@ namespace PartsInventory.Models
       #region Local Props
       private ObservableCollection<PartModel> _parts = new();
       private ObservableCollection<InvoiceModel> _invoices = new();
+
+      private PassivesCollection _passives = new();
       #endregion
 
       #region Constructors
@@ -29,7 +32,7 @@ namespace PartsInventory.Models
                Invoices.Add(invoice);
                foreach (var part in invoice.Parts)
                {
-                  if (Parts.FirstOrDefault(p => p.Equals(part), null) is PartModel pt)
+                  if (Parts.FirstOrDefault(p => p?.Equals(part) == true, null) is PartModel pt)
                   {
                      pt.Quantity += part.Quantity;
                   }
@@ -67,6 +70,16 @@ namespace PartsInventory.Models
          set
          {
             _invoices = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PassivesCollection Passives
+      {
+         get => _passives;
+         set
+         {
+            _passives = value;
             OnPropertyChanged();
          }
       }

@@ -87,5 +87,21 @@ namespace PartsInventory.Views
             }
          }
       }
+
+      private void PartsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         if (sender is DataGrid dg)
+         {
+            PartModel[] temp = new PartModel[dg.SelectedItems.Count];
+            for (int i = 0; i < dg.SelectedItems.Count; i++)
+            {
+               if (dg.SelectedItems[i] is PartModel part)
+               {
+                  temp[i] = part;
+               }
+            }
+            VM.SelectedParts = new(temp);
+         }
+      }
    }
 }

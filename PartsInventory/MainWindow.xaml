@@ -39,6 +39,9 @@
             <TabItem Header="PN Creation">
                 <views:PartNumberGeneratorView x:Name="PartNumberGenView"/>
             </TabItem>
+            <TabItem Header="Passives">
+                <views:PassivesView x:Name="PassivesView"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

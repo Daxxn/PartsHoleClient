@@ -1,5 +1,6 @@
 ﻿using CSVParserLibrary.Models;
 using MVVMLibrary;
+using PartsInventory.Models.Enums;
 using PartsInventory.Models.Parsers.DigiKey;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,6 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models
 {
-   public enum SupplierType
-   {
-      DigiKey,
-      Mouser
-   };
-
    public class InvoiceModel : Model
    {
       #region Local Props

@@ -21,6 +21,7 @@ namespace PartsInventory.ViewModels
       private ProjectBOMViewModel _projectBOMVM = new();
       private PartNumberGeneratorViewModel _partNumGenVM = new();
       private PartNumberTemplateViewModel _partNumTempVM = new();
+      private PassivesViewModel _passivesVM = new();
 
       #region Events
       public static EventHandler<PartsCollection> PartsChangedEvent;
@@ -42,8 +43,10 @@ namespace PartsInventory.ViewModels
          PartsChangedEvent += ProjectBOMVM.PartsChanged_Main;
          PartsChangedEvent += PartsInventoryVM.PartsChanged_Main;
          PartsChangedEvent += PartNumGenVM.PartsChanged_Main;
+         PartsChangedEvent += PassivesVM.PartsChanged_Main;
 
-         PartsInventoryVM.SelectedPartChanged += PartNumGenVM.SelectedPartChanged_Inv;
+         PartsInventoryVM.SelectedPartsChanged += PartNumGenVM.SelectedPartsChanged_Inv;
+         PartsInventoryVM.SelectedPartsChanged += PassivesVM.SelectedPartsChanged_Inv;
          PartNumTempVM.CreatePartNumber += PartNumGenVM.PartNumberCreated_PNTemp;
       }
       #endregion
@@ -73,7 +76,6 @@ namespace PartsInventory.ViewModels
             if (File.Exists(partsSavePath))
             {
                var parts = JsonReader.OpenJsonFile<PartsCollection>(partsSavePath);
-               //PartsInventoryVM.PartsCollection = parts;
                PartsChangedEvent?.Invoke(this, parts);
             }
          }
@@ -141,6 +143,16 @@ namespace PartsInventory.ViewModels
          set
          {
             _partNumTempVM = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PassivesViewModel PassivesVM
+      {
+         get => _passivesVM;
+         set
+         {
+            _passivesVM = value;
             OnPropertyChanged();
          }
       }

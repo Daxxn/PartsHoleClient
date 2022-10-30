@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:PartsInventory.Views"
              xmlns:models="clr-namespace:PartsInventory.Models"
              xmlns:utils="clr-namespace:PartsInventory.Utils"
+             xmlns:enums="clr-namespace:PartsInventory.Models.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -33,13 +34,13 @@
 
                 <TextBlock Grid.ColumnSpan="2">Current Part</TextBlock>
                 <TextBlock Grid.Row="1">MF PN</TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.PartNumber}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].PartNumber}"/>
                 <TextBlock Grid.Row="2">Sup PN</TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.SupplierPartNumber}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].SupplierPartNumber}"/>
                 <TextBlock Grid.Row="3">Current Ref</TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.Reference}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].Reference}"/>
                 <TextBlock Grid.Row="4" Grid.ColumnSpan="2">Desc</TextBlock>
-                <TextBlock Grid.Row="5" Grid.ColumnSpan="2" MaxWidth="250" TextWrapping="Wrap" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.Description}"/>
+                <TextBlock Grid.Row="5" Grid.ColumnSpan="2" MaxWidth="250" TextWrapping="Wrap" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].Description}"/>
             </Grid>
         </Border>
 
@@ -94,7 +95,7 @@
                 <ComboBox
                     Grid.Column="1"
                     MinWidth="50"
-                    ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type models:PartNumberType}}}"
+                    ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:PartNumberType}}}"
                     SelectedItem="{Binding Path=Type}"
                 />
 

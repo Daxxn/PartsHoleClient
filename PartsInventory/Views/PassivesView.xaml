@@ -1,0 +1,280 @@
+﻿<UserControl x:Class="PartsInventory.Views.PassivesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PartsInventory.Views"
+             xmlns:enums="clr-namespace:PartsInventory.Models.Enums"
+             xmlns:utils="clr-namespace:PartsInventory.Utils"
+             xmlns:conv="clr-namespace:PartsInventory.Utils.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <conv:PassiveValueConverter x:Key="PassiveValueConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Search-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Style="{StaticResource ControlTitle}">Search</TextBlock>
+                    <TextBox MinWidth="50" Grid.Row="1" Grid.Column="0" Text="{Binding Path=SearchText}"/>
+                    <Button Grid.Row="1" Grid.Column="1" Command="{Binding Path=SearchCmd}">GO</Button>
+                    <ComboBox
+                        Grid.ColumnSpan="2" Grid.Row="2"
+                        ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:PassiveSearchProp}}}"
+                        SelectedItem="{Binding Path=SearchProp, UpdateSourceTrigger=PropertyChanged}"
+                    />
+                </Grid>
+                
+                <!--Add Parts-->
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Style="{StaticResource ControlTitle}">Add Parts</TextBlock>
+
+                    <ListView
+                        Grid.Row="1"
+                        ItemsSource="{Binding Path=SelectedParts}"
+                        SelectionMode="Multiple"
+                        SelectionChanged="AddPartsList_SelectionChanged"
+                        Grid.IsSharedSizeScope="True"
+                    >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="a"/>
+                                        <ColumnDefinition SharedSizeGroup="b"/>
+                                        <ColumnDefinition SharedSizeGroup="c"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Padding="4,0" Text="{Binding Path=PartNumber}"/>
+                                    <TextBlock Grid.Column="1" Padding="4,0" HorizontalAlignment="Center" Text="{Binding Path=Reference}"/>
+                                    <TextBlock Grid.Column="2" Padding="4,0" HorizontalAlignment="Right" Text="{Binding Path=Quantity}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Button Margin="4,0" Padding="4,2" Command="{Binding Path=AddAllPartsCmd}">Add All</Button>
+                        <Button Margin="0,0,4,0" Padding="4,2" Command="{Binding Path=AddSelectedPartsCmd}">Add Sel</Button>
+                    </StackPanel>
+
+                    <Button Grid.Row="3" Command="{Binding Path=ParseAllPartsCmd}">Rebuild Passives</Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Column="1" SelectedIndex="{Binding Path=CurrentTabIndex}">
+            <TabItem Header="Resistors">
+                <DataGrid
+                    ItemsSource="{Binding Path=Parts.Passives.Resistors}"
+                    Style="{StaticResource PassivesDataGrid}"
+                >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Qty" Binding="{Binding Path=Quantity}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Total stock"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Alloc" Binding="{Binding Path=AllocatedQty}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Parts allocated to a project"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="PN" Binding="{Binding Path=PartNumber}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="My Part Number"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MF PN" Binding="{Binding Path=ManufacturerNumber}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Supplier Part Number"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="VAL" Binding="{Binding Path=Value, Converter={StaticResource PassiveValueConverter}, ConverterParameter=Ω}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Component Resistance (Ohms)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="%" Binding="{Binding Path=Tolerance}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Component Tolerance (%)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="P" Binding="{Binding Path=PowerRating}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Power Rating (Watts)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
+                        <DataGridTextColumn Header="PKG" Binding="{Binding Path=PackageType}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Package mounting type (SMD | PTH)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Size" Binding="{Binding Path=PackageName}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Package Size"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="BIN" Binding="{Binding Path=BinLocation}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Capacitors">
+                <DataGrid
+                    ItemsSource="{Binding Path=Parts.Passives.Capacitors}"
+                    Style="{StaticResource PassivesDataGrid}"
+                >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Qty" Binding="{Binding Path=Quantity}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Total stock"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Alloc" Binding="{Binding Path=AllocatedQty}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Parts allocated to a project"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="PN" Binding="{Binding Path=PartNumber}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="My Part Number"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MF PN" Binding="{Binding Path=ManufacturerNumber}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Supplier Part Number"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="VAL" Binding="{Binding Path=Value, Converter={StaticResource PassiveValueConverter}, ConverterParameter=F}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Component Capacitance (Farads)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="%" Binding="{Binding Path=Tolerance}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Component Tolerance (%)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="V" Binding="{Binding Path=VoltageRating}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Capacitor Voltage Rating (Volts)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
+                        <DataGridTextColumn Header="PKG" Binding="{Binding Path=PackageType}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Package mounting type (SMD | PTH)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Size" Binding="{Binding Path=PackageName}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Package Size"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="BIN" Binding="{Binding Path=BinLocation}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Inductors">
+                <DataGrid
+                    ItemsSource="{Binding Path=Parts.Passives.Inductors}"
+                    Style="{StaticResource PassivesDataGrid}"
+                >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Qty" Binding="{Binding Path=Quantity}"/>
+                        <DataGridTextColumn Header="Alloc" Binding="{Binding Path=AllocatedQty}"/>
+                        <DataGridTextColumn Header="PN" Binding="{Binding Path=PartNumber}"/>
+                        <DataGridTextColumn Header="MF PN" Binding="{Binding Path=ManufacturerNumber}"/>
+                        <DataGridTextColumn Header="VAL" Binding="{Binding Path=Value, Converter={StaticResource PassiveValueConverter}, ConverterParameter=H}"/>
+                        <DataGridTextColumn Header="TOL" Binding="{Binding Path=Tolerance}"/>
+                        <DataGridTextColumn Header="AMP" Binding="{Binding Path=CurrentRating}"/>
+                        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
+                        <DataGridTextColumn Header="PKG" Binding="{Binding Path=PackageType}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Package mounting type (SMD | PTH)"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Size" Binding="{Binding Path=PackageName}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="Package Size"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="BIN" Binding="{Binding Path=BinLocation}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

@@ -64,7 +64,7 @@ namespace PartsInventory.Models.Parsers.BOM
          BOMModel model = new();
          List<string> allLines = new();
          Queue<string> lines = new();
-         while (!reader.EndOfStream) allLines.Add(reader.ReadLine());
+         while (!reader.EndOfStream) allLines.Add(reader.ReadLine() ?? "");
          int endIndex = GetMetadata(model, proj, allLines);
          allLines.RemoveRange(endIndex, allLines.Count - endIndex);
          lines = new(allLines);

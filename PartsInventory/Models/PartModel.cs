@@ -72,6 +72,7 @@ namespace PartsInventory.Models
 
       public bool Equals(PartModel part)
       {
+         if (part.Reference is null) return false;
          if (Reference is not null)
          {
             if (Reference == part.Reference)
@@ -136,6 +137,11 @@ namespace PartsInventory.Models
             return val;
          }
          return 0;
+      }
+
+      public override string ToString()
+      {
+         return $"{Reference} {PartNumber} {SupplierPartNumber} - {Quantity} {AllocatedQty}";
       }
       #endregion
 

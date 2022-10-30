@@ -1,17 +1,20 @@
 ﻿using MVVMLibrary;
 using PartsInventory.Models;
+using PartsInventory.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PartsInventory.ViewModels
 {
    public class PartNumberGeneratorViewModel : ViewModel
    {
       #region Local Props
-      private PartModel? _selectedPart = null;
+      private ObservableCollection<PartModel>? _selectedParts = null;
       private PartsCollection? _allParts = null;
       private PartNumber? _newPartNum = new();
 
@@ -37,6 +40,9 @@ namespace PartsInventory.ViewModels
       #endregion
 
       #region Methods
+      /// <summary>
+      /// Replace. Theres an issues with the incremetation. It goes up a few numbers then it starts randomly repeating numbers.
+      /// </summary>
       private void New()
       {
          if (AllParts is null) return;
@@ -68,18 +74,31 @@ namespace PartsInventory.ViewModels
          }
       }
 
+      /// <summary>
+      /// Assigns the newly generated part number to the selected part.
+      /// </summary>
       private void AssignToSelectedPart()
       {
-         if (SelectedPart is null) return;
+         if (SelectedParts is null) return;
          if (NewPartNumber is null) return;
-         SelectedPart.Reference = NewPartNumber;
+         if (SelectedParts.Count != 1)
+         {
+            MessageBox.Show("Unable to assign part number.\nOnly one part can be selected.", "Warning");
+            return;
+         }
+         SelectedParts[0].Reference = NewPartNumber;
          NewPartNumber = new();
       }
 
       #region Events
-      public void SelectedPartChanged_Inv(object sender, PartModel? e)
+      public void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e)
       {
-         SelectedPart = e;
+         if (e is null)
+         {
+            SelectedParts = null;
+            return;
+         }
+         SelectedParts = new(e);
       }
 
       public void PartsChanged_Main(object sender, PartsCollection e)
@@ -95,12 +114,12 @@ namespace PartsInventory.ViewModels
       #endregion
 
       #region Full Props
-      public PartModel? SelectedPart
+      public ObservableCollection<PartModel>? SelectedParts
       {
-         get => _selectedPart;
+         get => _selectedParts;
          set
          {
-            _selectedPart = value;
+            _selectedParts = value;
             OnPropertyChanged();
          }
       }

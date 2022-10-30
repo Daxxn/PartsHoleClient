@@ -3,6 +3,7 @@ using PartsInventory.Models;
 using PartsInventory.Models.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +14,11 @@ namespace PartsInventory.ViewModels
    {
       #region Local Props
       public event EventHandler<PartModel> OpenDatasheetEvent = (s,e) => { };
-      public event EventHandler<PartModel?> SelectedPartChanged = (s,e) => { };
+      public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s,e) => { };
       private PartsCollection? _partsCollection = null;
       private InvoiceModel? _selectedInvoice = null;
-      private PartModel? _selectedPart = null;
+      //private PartModel? _selectedPart = null;
+      private ObservableCollection<PartModel>? _selectedParts = null;
       private BinModel? _selectedBin = null;
       private string? _selectedBinName = null;
 
@@ -54,9 +56,13 @@ namespace PartsInventory.ViewModels
 
       private void RemovePart()
       {
-         if (PartsCollection is null || SelectedPart is null) return;
+         if (PartsCollection is null || SelectedParts is null) return;
 
-         PartsCollection.Parts.Remove(SelectedPart);
+         //PartsCollection.Parts.Remove(SelectedPart);
+         foreach (var part in SelectedParts)
+         {
+            PartsCollection.Parts.Remove(part);
+         }
       }
 
       public void PartsChanged_Main(object sender, PartsCollection e)
@@ -76,14 +82,25 @@ namespace PartsInventory.ViewModels
          }
       }
 
-      public PartModel? SelectedPart
+      //public PartModel? SelectedPart
+      //{
+      //   get => _selectedPart;
+      //   set
+      //   {
+      //      _selectedPart = value;
+      //      OnPropertyChanged();
+      //      SelectedPartChanged?.Invoke(this, value);
+      //   }
+      //}
+
+      public ObservableCollection<PartModel>? SelectedParts
       {
-         get => _selectedPart;
+         get => _selectedParts;
          set
          {
-            _selectedPart = value;
+            _selectedParts = value;
+            SelectedPartsChanged?.Invoke(this, value);
             OnPropertyChanged();
-            SelectedPartChanged?.Invoke(this, value);
          }
       }
 

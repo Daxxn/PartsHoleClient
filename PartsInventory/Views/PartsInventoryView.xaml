@@ -51,30 +51,25 @@
         <DataGrid
             Grid.Column="1"
             ItemsSource="{Binding Path=PartsCollection.Parts}"
-            SelectedItem="{Binding Path=SelectedPart}"
-            CanUserAddRows="False"
-            CanUserDeleteRows="False"
-            AutoGenerateColumns="False"
-            CellStyle="{StaticResource PartsCell}"
-            RowStyle="{StaticResource PartsRow}"
-            AlternatingRowBackground="AliceBlue"
+            SelectionChanged="PartsList_SelectionChanged"
+            Style="{StaticResource PartsDataGrid}"
         >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Qty" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=Quantity}">
+                <DataGridTextColumn Header="Qty" FontWeight="DemiBold" Binding="{Binding Path=Quantity}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="ToolTip" Value="Total purchased from supplier."/>
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Alloc" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=AllocatedQty}">
+                <DataGridTextColumn Header="Alloc" FontWeight="DemiBold" Binding="{Binding Path=AllocatedQty}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="ToolTip" Value="Parts actively used in a project."/>
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Slpg" MinWidth="30" MaxWidth="45" FontSize="14" FontWeight="DemiBold" Binding="{Binding Path=Slippage}">
+                <DataGridTextColumn Header="Slpg" FontWeight="DemiBold" Binding="{Binding Path=Slippage}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="ToolTip" Value="Lost or damaged parts."/>
@@ -87,8 +82,14 @@
                 <DataGridTextColumn Header="Unit Price" Binding="{Binding Path=UnitPrice}"/>
                 <DataGridTextColumn Header="Extended Price" Binding="{Binding Path=ExtendedPrice}"/>
                 <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
-                <DataGridTextColumn Header="Backorder" MinWidth="30" Binding="{Binding Path=Backorder}"/>
-                <DataGridTemplateColumn Header="BIN" MinWidth="135">
+                <DataGridTextColumn Header="B" MinWidth="30" Binding="{Binding Path=Backorder}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="Qty on Backorder"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="BIN">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -143,9 +144,10 @@
                 <DataGridTemplateColumn Header="Datasheet" MinWidth="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Margin="10,5" Click="Datasheet_Click">
+                            <Button Margin="10,0" Click="Datasheet_Click">
                                 <Button.Style>
                                     <Style TargetType="Button">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
                                         <Setter Property="Visibility" Value="Hidden"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Path=Datasheet.IsGoodPath}" Value="True">
@@ -235,7 +237,6 @@
                         <DataGrid
                             Grid.Row="1"
                             ItemsSource="{Binding Path=SelectedInvoice.Parts}"
-                            SelectedItem="{Binding Path=SelectedPart}"
                             CanUserAddRows="False"
                             CanUserDeleteRows="False"
                             CellStyle="{StaticResource PartsCell}"
