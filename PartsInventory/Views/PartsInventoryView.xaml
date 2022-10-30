@@ -239,13 +239,11 @@
                             ItemsSource="{Binding Path=SelectedInvoice.Parts}"
                             CanUserAddRows="False"
                             CanUserDeleteRows="False"
-                            CellStyle="{StaticResource PartsCell}"
                             AlternatingRowBackground="AliceBlue"
                         />
                     </Grid>
                 </Grid>
             </Expander>
-            
         </Grid>
     </Grid>
 </UserControl>

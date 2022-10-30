@@ -41,7 +41,7 @@ namespace PartsInventory.Models.Passives
                   Tolerance = tol;
                }
             }
-            else if (split[i].EndsWith('W') && split[i].Contains('/'))
+            else if (split[i].EndsWith('W'))
             {
                PowerRating = split[i];
             }
