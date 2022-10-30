@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace PartsInventory.Models
 {
@@ -16,16 +17,29 @@ namespace PartsInventory.Models
       private int _horz = 0;
       private int _vert = 0;
       private string _name = "BIN";
+      private bool _isBook = false;
       #endregion
 
       #region Constructors
       public BinModel() { }
+      public BinModel(string name) => Name = name;
+      public BinModel(string name, bool isBook)
+      {
+         Name = name;
+         IsBook = isBook;
+      }
+      public BinModel(string name, int horz, int vert)
+      {
+         Name = name;
+         Horizontal = horz;
+         Vertical = vert;
+      }
       #endregion
 
       #region Methods
       public override string ToString()
       {
-         return $"{Name} - {Horizontal} - {Vertical}";
+         return $"{Name} - {(IsBook ? "Book" : $"{Horizontal} - {Vertical}")}";
       }
       #endregion
 
@@ -56,6 +70,16 @@ namespace PartsInventory.Models
          set
          {
             _vert = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public bool IsBook
+      {
+         get => _isBook;
+         set
+         {
+            _isBook = value;
             OnPropertyChanged();
          }
       }

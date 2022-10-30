@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Enums
 {
+   public enum EIAStandard
+   {
+      E6 = 20,
+      E12 = 10,
+      E24 = 5,
+      E48 = 2,
+      E96 = 1,
+      E192 = 0,
+   };
 
    public enum SupplierType
    {
@@ -25,7 +34,14 @@ namespace PartsInventory.Models.Enums
    {
       SMD,
       PTH,
-      UNK
+      UNK,
+   };
+
+   public enum PassiveType
+   {
+      Resistor = 0,
+      Capacitor = -12,
+      Inductor = -3,
    };
    #endregion
 

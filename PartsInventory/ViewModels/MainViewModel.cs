@@ -22,6 +22,7 @@ namespace PartsInventory.ViewModels
       private PartNumberGeneratorViewModel _partNumGenVM = new();
       private PartNumberTemplateViewModel _partNumTempVM = new();
       private PassivesViewModel _passivesVM = new();
+      private PassiveBookViewModel _bookVM = new();
 
       #region Events
       public static EventHandler<PartsCollection> PartsChangedEvent;
@@ -48,6 +49,7 @@ namespace PartsInventory.ViewModels
          PartsInventoryVM.SelectedPartsChanged += PartNumGenVM.SelectedPartsChanged_Inv;
          PartsInventoryVM.SelectedPartsChanged += PassivesVM.SelectedPartsChanged_Inv;
          PartNumTempVM.CreatePartNumber += PartNumGenVM.PartNumberCreated_PNTemp;
+         PassivesVM.NewBookEvent += BookVM.NewBook_Psv;
       }
       #endregion
 
@@ -153,6 +155,16 @@ namespace PartsInventory.ViewModels
          set
          {
             _passivesVM = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PassiveBookViewModel BookVM
+      {
+         get => _bookVM;
+         set
+         {
+            _bookVM = value;
             OnPropertyChanged();
          }
       }

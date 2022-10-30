@@ -91,6 +91,28 @@
 
                     <Button Grid.Row="3" Command="{Binding Path=ParseAllPartsCmd}">Rebuild Passives</Button>
                 </Grid>
+                
+                <!--Books-->
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Command="{Binding Path=NewBookCmd}">
+                        New Book
+                    </Button>
+                    <Button
+                        Grid.Row="1"
+                        Command="{Binding Path=AddCurrentBookCmd}"
+                        ToolTip="Adds the current book to the passive components"
+                    >
+                        Add Book
+                    </Button>
+                    
+                </Grid>
             </Grid>
         </Border>
 

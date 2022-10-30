@@ -1,6 +1,7 @@
 ﻿using MVVMLibrary;
 using PartsInventory.Models;
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Events;
 using PartsInventory.Models.Passives;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace PartsInventory.ViewModels
    public class PassivesViewModel : ViewModel
    {
       #region Local Props
+      public event EventHandler<NewBookEventArgs> NewBookEvent = (s, e) => { };
       private PartsCollection? _parts = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
       private ObservableCollection<PartModel>? _selectedAddParts = null;
@@ -28,6 +30,8 @@ namespace PartsInventory.ViewModels
       public Command AddAllPartsCmd { get; init; }
       public Command AddSelectedPartsCmd { get; init; }
       public Command ParseAllPartsCmd { get; init; }
+      public Command NewBookCmd { get; init; }
+      public Command AddBookCmd { get; init; }
       #endregion
       #endregion
 
@@ -38,6 +42,8 @@ namespace PartsInventory.ViewModels
          AddSelectedPartsCmd = new(AddSelectedParts);
          ParseAllPartsCmd = new(ParseAllParts);
          SearchCmd = new(Search);
+         NewBookCmd = new(NewBook);
+         AddBookCmd = new(AddBook);
       }
       #endregion
 
@@ -117,6 +123,27 @@ namespace PartsInventory.ViewModels
       //         break;
       //   }
       //}
+
+      private void NewBook()
+      {
+         if (CurrentTabIndex == 0)
+         {
+            NewBookEvent?.Invoke(this, new(PassiveType.Resistor));
+         }
+         else if (CurrentTabIndex == 1)
+         {
+            NewBookEvent?.Invoke(this, new(PassiveType.Capacitor));
+         }
+         else if (CurrentTabIndex == 2)
+         {
+            NewBookEvent?.Invoke(this, new(PassiveType.Inductor));
+         }
+      }
+
+      private void AddBook()
+      {
+         //TODO...
+      }
 
       public void PartsChanged_Main(object sender, PartsCollection e)
       {

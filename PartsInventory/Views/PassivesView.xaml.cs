@@ -28,6 +28,8 @@ namespace PartsInventory.Views
          VM = MainViewModel.Instance.PassivesVM;
          DataContext = VM;
          InitializeComponent();
+
+         VM.NewBookEvent += NewBook_VM;
       }
 
       private void AddPartsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -46,6 +48,13 @@ namespace PartsInventory.Views
                }
             }
          }
+      }
+
+      private void NewBook_VM(object sender, EventArgs e)
+      {
+         var bookDialog = new PassiveBookDialog();
+
+         bookDialog.Show();
       }
    }
 }
