@@ -26,6 +26,8 @@ namespace PartsInventory
       protected override void OnExit(ExitEventArgs e)
       {
          MainViewModel.Instance.Save();
+         Settings.Default.Save();
+         PathSettings.Default.Save();
          base.OnExit(e);
       }
    }

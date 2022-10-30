@@ -15,34 +15,22 @@ namespace PartsInventory.Utils.Converters
       {
          if (value is double num)
          {
-            if (num > 999999)
-            {
-               return $"{Math.Round(num * 0.000001, 4)}M{parameter ?? ""}";
-            }
-            else if (num > 999)
-            {
-               return $"{Math.Round(num * 0.001, 4)}K{parameter ?? ""}";
-            }
-            else if (num > 0.99999999999)
-            {
+            if (double.IsNaN(num)) return "NaN";
+            if (num == 0) return $"{num}{parameter ?? ""}";
+            else if (num > Constants.MEGA_CHECK)
+               return $"{Math.Round(num * Constants.MEGA_INVERT, 4)}M{parameter ?? ""}";
+            else if (num > Constants.KILO_CHECK)
+               return $"{Math.Round(num * Constants.KILO_INVERT, 4)}K{parameter ?? ""}";
+            else if (num > Constants.BASE_CHECK)
                return $"{Math.Round(num, 4)}{parameter ?? ""}";
-            }
-            else if (num > 0.0009)
-            {
-               return $"{Math.Round(num * 1000, 4)}m{parameter ?? ""}";
-            }
-            else if (num > 0.0000009)
-            {
-               return $"{Math.Round(num * 1000000, 4)}µ{parameter ?? ""}";
-            }
-            else if (num > 0.0000000009)
-            {
-               return $"{Math.Round(num * 1000000000, 4)}n{parameter ?? ""}";
-            }
+            else if (num > Constants.MILLI_CHECK)
+               return $"{Math.Round(num * Constants.MILLI_INVERT, 4)}m{parameter ?? ""}";
+            else if (num > Constants.MICRO_CHECK)
+               return $"{Math.Round(num * Constants.MICRO_INVERT, 4)}µ{parameter ?? ""}";
+            else if (num > Constants.NANO_CHECK)
+               return $"{Math.Round(num * Constants.NANO_INVERT, 4)}n{parameter ?? ""}";
             else
-            {
-               return $"{Math.Round(num * 1000000000000, 4)}p{parameter ?? ""}";
-            }
+               return $"{Math.Round(num * Constants.PICO_INVERT, 4)}p{parameter ?? ""}";
          }
          return value;
       }

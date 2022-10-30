@@ -1,6 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+	<!--#region Colors-->
+	<SolidColorBrush x:Key="AccentBase" Color="#e6e6e6"/>
+	<SolidColorBrush x:Key="DataGridAlternating" Color="#ebebeb"/>
+	<SolidColorBrush x:Key="MenuPopupBrush" Color="Red"/>
+	<SolidColorBrush x:Key="BorderMediumBrush" Color="Blue"/>
+	<!--#endregion-->
+
     <Style TargetType="DataGrid" x:Key="PartsDataGrid">
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -8,7 +15,7 @@
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="SelectionMode" Value="Extended"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="AlternatingRowBackground" Value="LightGray"/>
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource DataGridAlternating}"/>
         <Setter Property="CellStyle">
             <Setter.Value>
                 <Style TargetType="DataGridCell">
@@ -32,7 +39,8 @@
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="SelectionMode" Value="Extended"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="FontSize" Value="15"/>
+		<Setter Property="AlternatingRowBackground" Value="{StaticResource DataGridAlternating}"/>
+		<Setter Property="FontSize" Value="15"/>
         <Setter Property="CellStyle">
             <Setter.Value>
                 <Style TargetType="DataGridCell">
@@ -49,7 +57,7 @@
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ValueDisplayBlock">
-        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Background" Value="{StaticResource AccentBase}"/>
         <Setter Property="Padding" Value="2,0"/>
         <Setter Property="Margin" Value="0,2"/>
     </Style>
@@ -60,7 +68,7 @@
     </Style>
 
     <Style TargetType="TextBox">
-        <Setter Property="Background" Value="AliceBlue"/>
+        <Setter Property="Background" Value="{StaticResource AccentBase}"/>
     </Style>
 
     <Style TargetType="TextBox" x:Key="BinEditBox">

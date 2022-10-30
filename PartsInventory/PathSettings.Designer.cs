@@ -13,7 +13,7 @@ namespace PartsInventory {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
-    internal sealed partial class PathSettings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class PathSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static PathSettings defaultInstance = ((PathSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new PathSettings())));
         

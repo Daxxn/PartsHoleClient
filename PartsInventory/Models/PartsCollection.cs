@@ -1,5 +1,7 @@
 ﻿using MVVMLibrary;
 using PartsInventory.Models.Passives;
+using PartsInventory.Models.Passives.Book;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

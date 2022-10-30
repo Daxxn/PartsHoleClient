@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="PartsInventory.Resources.Packages.Passives.SmdDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PartsInventory.Resources.Packages.Passives"
+			 x:Name="root"
+			 Loaded="Root_Loaded"
+             mc:Ignorable="d">
+	<Canvas Width="{Binding ElementName=root, Path=PackageWidth}" Background="LightGray" Height="{Binding ElementName=root, Path=PackageHeight}">
+		<Rectangle
+			x:Name="courtyardRect"
+			Canvas.Left="0" Canvas.Top="0"
+			Stroke="Black"
+			StrokeThickness="1.5"
+			Width="{Binding ElementName=root, Path=PackageWidth}"
+			Height="{Binding ElementName=root, Path=PackageHeight}"
+			LayoutUpdated="courtyardRect_LayoutUpdated"
+        />
+		<Rectangle
+			x:Name="PadARect"
+			Canvas.Left="0" Canvas.Top="0"
+			Fill="Gold"
+			Width="{Binding ElementName=root, Path=PadWidth}"
+			Height="{Binding ElementName=root, Path=PackageHeight}"
+		/>
+		<Rectangle
+			x:Name="PadBRect"
+			Canvas.Right="0" Canvas.Top="0"
+			Fill="Gold"
+			Width="{Binding ElementName=root, Path=PadWidth}"
+			Height="{Binding ElementName=root, Path=PackageHeight}"
+		/>
+	</Canvas>
+</UserControl>

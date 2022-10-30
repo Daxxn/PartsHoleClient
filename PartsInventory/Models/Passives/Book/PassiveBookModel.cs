@@ -44,20 +44,22 @@ namespace PartsInventory.Models.Passives.Book
          { PassiveType.Inductor, 'H' }
       };
 
-      public event EventHandler<IEnumerable<ValueModel>> AddNewBookEvent;
-
       private BinModel _bin = new("Book", true);
       private uint _qty = 0;
       private PassiveType _type = PassiveType.Resistor;
+      private string? _packageSize = null;
       private EIAStandard _baseStandard = EIAStandard.E24;
       private ObservableCollection<ValueModel> _values = new();
+      private bool _addedToPassives = false;
 
       public int Count => Values.Count;
       public bool IsReadOnly => false;
+
       #endregion
 
       #region Constructors
       public PassiveBookModel() { }
+
       public PassiveBookModel(PassiveType type)
       {
          Type = type;
@@ -65,13 +67,17 @@ namespace PartsInventory.Models.Passives.Book
       #endregion
 
       #region Methods
-      public void GenerateValues()
+      public void GenerateValues(bool addZero)
       {
          Values = new();
+         if (addZero)
+         {
+            Add(0);
+         }
 
          var vals = TypicalValues[BaseStandard];
          Array.ForEach(vals, v => Add(v));
-         for (int decade = 1; decade < 4; decade++)
+         for (int decade = 1; decade < 5; decade++)
          {
             for (int i = 0; i < vals.Length; i++)
             {
@@ -224,6 +230,26 @@ namespace PartsInventory.Models.Passives.Book
             Values[index] = value;
             UpdateIndecies();
             OnPropertyChanged(nameof(Values));
+         }
+      }
+
+      public bool AddedToPassives
+      {
+         get => _addedToPassives;
+         set
+         {
+            _addedToPassives = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string? PackageSize
+      {
+         get => _packageSize;
+         set
+         {
+            _packageSize = value;
+            OnPropertyChanged();
          }
       }
       #endregion

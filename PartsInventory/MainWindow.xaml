@@ -24,6 +24,24 @@
                 <MenuItem Header="Electrical Calcs" Click="ElectricalCalc_Click"/>
                 <MenuItem Header="Saturn PCB Toolkit" Click="Saturn_Click"/>
             </MenuItem>
+			<MenuItem Header="Settings">
+				<MenuItem Header="Monitor">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<TextBlock Grid.Row="0" Grid.Column="0">Monitor Size</TextBlock>
+						<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MonitorSize}"/>
+						<TextBlock Grid.Row="1" Grid.Column="0">Aspect Ratio</TextBlock>
+						<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=AspectRatio}"/>
+					</Grid>
+				</MenuItem>
+			</MenuItem>
         </Menu>
 
         <TabControl Grid.Row="1">

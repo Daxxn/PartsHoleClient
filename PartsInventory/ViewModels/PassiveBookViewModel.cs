@@ -1,4 +1,5 @@
 ﻿using MVVMLibrary;
+
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Passives.Book;
 using System;
@@ -13,8 +14,11 @@ namespace PartsInventory.ViewModels
    public class PassiveBookViewModel : ViewModel
    {
       #region Local Props
+      public event EventHandler<PassiveBookModel> AddNewBookEvent;
+
       private PassiveBookModel _book = new();
       private ObservableCollection<ValueModel>? _selectedValues = null;
+      private bool _addZero = false;
 
       #region Commands
       public Command GenerateCmd { get; init; }
@@ -24,11 +28,16 @@ namespace PartsInventory.ViewModels
       #region Constructors
       public PassiveBookViewModel()
       {
-         GenerateCmd = new(() => Book.GenerateValues());
+         AddNewBookEvent += AddNewBookEvent_this;
+         GenerateCmd = new(() => Book.GenerateValues(AddZero));
       }
       #endregion
 
       #region Methods
+
+      private void AddNewBookEvent_this(object? sender, IEnumerable<ValueModel> e)
+      {
+      }
       public void RemoveValue(ValueModel value)
       {
          Book.Remove(value);
@@ -36,12 +45,12 @@ namespace PartsInventory.ViewModels
 
       public void AddAbove(ValueModel value)
       {
-         Book.Insert(value.Index - 1, new(value.Index - 1));
+         Book.Insert(value.Index, new(value.Index));
       }
 
       public void AddBelow(ValueModel value)
       {
-         Book.Insert(value.Index, new(value.Index));
+         Book.Insert(value.Index + 1, new(value.Index + 1));
       }
 
       #region Events
@@ -71,6 +80,21 @@ namespace PartsInventory.ViewModels
             _selectedValues = value;
             OnPropertyChanged();
          }
+      }
+
+      public bool AddZero
+      {
+         get => _addZero;
+         set
+         {
+            _addZero = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string[] StandardPackageSizes
+      {
+         get => Models.Constants.StandardSMDPackages;
       }
       #endregion
    }

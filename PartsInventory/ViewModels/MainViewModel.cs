@@ -24,6 +24,9 @@ namespace PartsInventory.ViewModels
       private PassivesViewModel _passivesVM = new();
       private PassiveBookViewModel _bookVM = new();
 
+      private double _monSize = Settings.Default.MonitorSize;
+      private string _aspectRatio = Settings.Default.AspectRatio;
+
       #region Events
       public static EventHandler<PartsCollection> PartsChangedEvent;
       #endregion
@@ -50,6 +53,7 @@ namespace PartsInventory.ViewModels
          PartsInventoryVM.SelectedPartsChanged += PassivesVM.SelectedPartsChanged_Inv;
          PartNumTempVM.CreatePartNumber += PartNumGenVM.PartNumberCreated_PNTemp;
          PassivesVM.NewBookEvent += BookVM.NewBook_Psv;
+         BookVM.AddNewBookEvent += PassivesVM.AddNewBook_Book;
       }
       #endregion
 
@@ -165,6 +169,26 @@ namespace PartsInventory.ViewModels
          set
          {
             _bookVM = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public double MonitorSize
+      {
+         get => Settings.Default.MonitorSize;
+         set
+         {
+            Settings.Default.MonitorSize = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string AspectRatio
+      {
+         get => Settings.Default.AspectRatio;
+         set
+         {
+            Settings.Default.AspectRatio = value;
             OnPropertyChanged();
          }
       }

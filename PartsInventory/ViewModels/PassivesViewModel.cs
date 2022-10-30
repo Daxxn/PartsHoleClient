@@ -3,6 +3,8 @@ using PartsInventory.Models;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Passives;
+using PartsInventory.Models.Passives.Book;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +22,7 @@ namespace PartsInventory.ViewModels
       private PartsCollection? _parts = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
       private ObservableCollection<PartModel>? _selectedAddParts = null;
+      private PassiveBookModel? _selectedBook = null;
       private ObservableCollection<IPassive>? _searchResults = null;
       private PassiveSearchProp? _searchProp = null;
       private string? _searchText = null;
@@ -142,7 +145,61 @@ namespace PartsInventory.ViewModels
 
       private void AddBook()
       {
-         //TODO...
+         if (Parts is null) return;
+         if (SelectedBook is null) return;
+         if (SelectedBook.AddedToPassives) return;
+
+         var data = new List<IPassive>();
+         foreach (var val in SelectedBook.Values)
+         {
+            switch (SelectedBook.Type)
+            {
+               case PassiveType.Resistor:
+                  data.Add(new Resistor
+                  {
+                     BinLocation = SelectedBook.BIN,
+                     Quantity = SelectedBook.Quantity,
+                     PackageName = SelectedBook.PackageSize,
+                     Value = val.Value,
+                     Tolerance = SelectedBook.Tolerance,
+                  });
+                  break;
+               case PassiveType.Capacitor:
+                  data.Add(new Capacitor
+                  {
+                     BinLocation = SelectedBook.BIN,
+                     Quantity = SelectedBook.Quantity,
+                     PackageName = SelectedBook.PackageSize,
+                     Value = val.Value,
+                     Tolerance = SelectedBook.Tolerance,
+                  });
+                  break;
+               case PassiveType.Inductor:
+                  data.Add(new Inductor
+                  {
+                     BinLocation = SelectedBook.BIN,
+                     Quantity = SelectedBook.Quantity,
+                     PackageName = SelectedBook.PackageSize,
+                     Value = val.Value,
+                     Tolerance = SelectedBook.Tolerance,
+                  });
+                  break;
+               default:
+                  break;
+            }
+         }
+
+         Parts.Passives.AddRange(data);
+         SelectedBook.AddedToPassives = true;
+      }
+
+      public void AddNewBook_Book(object sender, PassiveBookModel e)
+      {
+         if (Parts is null) return;
+         if (Parts.Passives.Books.Any(b => b.BIN.Name == e.BIN.Name))
+            return;
+         Parts.Passives.Books.Add(e);
+         SelectedBook = e;
       }
 
       public void PartsChanged_Main(object sender, PartsCollection e)
@@ -192,6 +249,16 @@ namespace PartsInventory.ViewModels
          }
       }
 
+      public PassiveBookModel? SelectedBook
+      {
+         get => _selectedBook;
+         set
+         {
+            _selectedBook = value;
+            OnPropertyChanged();
+         }
+      }
+
       public ObservableCollection<IPassive>? SearchResults
       {
          get => _searchResults;
@@ -230,6 +297,11 @@ namespace PartsInventory.ViewModels
             _currentTabIndex = value;
             OnPropertyChanged();
          }
+      }
+
+      public string[] StandardPackageSizes
+      {
+         get => Models.Constants.StandardSMDPackages;
       }
       #endregion
    }

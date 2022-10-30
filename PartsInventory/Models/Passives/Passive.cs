@@ -233,6 +233,11 @@ namespace PartsInventory.Models.Passives
 
       public char UnitLetter => '\0';
       public char TypeLetter => '\0';
+
+      public string[] StandardPackageSizes
+      {
+         get => Models.Constants.StandardSMDPackages;
+      }
       #endregion
    }
 }
