@@ -46,5 +46,17 @@ namespace PartsInventory {
                 this["AspectRatio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CurrentMainTab {
+            get {
+                return ((int)(this["CurrentMainTab"]));
+            }
+            set {
+                this["CurrentMainTab"] = value;
+            }
+        }
     }
 }

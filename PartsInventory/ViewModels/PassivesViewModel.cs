@@ -97,7 +97,13 @@ namespace PartsInventory.ViewModels
 
       private void Search()
       {
+         if (Parts is null) return;
          if (SearchProp is null) return;
+         if (string.IsNullOrEmpty(SearchText))
+         {
+            SearchResults = null;
+            return;
+         }
          var results = SearchPassives(Parts.Passives.GetPassivesList(CurrentTabIndex));
          if (results is null) return;
          SearchResults = new(results);

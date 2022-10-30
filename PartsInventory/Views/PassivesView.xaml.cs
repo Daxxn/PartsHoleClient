@@ -56,5 +56,10 @@ namespace PartsInventory.Views
 
          bookDialog.Show();
       }
-   }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+    }
 }

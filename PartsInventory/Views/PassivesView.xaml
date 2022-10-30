@@ -36,9 +36,11 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
 
                     <TextBlock Style="{StaticResource ControlTitle}">Search</TextBlock>
                     <TextBox MinWidth="50" Grid.Row="1" Grid.Column="0" Text="{Binding Path=SearchText}"/>
@@ -48,6 +50,32 @@
                         ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:PassiveSearchProp}}}"
                         SelectedItem="{Binding Path=SearchProp, UpdateSourceTrigger=PropertyChanged}"
                     />
+
+					<Button Grid.Row="3" Grid.ColumnSpan="2" Command="{Binding Path=ClearSearchCmd}">Clear</Button>
+
+					<ListView Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding Path=SearchResults}" SelectionChanged="ListView_SelectionChanged">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock Padding="2,0" Text="{Binding Path=PartNumber}"/>
+									<TextBlock Grid.Column="1">--</TextBlock>
+									<TextBlock Grid.Column="2" Padding="2,0">
+										<Run Text="{Binding Path=Value}"/>
+										<Run Text="{Binding Path=UnitLetter, Mode=OneWay}"/>
+									</TextBlock>
+									<TextBlock Grid.Column="3" Padding="2,0" Text="{Binding Path=ToleranceDisplay}"/>
+									<TextBlock Grid.Column="4" Padding="2,0" Text="{Binding Path=Quantity}"/>
+								</Grid>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
                 </Grid>
                 
                 <!--Add Parts-->

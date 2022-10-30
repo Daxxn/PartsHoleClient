@@ -76,11 +76,11 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="MF Part #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
+                <DataGridTextColumn Header="MF #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Part #" Binding="{Binding Path=Reference, Converter={StaticResource PartNumberConverter}}"/>
-                <DataGridTextColumn Header="Supplier Part #" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Unit Price" Binding="{Binding Path=UnitPrice}"/>
-                <DataGridTextColumn Header="Extended Price" Binding="{Binding Path=ExtendedPrice}"/>
+                <DataGridTextColumn Header="Supplier #" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Unit $" Binding="{Binding Path=UnitPrice, StringFormat=C2}"/>
+				<DataGridTextColumn Header="Total $" Binding="{Binding Path=ExtendedPrice, StringFormat=C2}"/>
                 <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
                 <DataGridTextColumn Header="B" MinWidth="30" Binding="{Binding Path=Backorder}">
                     <DataGridTextColumn.CellStyle>

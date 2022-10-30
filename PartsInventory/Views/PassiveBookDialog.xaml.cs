@@ -28,7 +28,6 @@ namespace PartsInventory.Views
          VM = MainViewModel.Instance.BookVM;
          DataContext = VM;
          InitializeComponent();
-         //PackageSizeList.ItemsSource = SmdPackages;
       }
 
       private void ValueList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -78,11 +77,6 @@ namespace PartsInventory.Views
                VM.AddBelow(val);
             }
          }
-      }
-
-      private void SmdDisplay_Loaded(object sender, RoutedEventArgs e)
-      {
-
       }
    }
 }
