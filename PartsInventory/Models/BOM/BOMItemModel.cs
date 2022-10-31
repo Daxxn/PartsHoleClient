@@ -1,4 +1,6 @@
 ﻿using MVVMLibrary;
+
+using PartsInventory.Models.Enums;
 using PartsInventory.Models.Packages;
 using System;
 using System.Collections.Generic;
@@ -8,59 +10,6 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.BOM
 {
-   public enum PartType
-   {
-      Unknown = 0,
-
-      Resistor,
-      Capacitor,
-      Inductor,
-      IC,
-      Arduino,
-      Battery,
-      CapacitorNetwork,
-      ResistorNetwork,
-      Diode,
-      DiodeNetwork,
-      Display,
-      Fuse,
-      FerriteBead,
-      Fiducial,
-      Filter,
-      InfraredDiode,
-      Connector,
-      Jumper,
-      Relay,
-      Speaker,
-      Motor,
-      Microphone,
-      OptoIsolator,
-      PowerSupply,
-      Transistor,
-      Thermistor,
-      Varistor,
-      Switch,
-      Transformer,
-      Thermocouple,
-      TestPoint,
-      Tuner,
-      VacuumTube,
-      VoltageRegulator,
-      Potentiometer,
-      Crystal,
-      Oscillator,
-      BridgeRectifier,
-      Attenuator,
-      DelayLine,
-      Hardware,
-      DirectionalCoupler,
-      Socket,
-
-      USBConnector,
-      SenseResistor,
-      RotaryEncoder,
-   }
-
    public class BOMItemModel : PartModel
    {
       #region Local Props

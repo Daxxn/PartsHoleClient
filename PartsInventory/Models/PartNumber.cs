@@ -11,20 +11,6 @@ namespace PartsInventory.Models
    public class PartNumber : Model, IComparable<PartNumber>
    {
       #region Local Props
-      //private static Dictionary<PartNumberType, uint> SubTypeIDs = new()
-      //{
-      //   { PartNumberType.Passives, 6 },
-      //   { PartNumberType.Protection, 4 },
-      //   { PartNumberType.Mechanical, 3 },
-      //   { PartNumberType.Connector, 12 },
-      //   { PartNumberType.Lighting, 3 },
-      //   { PartNumberType.Diode, 4 },
-      //   { PartNumberType.Transistor, 5 },
-      //   { PartNumberType.IC, 16 },
-      //   { PartNumberType.Display, 5 },
-      //   { PartNumberType.ElectroMechanical, 6 },
-      //   { PartNumberType.Switch_Input, 12 },
-      //};
       public static Dictionary<PartNumberType, PartNumberSubTypes[]> SubTypeDisplay = new()
       {
          { PartNumberType.Passives, new PartNumberSubTypes[] { PartNumberSubTypes.Resistor, PartNumberSubTypes.capacitor, PartNumberSubTypes.Inductor, PartNumberSubTypes.Ferrites, PartNumberSubTypes.Crystal, PartNumberSubTypes.Resonator } },

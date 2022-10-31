@@ -86,7 +86,7 @@ namespace PartsInventory.Models.Passives.Book
          }
       }
 
-      private void UpdateIndecies()
+      private void UpdateIndices()
       {
          for (int i = 0; i < Values.Count; i++)
          {
@@ -103,7 +103,7 @@ namespace PartsInventory.Models.Passives.Book
       public void Insert(int index, ValueModel item)
       {
          Values.Insert(index, item);
-         UpdateIndecies();
+         UpdateIndices();
       }
 
       public void RemoveAt(int index)
@@ -228,7 +228,7 @@ namespace PartsInventory.Models.Passives.Book
          set
          {
             Values[index] = value;
-            UpdateIndecies();
+            UpdateIndices();
             OnPropertyChanged(nameof(Values));
          }
       }
