@@ -1,0 +1,21 @@
+{
+  "Dirs": {
+    "PartInvoiceDir": "C:\\Users\\Daxxn\\Documents\\Electrical\\PartInvoices",
+    "DigiKeyDir": "DigiKey",
+    "MouserDir": "Mouser",
+    "SettingsPath": "C:\\Users\\Daxxn\\Documents\\PartsInventory\\settings.json",
+    "DatasheetsPath": "C:\\Users\\Daxxn\\Documents\\Electrical\\Datasheets",
+    "AppDataPath": "C:\\Users\\Daxxn\\Documents\\PartsInventory",
+    "AppDataFileName": "Data.json",
+    "BinLocFileName": "BinLocations.json",
+    "KiCADProjects": "C:\\Users\\Daxxn\\Documents\\Electrical\\KiCAD\\Designs",
+    "BOMs": "C:\\Users\\Daxxn\\Documents\\Electrical\\Project BOMs",
+    "ElectricalCalcExe": "C:\\Users\\Daxxn\\Code\\C#\\Projects\\ElectricalCalculators\\ElectricalCalculators\\bin\\Debug\\net6.0-windows\\ElectricalCalculators.exe",
+    "SaturnPCBExe": "C:\\Users\\Daxxn\\SaturnPCB\\PCB Toolkit V8.10.exe"
+  },
+  "Settings": {
+    "MonitorSize": 24,
+    "AspectRatio": "16/9",
+    "CurrentMainTab": 0
+  }
+}
