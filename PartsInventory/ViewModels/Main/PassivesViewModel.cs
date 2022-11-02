@@ -13,9 +13,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Main
 {
-   public class PassivesViewModel : ViewModel
+   public class PassivesViewModel : ViewModel, IPassivesViewModel
    {
       #region Local Props
       public event EventHandler<NewBookEventArgs> NewBookEvent = (s, e) => { };
@@ -53,36 +53,44 @@ namespace PartsInventory.ViewModels
       #region Methods
       private void AddAllParts()
       {
-         if (Parts is null) return;
-         if (SelectedParts is null) return;
+         if (Parts is null)
+            return;
+         if (SelectedParts is null)
+            return;
          foreach (var part in SelectedParts)
          {
             IPassive? newPassive = Passive.ConvertPartAuto(part);
-            if (newPassive is null) continue;
+            if (newPassive is null)
+               continue;
             Parts.Passives.Add(newPassive);
          }
       }
 
       private void AddSelectedParts()
       {
-         if (Parts is null) return;
-         if (SelectedAddParts is null) return;
+         if (Parts is null)
+            return;
+         if (SelectedAddParts is null)
+            return;
          foreach (var part in SelectedAddParts)
          {
             IPassive? newPassive = Passive.ConvertPartAuto(part);
-            if (newPassive is null) continue;
+            if (newPassive is null)
+               continue;
             Parts.Passives.Add(newPassive);
          }
       }
 
       private void ParseAllParts()
       {
-         if (Parts is null) return;
+         if (Parts is null)
+            return;
          var passives = Parts.Passives;
          if (passives.Capacitors.Count > 0 || passives.Resistors.Count > 0 || passives.Inductors.Count > 0)
          {
             var result = MessageBox.Show("There is currently passives saved. Overwrite??", "Hold on..", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.No) return;
+            if (result == MessageBoxResult.No)
+               return;
          }
 
          Parts.Passives = new();
@@ -90,22 +98,26 @@ namespace PartsInventory.ViewModels
          foreach (var part in Parts.Parts)
          {
             IPassive? newPassive = Passive.ConvertPartAuto(part);
-            if (newPassive is null) continue;
+            if (newPassive is null)
+               continue;
             Parts.Passives.Add(newPassive);
          }
       }
 
       private void Search()
       {
-         if (Parts is null) return;
-         if (SearchProp is null) return;
+         if (Parts is null)
+            return;
+         if (SearchProp is null)
+            return;
          if (string.IsNullOrEmpty(SearchText))
          {
             SearchResults = null;
             return;
          }
          var results = SearchPassives(Parts.Passives.GetPassivesList(CurrentTabIndex));
-         if (results is null) return;
+         if (results is null)
+            return;
          SearchResults = new(results);
       }
 
@@ -151,9 +163,12 @@ namespace PartsInventory.ViewModels
 
       private void AddBook()
       {
-         if (Parts is null) return;
-         if (SelectedBook is null) return;
-         if (SelectedBook.AddedToPassives) return;
+         if (Parts is null)
+            return;
+         if (SelectedBook is null)
+            return;
+         if (SelectedBook.AddedToPassives)
+            return;
 
          var data = new List<IPassive>();
          foreach (var val in SelectedBook.Values)
@@ -201,7 +216,8 @@ namespace PartsInventory.ViewModels
 
       public void AddNewBook_Book(object sender, PassiveBookModel e)
       {
-         if (Parts is null) return;
+         if (Parts is null)
+            return;
          if (Parts.Passives.Books.Any(b => b.BIN.Name == e.BIN.Name))
             return;
          Parts.Passives.Books.Add(e);
@@ -307,7 +323,7 @@ namespace PartsInventory.ViewModels
 
       public string[] StandardPackageSizes
       {
-         get => Models.Constants.StandardSMDPackages;
+         get => Constants.StandardSMDPackages;
       }
       #endregion
    }

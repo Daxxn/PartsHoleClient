@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Testing
 {
-   public class MainViewModel : ViewModel
+   public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
       private static MainViewModel _instance = new();
@@ -197,7 +197,8 @@ namespace PartsInventory.ViewModels
       {
          get
          {
-            if (_instance is null) _instance = new MainViewModel();
+            if (_instance is null)
+               _instance = new MainViewModel();
             return _instance;
          }
       }

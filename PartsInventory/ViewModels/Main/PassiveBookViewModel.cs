@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Main
 {
-   public class PassiveBookViewModel : ViewModel
+   public class PassiveBookViewModel : ViewModel, IPassiveBookViewModel
    {
       #region Local Props
       public event EventHandler<PassiveBookModel> AddNewBookEvent;

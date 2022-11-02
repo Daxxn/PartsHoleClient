@@ -1,4 +1,5 @@
 ﻿using PartsInventory.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,26 +14,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
+namespace PartsInventory.Views;
+
+public partial class PartNumberTemplateDialog : Window
 {
-   /// <summary>
-   /// Interaction logic for PartNumberTemplateDialog.xaml
-   /// </summary>
-   public partial class PartNumberTemplateDialog : Window
+   private readonly IPartNumberTemplateViewModel VM;
+   public PartNumberTemplateDialog(IPartNumberTemplateViewModel vm)
    {
-      public PartNumberTemplateViewModel VM { get; set; }
-      public PartNumberTemplateDialog()
-      {
-         VM = MainViewModel.Instance.PartNumTempVM;
-         DataContext = VM;
-         InitializeComponent();
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
 
-         VM.CreatePartNumber += VM_CreatePartNumber;
-      }
+      VM.CreatePartNumber += VM_CreatePartNumber;
+   }
 
-      private void VM_CreatePartNumber(object? sender, Models.PartNumber e)
-      {
-         Close();
-      }
+   private void VM_CreatePartNumber(object? sender, Models.PartNumber e)
+   {
+      Close();
    }
 }

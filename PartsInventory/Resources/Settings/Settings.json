@@ -10,12 +10,27 @@
     "BinLocFileName": "BinLocations.json",
     "KiCADProjects": "C:\\Users\\Daxxn\\Documents\\Electrical\\KiCAD\\Designs",
     "BOMs": "C:\\Users\\Daxxn\\Documents\\Electrical\\Project BOMs",
+    "ExtraTools": [
+      {
+        "Key": "ElectricalCalc",
+        "Name": "Electrical Calculators",
+        "Path": "C:\\Users\\Daxxn\\Code\\C#\\Projects\\ElectricalCalculators\\ElectricalCalculators\\bin\\Debug\\net6.0-windows\\ElectricalCalculators.exe"
+      },
+      {
+        "Key": "SaturnPCB",
+        "Name": "Saturn PCB Toolkit",
+        "Path": "C:\\Users\\Daxxn\\SaturnPCB\\PCB Toolkit V8.10.exe"
+      }
+    ],
     "ElectricalCalcExe": "C:\\Users\\Daxxn\\Code\\C#\\Projects\\ElectricalCalculators\\ElectricalCalculators\\bin\\Debug\\net6.0-windows\\ElectricalCalculators.exe",
     "SaturnPCBExe": "C:\\Users\\Daxxn\\SaturnPCB\\PCB Toolkit V8.10.exe"
   },
   "Settings": {
     "MonitorSize": 24,
     "AspectRatio": "16/9",
-    "CurrentMainTab": 0
+    "TabIndecies": {
+      "Main": 0,
+      "Passives": 0
+    }
   }
 }

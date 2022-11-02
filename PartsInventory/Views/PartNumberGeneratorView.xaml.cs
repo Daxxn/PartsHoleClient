@@ -1,4 +1,5 @@
 ﻿using PartsInventory.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,25 +15,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
-{
-   /// <summary>
-   /// Interaction logic for PartNumberGeneratorView.xaml
-   /// </summary>
-   public partial class PartNumberGeneratorView : UserControl
-   {
-      private PartNumberGeneratorViewModel VM { get; init; }
-      public PartNumberGeneratorView()
-      {
-         VM = MainViewModel.Instance.PartNumGenVM;
-         DataContext = VM;
-         InitializeComponent();
-      }
+namespace PartsInventory.Views;
 
-      private void OpenTemplateView_Click(object sender, RoutedEventArgs e)
-      {
-         var dialog = new PartNumberTemplateDialog();
-         dialog.ShowDialog();
-      }
+public partial class PartNumberGeneratorView : UserControl
+{
+   private readonly IPartNumberGeneratorViewModel VM;
+   private readonly IPartNumberTemplateViewModel _templateVM;
+   public PartNumberGeneratorView(
+      IPartNumberGeneratorViewModel vm,
+      IPartNumberTemplateViewModel tempVM
+      )
+   {
+      VM = vm;
+      _templateVM = tempVM;
+      DataContext = VM;
+      InitializeComponent();
+   }
+
+   private void OpenTemplateView_Click(object sender, RoutedEventArgs e)
+   {
+      var dialog = new PartNumberTemplateDialog(_templateVM);
+      dialog.ShowDialog();
    }
 }

@@ -12,9 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Testing
 {
-   public class InvoiceParserViewModel : ViewModel
+   public class InvoiceParserViewModel : ViewModel, IInvoiceParserViewModel
    {
       #region Local Props
       public event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent = (s, e) => { };
@@ -38,7 +38,8 @@ namespace PartsInventory.ViewModels
          ParseTestCmd = new(ParseTest);
          OpenInvoicesCmd = new(OpenInvoices);
          OpenAllInvoicesCmd = new(OpenAllInvoices);
-         ClearInvoicesCmd = new(() => {
+         ClearInvoicesCmd = new(() =>
+         {
             Invoices.Clear();
             SelectedInvoice = null;
          });
@@ -112,7 +113,8 @@ namespace PartsInventory.ViewModels
 
       private void AddToParts()
       {
-         if (Invoices.Count == 0) return;
+         if (Invoices.Count == 0)
+            return;
          AddToPartsEvent?.Invoke(this, new(Invoices));
       }
 

@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.New
 {
-   public class ProjectBOMViewModel : ViewModel
+   public class ProjectBOMViewModel : ViewModel, IProjectBOMViewModel
    {
       #region Local Props
       private PartsCollection? _allParts = null;
@@ -66,14 +66,18 @@ namespace PartsInventory.ViewModels
 
       private void Allocate()
       {
-         if (Project is null) return;
-         if (Project.BOM is null) return;
-         if (AllParts is null) return;
+         if (Project is null)
+            return;
+         if (Project.BOM is null)
+            return;
+         if (AllParts is null)
+            return;
 
          Project.Parts = new();
          foreach (var bom in Project.BOM.Parts)
          {
-            if (bom.Reference == null) continue;
+            if (bom.Reference == null)
+               continue;
             var foundParts = AllParts.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
             if (foundParts.Length > 0)
             {

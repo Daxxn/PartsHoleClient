@@ -1,7 +1,6 @@
 ﻿using PartsInventory.Models;
-using PartsInventory.Models.BOM;
-using PartsInventory.Models.KiCAD;
 using PartsInventory.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,37 +17,35 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
-{
-   /// <summary>
-   /// Interaction logic for ProjectBOMView.xaml
-   /// </summary>
-   public partial class ProjectBOMView : UserControl
-   {
-      private ProjectBOMViewModel VM { get; set; }
-      public ProjectBOMView()
-      {
-         VM = MainViewModel.Instance.ProjectBOMVM;
-         DataContext = VM;
-         InitializeComponent();
-      }
+namespace PartsInventory.Views;
 
-      private void Datasheet_Click(object sender, RoutedEventArgs e)
+public partial class ProjectBOMView : UserControl
+{
+   private readonly IProjectBOMViewModel VM;
+   public ProjectBOMView(IProjectBOMViewModel vm)
+   {
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
+   }
+
+   private void Datasheet_Click(object sender, RoutedEventArgs e)
+   {
+      if (sender is Button btn)
       {
-         if (sender is Button btn)
+         if (btn.DataContext is PartModel comp)
          {
-            if (btn.DataContext is PartModel comp)
+            if (comp.Datasheet?.Path is null)
+               return;
+            if (comp.Datasheet.IsGoodPath)
             {
-               if (comp.Datasheet?.Path is null) return;
-               if (comp.Datasheet.IsGoodPath)
+               ProcessStartInfo proc = new()
                {
-                  ProcessStartInfo proc = new()
-                  {
-                     FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
-                     Arguments = comp.Datasheet.Path.AbsoluteUri,
-                  };
-                  Process.Start(proc);
-               }
+                  //FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                  FileName = "explorer.exe",
+                  Arguments = comp.Datasheet.Path.AbsoluteUri,
+               };
+               Process.Start(proc);
             }
          }
       }

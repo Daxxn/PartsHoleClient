@@ -1,6 +1,9 @@
 ﻿using Microsoft.Win32;
+
 using PartsInventory.Models;
 using PartsInventory.ViewModels;
+using PartsInventory.ViewModels.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,91 +20,90 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
+namespace PartsInventory.Views;
+
+public partial class PartsInventoryView : UserControl
 {
-   /// <summary>
-   /// Interaction logic for PartsInventoryView.xaml
-   /// </summary>
-   public partial class PartsInventoryView : UserControl
+   private readonly IPartsInventoryViewModel VM;
+   public PartsInventoryView(IPartsInventoryViewModel vm)
    {
-      private PartsInventoryViewModel VM { get; init; }
-      public PartsInventoryView()
-      {
-         VM = MainViewModel.Instance.PartsInventoryVM;
-         DataContext = VM;
-         InitializeComponent();
-      }
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
+   }
 
-      private void Datasheet_Click(object sender, RoutedEventArgs e)
+   private void Datasheet_Click(object sender, RoutedEventArgs e)
+   {
+      if (sender is Button btn)
       {
-         if (sender is Button btn)
+         if (btn.DataContext is PartModel part)
          {
-            if (btn.DataContext is PartModel part)
+            if (part.Datasheet?.Path is null)
+               return;
+            if (!part.Datasheet.Path.IsFile)
             {
-               if (part.Datasheet?.Path is null) return;
-               if (!part.Datasheet.Path.IsFile)
+               ProcessStartInfo proc = new()
                {
-                  ProcessStartInfo proc = new()
-                  {
-                     FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
-                     Arguments = part.Datasheet.Path.AbsoluteUri,
-                  };
-                  Process.Start(proc);
-               }
-            }
-         }
-      }
-
-      private void BrowseDatasheet_Click(object sender, RoutedEventArgs e)
-      {
-         if (sender is Button btn)
-         {
-            if (btn.DataContext is PartModel part)
-            {
-               if (part is null) return;
-               OpenFileDialog dialog = new()
-               {
-                  Title = $"Browse for {part.PartNumber} Datasheet",
-                  Filter = "PDF|*.pdf|All Files|*.*",
-                  InitialDirectory = PathSettings.Default.DatasheetsPath,
-                  Multiselect = false,
-                  DereferenceLinks = true
+                  //FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                  FileName = "explorer.exe",
+                  Arguments = part.Datasheet.Path.AbsoluteUri,
                };
-
-               if (dialog.ShowDialog() == true)
-               {
-                  part.Datasheet = new(dialog.FileName);
-                  VM.OpenDatasheet(sender, part);
-               }
+               Process.Start(proc);
             }
          }
       }
+   }
 
-      private void BinEdit_Click(object sender, RoutedEventArgs e)
+   private void BrowseDatasheet_Click(object sender, RoutedEventArgs e)
+   {
+      if (sender is Button btn)
       {
-         if (sender is Button btn)
+         if (btn.DataContext is PartModel part)
          {
-            if (btn.DataContext is BinModel bin)
+            if (part is null)
+               return;
+            OpenFileDialog dialog = new()
             {
-               VM.SelectedBin = bin;
+               Title = $"Browse for {part.PartNumber} Datasheet",
+               Filter = "PDF|*.pdf|All Files|*.*",
+               InitialDirectory = PathSettings.Default.DatasheetsPath,
+               Multiselect = false,
+               DereferenceLinks = true
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+               part.Datasheet = new(dialog.FileName);
+               VM.OpenDatasheet(sender, part);
             }
          }
       }
+   }
 
-      private void PartsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   private void BinEdit_Click(object sender, RoutedEventArgs e)
+   {
+      if (sender is Button btn)
       {
-         if (sender is DataGrid dg)
+         if (btn.DataContext is BinModel bin)
          {
-            PartModel[] temp = new PartModel[dg.SelectedItems.Count];
-            for (int i = 0; i < dg.SelectedItems.Count; i++)
-            {
-               if (dg.SelectedItems[i] is PartModel part)
-               {
-                  temp[i] = part;
-               }
-            }
-            VM.SelectedParts = new(temp);
+            VM.SelectedBin = bin;
          }
+      }
+   }
+
+   private void PartsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   {
+      if (sender is DataGrid dg)
+      {
+         PartModel[] temp = new PartModel[dg.SelectedItems.Count];
+         for (int i = 0; i < dg.SelectedItems.Count; i++)
+         {
+            if (dg.SelectedItems[i] is PartModel part)
+            {
+               temp[i] = part;
+            }
+         }
+         VM.SelectedParts = new(temp);
       }
    }
 }

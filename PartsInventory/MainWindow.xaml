@@ -45,20 +45,20 @@
         </Menu>
 
         <TabControl Grid.Row="1">
-            <TabItem Header="Inventory">
-                <views:PartsInventoryView x:Name="PartsView"/>
+            <TabItem Header="Inventory" x:Name="PartsViewTab">
+                <!--<views:PartsInventoryView x:Name="PartsView"/>-->
             </TabItem>
-            <TabItem Header="Invoices">
-                <views:InvoiceParserView x:Name="InvoiceView"/>
+            <TabItem Header="Invoices" x:Name="InvoiceViewTab">
+                <!--<views:InvoiceParserView x:Name="InvoiceView"/>-->
             </TabItem>
-            <TabItem Header="Project BOM">
-                <views:ProjectBOMView x:Name="ProjectBOMView" />
+            <TabItem Header="Project BOM" x:Name="BomViewTab">
+                <!--<views:ProjectBOMView x:Name="ProjectBOMView" />-->
             </TabItem>
-            <TabItem Header="PN Creation">
-                <views:PartNumberGeneratorView x:Name="PartNumberGenView"/>
+            <TabItem Header="PN Creation" x:Name="PartNumViewTab">
+                <!--<views:PartNumberGeneratorView x:Name="PartNumberGenView"/>-->
             </TabItem>
-            <TabItem Header="Passives">
-                <views:PassivesView x:Name="PassivesView"/>
+            <TabItem Header="Passives" x:Name="PassivesViewTab">
+                <!--<views:PassivesView x:Name="PassivesView"/>-->
             </TabItem>
         </TabControl>
     </Grid>

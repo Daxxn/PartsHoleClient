@@ -13,15 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Microsoft.Extensions.Options;
+
 using Newtonsoft.Json.Linq;
 
 using PartsInventory.Models;
+using PartsInventory.Resources.Settings;
 
 namespace PartsInventory.Resources.Packages.Passives
 {
-   /// <summary>
-   /// Interaction logic for SmdDisplay.xaml
-   /// </summary>
    public partial class SmdDisplay : UserControl
    {
       public string PackageString
@@ -67,8 +67,10 @@ namespace PartsInventory.Resources.Packages.Passives
       public static readonly DependencyProperty PadWidthProperty =
          DependencyProperty.Register("PadWidth", typeof(double), typeof(SmdDisplay), new PropertyMetadata(default(double)));
 
-      public SmdDisplay()
+      private readonly IOptions<GeneralSettings> _generalSettings;
+      public SmdDisplay(IOptions<GeneralSettings> settings)
       {
+         _generalSettings = settings;
          InitializeComponent();
          //CalcSize();
       }
@@ -106,17 +108,17 @@ namespace PartsInventory.Resources.Packages.Passives
 
       private double MonitorSizeToWidth()
       {
-         if (Constants.StandardAspectRatios.ContainsKey(Settings.Default.AspectRatio))
+         if (Constants.StandardAspectRatios.ContainsKey(_generalSettings.Value.AspectRatio))
          {
             return
-               Constants.StandardAspectRatios[Settings.Default.AspectRatio].aspectRatio
+               Constants.StandardAspectRatios[_generalSettings.Value.AspectRatio].aspectRatio
                   *
-               (Settings.Default.MonitorSize / Constants.StandardAspectRatios[Settings.Default.AspectRatio].aspectSqrt);
+               (_generalSettings.Value.MonitorSize / Constants.StandardAspectRatios[_generalSettings.Value.AspectRatio].aspectSqrt);
          }
          return
             Constants.StandardAspectRatios["16/9"].aspectRatio
                *
-            (Settings.Default.MonitorSize / Constants.StandardAspectRatios["16/9"].aspectSqrt);
+            (_generalSettings.Value.MonitorSize / Constants.StandardAspectRatios["16/9"].aspectSqrt);
       }
 
       private void Root_Loaded(object sender, RoutedEventArgs e)

@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Main
 {
-   public class PartsInventoryViewModel : ViewModel
+   public class PartsInventoryViewModel : ViewModel, IPartsInventoryViewModel
    {
       #region Local Props
-      public event EventHandler<PartModel> OpenDatasheetEvent = (s,e) => { };
-      public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s,e) => { };
+      public event EventHandler<PartModel> OpenDatasheetEvent = (s, e) => { };
+      public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s, e) => { };
       private PartsCollection? _partsCollection = null;
       private InvoiceModel? _selectedInvoice = null;
       //private PartModel? _selectedPart = null;
@@ -39,7 +39,8 @@ namespace PartsInventory.ViewModels
       #region Methods
       public void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e)
       {
-         if (PartsCollection is null) PartsCollection = new();
+         if (PartsCollection is null)
+            PartsCollection = new();
          PartsCollection.AddInvoices(e.NewInvoices);
       }
 
@@ -50,13 +51,15 @@ namespace PartsInventory.ViewModels
 
       private void AddPart()
       {
-         if (PartsCollection is null) return;
+         if (PartsCollection is null)
+            return;
          PartsCollection.Parts.Add(new());
       }
 
       private void RemovePart()
       {
-         if (PartsCollection is null || SelectedParts is null) return;
+         if (PartsCollection is null || SelectedParts is null)
+            return;
 
          //PartsCollection.Parts.Remove(SelectedPart);
          foreach (var part in SelectedParts)

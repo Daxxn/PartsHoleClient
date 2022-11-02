@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.New
 {
-   public class PartSearchViewModel : ViewModel
+   public class PartSearchViewModel : ViewModel, IPartSearchViewModel
    {
       #region Local Props
       private PartsCollection? _allParts = null;
@@ -35,8 +35,10 @@ namespace PartsInventory.ViewModels
       #region Methods
       private void Search()
       {
-         if (string.IsNullOrEmpty(SearchText)) return;
-         if (AllParts is null) return;
+         if (string.IsNullOrEmpty(SearchText))
+            return;
+         if (AllParts is null)
+            return;
 
          SearchText = SearchText.Trim();
 

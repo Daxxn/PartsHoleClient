@@ -1,5 +1,7 @@
 ﻿using PartsInventory.Models;
 using PartsInventory.ViewModels;
+using PartsInventory.ViewModels.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,32 +16,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
-{
-   /// <summary>
-   /// Interaction logic for PartSearchDialog.xaml
-   /// </summary>
-   public partial class PartSearchDialog : Window
-   {
-      public PartSearchViewModel VM { get; set; }
-      public PartSearchDialog()
-      {
-         VM = new();
-         DataContext = VM;
-         InitializeComponent();
-      }
+namespace PartsInventory.Views;
 
-      private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+public partial class PartSearchDialog : Window
+{
+   private readonly IPartSearchViewModel VM;
+   public PartSearchDialog(IPartSearchViewModel vm)
+   {
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
+   }
+
+   private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   {
+      if (sender is DataGrid dg)
       {
-         if (sender is DataGrid dg)
+         VM.SelectedParts = new();
+         foreach (var part in dg.SelectedItems)
          {
-            VM.SelectedParts = new();
-            foreach (var part in dg.SelectedItems)
+            if (part is PartModel pm)
             {
-               if (part is PartModel pm)
-               {
-                  VM.SelectedParts.Add(pm);
-               }
+               VM.SelectedParts.Add(pm);
             }
          }
       }

@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Testing
 {
-   public class PartNumberGeneratorViewModel : ViewModel
+   public class PartNumberGeneratorViewModel : ViewModel, IPartNumberGeneratorViewModel
    {
       #region Local Props
       private ObservableCollection<PartModel>? _selectedParts = null;
@@ -45,7 +45,8 @@ namespace PartsInventory.ViewModels
       /// </summary>
       private void New()
       {
-         if (AllParts is null) return;
+         if (AllParts is null)
+            return;
          NewPartNumber = PartNumber.Create(Type, SubType);
          var matchingTypes = AllParts.Parts.Where((p) => p.Reference.TypeNum == NewPartNumber.TypeNum).ToArray();
 
@@ -79,8 +80,10 @@ namespace PartsInventory.ViewModels
       /// </summary>
       private void AssignToSelectedPart()
       {
-         if (SelectedParts is null) return;
-         if (NewPartNumber is null) return;
+         if (SelectedParts is null)
+            return;
+         if (NewPartNumber is null)
+            return;
          if (SelectedParts.Count != 1)
          {
             MessageBox.Show("Unable to assign part number.\nOnly one part can be selected.", "Warning");

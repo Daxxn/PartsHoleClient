@@ -1,4 +1,9 @@
-﻿using PartsInventory.ViewModels;
+﻿using Microsoft.Extensions.Options;
+
+using PartsInventory.Resources.Settings;
+using PartsInventory.ViewModels;
+using PartsInventory.Views;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,27 +23,57 @@ using System.Windows.Shapes;
 
 namespace PartsInventory
 {
-   /// <summary>
-   /// Interaction logic for MainWindow.xaml
-   /// </summary>
-   public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
    {
-      private MainViewModel VM { get; init; }
-      public MainWindow()
+
+      private readonly IMainViewModel VM;
+      private readonly IOptions<DirSettings> _dirSettings;
+
+      public MainWindow(
+         IMainViewModel mainVM,
+         IOptions<DirSettings> dirSettings,
+         PartsInventoryView partsView,
+         InvoiceParserView invoiceView,
+         ProjectBOMView bomView,
+         PartNumberGeneratorView pnView,
+         PassivesView passView)
       {
-         VM = MainViewModel.Instance;
+         VM = mainVM;
+         _dirSettings = dirSettings;
          DataContext = VM;
          InitializeComponent();
+
+         Loaded += MainWindow_Loaded;
+         Closed += MainWindow_Closed;
+
+         PartsViewTab.Content = partsView;
+         InvoiceViewTab.Content = invoiceView;
+         BomViewTab.Content = bomView;
+         PartNumViewTab.Content = pnView;
+         PassivesViewTab.Content = passView;
+      }
+
+      private void MainWindow_Closed(object? sender, EventArgs e)
+      {
+         VM.Save();
+      }
+
+      private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+      {
+         VM.Open();
       }
 
       private void ElectricalCalc_Click(object sender, RoutedEventArgs e)
       {
-         Process.Start(PathSettings.Default.ElectricalCalcExe);
+         Process.Start(_dirSettings.Value.ElectricalCalcExe);
       }
 
       private void Saturn_Click(object sender, RoutedEventArgs e)
       {
-         Process.Start(PathSettings.Default.SaturnPCBExe);
+         Process.Start(_dirSettings.Value.SaturnPCBExe);
       }
    }
 }

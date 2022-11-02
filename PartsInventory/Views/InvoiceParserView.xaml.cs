@@ -1,4 +1,5 @@
 ﻿using PartsInventory.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +15,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
+namespace PartsInventory.Views;
+
+public partial class InvoiceParserView : UserControl
 {
-   /// <summary>
-   /// Interaction logic for InvoiceParserView.xaml
-   /// </summary>
-   public partial class InvoiceParserView : UserControl
+   private readonly IInvoiceParserViewModel VM;
+   public InvoiceParserView(IInvoiceParserViewModel vm)
    {
-      private InvoiceParserViewModel VM { get; init; }
-      public InvoiceParserView()
-      {
-         VM = MainViewModel.Instance.InvoiceParserVM;
-         DataContext = VM;
-         InitializeComponent();
-      }
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
    }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels.Testing
 {
-   public class PackageViewModel : ViewModel
+   public class PackageViewModel : ViewModel, IPackageViewModel
    {
       #region Local Props
 
