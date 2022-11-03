@@ -3,6 +3,8 @@
 using Microsoft.Extensions.Options;
 
 using MVVMLibrary;
+
+using PartsInventory.Models.API;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
@@ -30,6 +32,8 @@ namespace PartsInventory.ViewModels.Main
       private readonly IPassiveBookViewModel _bookVM;
       private readonly IOptions<DirSettings> _dirSettings;
       private readonly IOptions<APISettings> _apiSettings;
+      private readonly IAPIController _apiController;
+      private UserModel? _user = null;
 
       #region Events
       public static EventHandler<UserModel> PartsChangedEvent;
@@ -38,6 +42,7 @@ namespace PartsInventory.ViewModels.Main
       #region Commands
       public Command SaveCmd { get; init; }
       public Command OpenCmd { get; init; }
+      public Command GetUserTestAsyncCmd { get; init; }
       #endregion
       #endregion
 
@@ -52,7 +57,8 @@ namespace PartsInventory.ViewModels.Main
          IPassivesViewModel passivesVM,
          IPassiveBookViewModel bookVM,
          IOptions<DirSettings> dirSettings,
-         IOptions<APISettings> apiSettings
+         IOptions<APISettings> apiSettings,
+         IAPIController apiController
          )
       {
          _partsInventoryVM = partsVM;
@@ -65,9 +71,11 @@ namespace PartsInventory.ViewModels.Main
          _bookVM = bookVM;
          _dirSettings = dirSettings;
          _apiSettings = apiSettings;
-
+         _apiController = apiController;
          SaveCmd = new(Save);
          OpenCmd = new(Open);
+
+         GetUserTestAsyncCmd = new Command(GetUserTestAsync);
 
          _invoiceParserVM.AddToPartsEvent += _partsInventoryVM.NewPartsEventHandler;
 
@@ -116,12 +124,36 @@ namespace PartsInventory.ViewModels.Main
             //   PartsChangedEvent?.Invoke(this, parts);
             //}
 
+            // Try to get Auth0 token...
+            // For now, just using the dev user.
+            //var devObjId = "636015e41a792e2787223cfa";
 
+            // Get UserModel from API:
+            //APIController.Get<UserModel>($"{_apiSettings.Value.UserEndpoint}/{devObjId}")
          }
          catch (Exception e)
          {
             MessageBox.Show(e.Message);
          }
+      }
+
+      private async void GetUserTestAsync()
+      {
+         // Try to get Auth0 token...
+         // For now, just using the dev user.
+         var devObjId = "636015e41a792e2787223cfa";
+
+         var devUser = new UserModel()
+         {
+            Id = new(devObjId)
+         };
+
+         // Get UserModel from API:
+
+         _partsInventoryVM.PartsCollection = await _apiController.GetUser(devUser);
+         if (_partsInventoryVM.PartsCollection is null)
+            return;
+         var data = await _apiController.GetUserData(_partsInventoryVM.PartsCollection);
       }
       #endregion
 
@@ -143,6 +175,16 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             Settings.Default.AspectRatio = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public UserModel? User
+      {
+         get => _user;
+         set
+         {
+            _user = value;
             OnPropertyChanged();
          }
       }

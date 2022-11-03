@@ -19,6 +19,7 @@ namespace PartsInventory.Models.Inventory.Main
       private decimal _subTotal = 0;
       private ObservableCollection<PartModel> _parts = new();
       private SupplierType? _supplierType = null;
+      public IEnumerable<string> PartIDs { get; set; }
       #endregion
 
       #region Constructors

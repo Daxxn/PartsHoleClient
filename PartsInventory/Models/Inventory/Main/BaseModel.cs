@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using MVVMLibrary;
 
@@ -13,7 +14,7 @@ namespace PartsInventory.Models.Inventory.Main
    public class BaseModel : Model
    {
       #region Local Props
-      private ObjectId _id = new();
+      private string _id = null!;
       #endregion
 
       #region Constructors
@@ -25,7 +26,9 @@ namespace PartsInventory.Models.Inventory.Main
       #endregion
 
       #region Full Props
-      public ObjectId Id
+      [BsonId]
+      [BsonRepresentation(BsonType.ObjectId)]
+      public string Id
       {
          get => _id;
          set

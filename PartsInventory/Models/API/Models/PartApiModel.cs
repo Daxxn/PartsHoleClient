@@ -4,12 +4,13 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
+using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.Models.API.Models
 {
-   public class PartApiModel : IApiModel<PartModel>
+   public class PartApiModel : IApiConverter<PartModel>
    {
       #region Local Props
       public string Id { get; set; } = null!;
@@ -39,6 +40,7 @@ namespace PartsInventory.Models.API.Models
          var datasheet = new Datasheet(Datasheet);
          return new PartModel()
          {
+            Id = new(Id),
             AllocatedQty = AllocatedQty,
             Backorder = Backorder,
             UnitPrice = UnitPrice,

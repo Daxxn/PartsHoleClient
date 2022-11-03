@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.Models.API.Models
+namespace PartsInventory.Models.API.Interfaces
 {
-   public interface IApiModel<T>
+   public interface IApiConverter<T>
    {
       string Id { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using MVVMLibrary;
 using PartsInventory.Models.Passives;
@@ -16,14 +17,16 @@ namespace PartsInventory.Models.Inventory.Main
    public class UserModel : BaseModel
    {
       #region Local Props
-      private ObjectId _id = new();
       private string _userName = null!;
-      private string _email = null!;
+      private string? _email = null!;
 
       private ObservableCollection<PartModel> _parts = new();
       private ObservableCollection<InvoiceModel> _invoices = new();
 
       private PassivesCollection _passives = new();
+
+      public IEnumerable<string> InvoiceIDs { get; set; } = null!;
+      public IEnumerable<string> PartIDs { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -55,16 +58,6 @@ namespace PartsInventory.Models.Inventory.Main
       #endregion
 
       #region Full Props
-      public ObjectId Id
-      {
-         get => _id;
-         set
-         {
-            _id = value;
-            OnPropertyChanged();
-         }
-      }
-
       public string UserName
       {
          get => _userName;
@@ -75,7 +68,7 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
-      public string Email
+      public string? Email
       {
          get => _email;
          set

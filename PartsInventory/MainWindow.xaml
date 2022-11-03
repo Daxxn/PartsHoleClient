@@ -44,6 +44,7 @@
 			</MenuItem>
 			<MenuItem Header="API Testing">
 				<MenuItem Header="Part" Click="GetPart_Click"/>
+				<MenuItem Header="Get User" Command="{Binding Path=GetUserTestAsyncCmd}"/>
 			</MenuItem>
         </Menu>
 
