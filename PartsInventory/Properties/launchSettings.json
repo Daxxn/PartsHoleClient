@@ -10,7 +10,8 @@
     "PartsInventoryAPI": {
       "commandName": "Project",
       "environmentVariables": {
-        "IMPL": "MAIN"
+        "IMPL": "MAIN",
+        "API": "TRUE"
       },
       "remoteDebugEnabled": false
     }

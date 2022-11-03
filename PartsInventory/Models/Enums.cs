@@ -6,6 +6,24 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Enums
 {
+   #region API
+   public enum APIMethod
+   {
+      GET,
+      POST,
+      PUT,
+      DELETE,
+   }
+
+   public enum APISubHeader
+   {
+      none,
+      many,
+      login,
+      logout,
+
+   }
+   #endregion
    public enum EIAStandard
    {
       E6 = 20,

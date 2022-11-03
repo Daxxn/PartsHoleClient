@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartNumber : Model, IComparable<PartNumber>
+   public class PartNumber : BaseModel, IComparable<PartNumber>
    {
       #region Local Props
       public static Dictionary<PartNumberType, PartNumberSubTypes[]> SubTypeDisplay = new()
@@ -50,7 +50,8 @@ namespace PartsInventory.Models
 
       public void Parse(string input)
       {
-         if (string.IsNullOrEmpty(input)) return;
+         if (string.IsNullOrEmpty(input))
+            return;
 
          var spl = input.Split('-');
 
@@ -81,15 +82,19 @@ namespace PartsInventory.Models
 
       public bool Equals(PartNumber? pn)
       {
-         if (pn is null) return false;
+         if (pn is null)
+            return false;
          return pn.TypeNum == TypeNum && pn.ID == ID;
       }
 
       public int CompareTo(PartNumber? other)
       {
-         if (other is null) return 1;
-         if (other == this) return 0;
-         if (other.TypeNum > TypeNum) return -1;
+         if (other is null)
+            return 1;
+         if (other == this)
+            return 0;
+         if (other.TypeNum > TypeNum)
+            return -1;
          return other.ID.CompareTo(ID);
       }
 

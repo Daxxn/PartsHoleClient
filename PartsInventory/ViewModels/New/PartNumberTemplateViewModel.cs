@@ -1,5 +1,7 @@
 ﻿using MVVMLibrary;
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
+using PartsInventory.Models.API;
 using PartsInventory.Resources.Settings;
 using PartsInventory.ViewModels;
 using PartsInventory.Views;
@@ -31,10 +32,12 @@ namespace PartsInventory
 
       private readonly IMainViewModel VM;
       private readonly IOptions<DirSettings> _dirSettings;
+      private readonly IAPIController _api;
 
       public MainWindow(
          IMainViewModel mainVM,
          IOptions<DirSettings> dirSettings,
+         IAPIController api,
          PartsInventoryView partsView,
          InvoiceParserView invoiceView,
          ProjectBOMView bomView,
@@ -43,6 +46,7 @@ namespace PartsInventory
       {
          VM = mainVM;
          _dirSettings = dirSettings;
+         _api = api;
          DataContext = VM;
          InitializeComponent();
 
@@ -54,6 +58,11 @@ namespace PartsInventory
          BomViewTab.Content = bomView;
          PartNumViewTab.Content = pnView;
          PassivesViewTab.Content = passView;
+      }
+
+      private async void GetPart_Click(object sender, RoutedEventArgs e)
+      {
+         var part = await _api.GetPart("6360180d1a792e2787223cff");
       }
 
       private void MainWindow_Closed(object? sender, EventArgs e)

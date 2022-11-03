@@ -3,6 +3,8 @@ using Microsoft.Win32;
 using MVVMLibrary;
 using PartsInventory.Models;
 using PartsInventory.Models.BOM;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.KiCAD;
 using PartsInventory.Models.Parsers.BOM;
 using System;
@@ -17,7 +19,7 @@ namespace PartsInventory.ViewModels.New
    public class ProjectBOMViewModel : ViewModel, IProjectBOMViewModel
    {
       #region Local Props
-      private PartsCollection? _allParts = null;
+      private UserModel? _allParts = null;
       private ProjectModel? _project = null;
       private int _currentTab = 0;
 
@@ -122,7 +124,7 @@ namespace PartsInventory.ViewModels.New
          });
       }
 
-      public void PartsChanged_Main(object sender, PartsCollection e)
+      public void PartsChanged_Main(object sender, UserModel e)
       {
          AllParts = e;
       }
@@ -149,7 +151,7 @@ namespace PartsInventory.ViewModels.New
          }
       }
 
-      public PartsCollection? AllParts
+      public UserModel? AllParts
       {
          get => _allParts;
          set

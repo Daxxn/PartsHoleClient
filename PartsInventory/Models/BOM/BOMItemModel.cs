@@ -1,6 +1,8 @@
 ﻿using MVVMLibrary;
 
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.Packages;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.BOM
 {
-   public class BOMItemModel : PartModel
+    public class BOMItemModel : PartModel
    {
       #region Local Props
       private static readonly Dictionary<string, PartType> PartTypeDecoder = new()

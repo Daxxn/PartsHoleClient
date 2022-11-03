@@ -2,6 +2,8 @@
 using PartsInventory.Models;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.Passives;
 using PartsInventory.Models.Passives.Book;
 
@@ -19,7 +21,7 @@ namespace PartsInventory.ViewModels.Main
    {
       #region Local Props
       public event EventHandler<NewBookEventArgs> NewBookEvent = (s, e) => { };
-      private PartsCollection? _parts = null;
+      private UserModel? _parts = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
       private ObservableCollection<PartModel>? _selectedAddParts = null;
       private PassiveBookModel? _selectedBook = null;
@@ -224,7 +226,7 @@ namespace PartsInventory.ViewModels.Main
          SelectedBook = e;
       }
 
-      public void PartsChanged_Main(object sender, PartsCollection e)
+      public void PartsChanged_Main(object sender, UserModel e)
       {
          Parts = e;
       }
@@ -241,7 +243,7 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
-      public PartsCollection? Parts
+      public UserModel? Parts
       {
          get => _parts;
          set

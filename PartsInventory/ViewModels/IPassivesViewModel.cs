@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using MVVMLibrary;
-
-using PartsInventory.Models;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.Passives;
 using PartsInventory.Models.Passives.Book;
 
@@ -20,7 +20,7 @@ namespace PartsInventory.ViewModels
       int CurrentTabIndex { get; set; }
       Command NewBookCmd { get; init; }
       Command ParseAllPartsCmd { get; init; }
-      PartsCollection? Parts { get; set; }
+      UserModel? Parts { get; set; }
       Command SearchCmd { get; init; }
       PassiveSearchProp? SearchProp { get; set; }
       ObservableCollection<IPassive>? SearchResults { get; set; }
@@ -33,7 +33,7 @@ namespace PartsInventory.ViewModels
       event EventHandler<NewBookEventArgs> NewBookEvent;
 
       void AddNewBook_Book(object sender, PassiveBookModel e);
-      void PartsChanged_Main(object sender, PartsCollection e);
+      void PartsChanged_Main(object sender, UserModel e);
       void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e);
    }
 }

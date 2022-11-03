@@ -1,5 +1,7 @@
 ﻿using MVVMLibrary;
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +14,7 @@ namespace PartsInventory.ViewModels.New
    public class PartSearchViewModel : ViewModel, IPartSearchViewModel
    {
       #region Local Props
-      private PartsCollection? _allParts = null;
+      private UserModel? _allParts = null;
       private ObservableCollection<PartModel> _searchParts = new();
       private ObservableCollection<PartModel>? _selectedParts = null;
 
@@ -55,7 +57,7 @@ namespace PartsInventory.ViewModels.New
       #endregion
 
       #region Full Props
-      public PartsCollection? AllParts
+      public UserModel? AllParts
       {
          get => _allParts;
          set

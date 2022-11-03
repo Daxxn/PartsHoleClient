@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using PartsInventory.Models.KiCAD;
 using PartsInventory.Models.BOM;
 using System.IO;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.Models
 {
-   public class ProjectModel : Model
+    public class ProjectModel : Model
    {
       #region Local Props
       private string _name = "New Project";
@@ -19,7 +21,7 @@ namespace PartsInventory.Models
       private string? _source = null;
       private int? _partCount = null;
       private DateTime? _date = null;
-      private PartsCollection? _parts = null;
+      private UserModel? _parts = null;
       #endregion
 
       #region Constructors
@@ -115,7 +117,7 @@ namespace PartsInventory.Models
          }
       }
 
-      public PartsCollection? Parts
+      public UserModel? Parts
       {
          get => _parts;
          set

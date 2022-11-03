@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartModel : Model
+   public class PartModel : BaseModel
    {
       #region Local Props
       private string _supplierPartNumber = "";
@@ -72,7 +72,8 @@ namespace PartsInventory.Models
 
       public bool Equals(PartModel part)
       {
-         if (part.Reference is null) return false;
+         if (part.Reference is null)
+            return false;
          if (Reference is not null)
          {
             if (Reference == part.Reference)
@@ -93,13 +94,17 @@ namespace PartsInventory.Models
 
       public bool Search(string text, bool matchCase)
       {
-         if (matchCase) text = text.ToLower();
+         if (matchCase)
+            text = text.ToLower();
          var reference = ConvertCase(Reference?.ToString(), matchCase);
-         if (reference?.Contains(text) == true) return true;
+         if (reference?.Contains(text) == true)
+            return true;
          var pn = ConvertCase(PartNumber, matchCase);
-         if (pn?.Contains(text) == true) return true;
+         if (pn?.Contains(text) == true)
+            return true;
          var supplPN = ConvertCase(SupplierPartNumber, matchCase);
-         if (supplPN?.Contains(text) == true) return true;
+         if (supplPN?.Contains(text) == true)
+            return true;
 
          return false;
       }

@@ -1,4 +1,6 @@
-﻿using MVVMLibrary;
+﻿using MongoDB.Bson;
+
+using MVVMLibrary;
 using PartsInventory.Models.Passives;
 using PartsInventory.Models.Passives.Book;
 
@@ -9,11 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartsCollection : Model
+   public class UserModel : BaseModel
    {
       #region Local Props
+      private ObjectId _id = new();
+      private string _userName = null!;
+      private string _email = null!;
+
       private ObservableCollection<PartModel> _parts = new();
       private ObservableCollection<InvoiceModel> _invoices = new();
 
@@ -21,7 +27,7 @@ namespace PartsInventory.Models
       #endregion
 
       #region Constructors
-      public PartsCollection() { }
+      public UserModel() { }
       #endregion
 
       #region Methods
@@ -49,6 +55,36 @@ namespace PartsInventory.Models
       #endregion
 
       #region Full Props
+      public ObjectId Id
+      {
+         get => _id;
+         set
+         {
+            _id = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string UserName
+      {
+         get => _userName;
+         set
+         {
+            _userName = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string Email
+      {
+         get => _email;
+         set
+         {
+            _email = value;
+            OnPropertyChanged();
+         }
+      }
+
       public PartModel? this[PartNumber pn]
       {
          get

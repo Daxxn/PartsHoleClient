@@ -1,4 +1,5 @@
-﻿using PartsInventory.Models;
+﻿using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.ViewModels;
 using PartsInventory.ViewModels.Main;
 

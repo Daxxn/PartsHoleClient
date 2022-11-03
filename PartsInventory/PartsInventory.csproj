@@ -35,6 +35,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="MongoDB.Bson" Version="2.18.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,9 @@
     <None Update="Resources\PartInventoryLogo.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Resources\Settings\APIEndpoints.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Settings\Settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

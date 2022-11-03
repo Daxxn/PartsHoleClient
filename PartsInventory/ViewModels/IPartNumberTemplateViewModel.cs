@@ -1,8 +1,8 @@
 ﻿using System;
 
 using MVVMLibrary;
-
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels
 {

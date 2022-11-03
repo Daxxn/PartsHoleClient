@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 
 using MVVMLibrary;
-
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels
 {
    public interface IPartSearchViewModel
    {
-      PartsCollection? AllParts { get; set; }
+      UserModel? AllParts { get; set; }
       bool MatchCase { get; set; }
       Command SearchCmd { get; init; }
       ObservableCollection<PartModel> SearchParts { get; set; }

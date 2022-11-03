@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.Inventory.Main
 {
-   public class BinModel : Model
+   public class BinModel : BaseModel
    {
       #region Local Props
       private int _horz = 0;

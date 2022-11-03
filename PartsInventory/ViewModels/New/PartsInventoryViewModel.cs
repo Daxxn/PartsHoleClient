@@ -1,6 +1,8 @@
 ﻿using MVVMLibrary;
-using PartsInventory.Models;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +17,7 @@ namespace PartsInventory.ViewModels.New
       #region Local Props
       public event EventHandler<PartModel> OpenDatasheetEvent = (s, e) => { };
       public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s, e) => { };
-      private PartsCollection? _partsCollection = null;
+      private UserModel? _partsCollection = null;
       private InvoiceModel? _selectedInvoice = null;
       //private PartModel? _selectedPart = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
@@ -68,14 +70,14 @@ namespace PartsInventory.ViewModels.New
          }
       }
 
-      public void PartsChanged_Main(object sender, PartsCollection e)
+      public void PartsChanged_Main(object sender, UserModel e)
       {
          PartsCollection = e;
       }
       #endregion
 
       #region Full Props
-      public PartsCollection? PartsCollection
+      public UserModel? PartsCollection
       {
          get => _partsCollection;
          set

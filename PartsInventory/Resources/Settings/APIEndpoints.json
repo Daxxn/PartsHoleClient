@@ -1,0 +1,10 @@
+{
+  "API": {
+    "Port": 49155,
+    "BaseUrl": "https://localhost:{Port}/api/",
+    "UserEndpoint": "User",
+    "PartsEndpoint": "Parts",
+    "InvoicesEndpoint": "Invoices",
+    "BinsEndpoint": "Bin"
+  }
+}

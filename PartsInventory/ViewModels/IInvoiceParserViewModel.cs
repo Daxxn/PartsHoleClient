@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 
 using MVVMLibrary;
-
-using PartsInventory.Models;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels
 {

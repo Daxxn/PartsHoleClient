@@ -3,7 +3,8 @@
 using Microsoft.Extensions.Options;
 
 using MVVMLibrary;
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 
 using System;
@@ -19,8 +20,6 @@ namespace PartsInventory.ViewModels.Main
    public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
-      //private static MainViewModel _instance = new();
-
       private readonly IPartsInventoryViewModel _partsInventoryVM;
       private readonly IInvoiceParserViewModel _invoiceParserVM;
       private readonly IPackageViewModel _packageVM;
@@ -30,12 +29,10 @@ namespace PartsInventory.ViewModels.Main
       private readonly IPassivesViewModel _passivesVM;
       private readonly IPassiveBookViewModel _bookVM;
       private readonly IOptions<DirSettings> _dirSettings;
-
-      private double _monSize = Settings.Default.MonitorSize;
-      private string _aspectRatio = Settings.Default.AspectRatio;
+      private readonly IOptions<APISettings> _apiSettings;
 
       #region Events
-      public static EventHandler<PartsCollection> PartsChangedEvent;
+      public static EventHandler<UserModel> PartsChangedEvent;
       #endregion
 
       #region Commands
@@ -54,7 +51,8 @@ namespace PartsInventory.ViewModels.Main
          IPartNumberTemplateViewModel partNumTempVM,
          IPassivesViewModel passivesVM,
          IPassiveBookViewModel bookVM,
-         IOptions<DirSettings> dirSettings
+         IOptions<DirSettings> dirSettings,
+         IOptions<APISettings> apiSettings
          )
       {
          _partsInventoryVM = partsVM;
@@ -66,10 +64,12 @@ namespace PartsInventory.ViewModels.Main
          _passivesVM = passivesVM;
          _bookVM = bookVM;
          _dirSettings = dirSettings;
+         _apiSettings = apiSettings;
 
-         _invoiceParserVM.AddToPartsEvent += _partsInventoryVM.NewPartsEventHandler;
          SaveCmd = new(Save);
          OpenCmd = new(Open);
+
+         _invoiceParserVM.AddToPartsEvent += _partsInventoryVM.NewPartsEventHandler;
 
          PartsChangedEvent += _projectBOMVM.PartsChanged_Main;
          PartsChangedEvent += _partsInventoryVM.PartsChanged_Main;
@@ -89,11 +89,14 @@ namespace PartsInventory.ViewModels.Main
       {
          try
          {
-            var partsSavePath = Path.Combine(_dirSettings.Value.AppDataPath, _dirSettings.Value.AppDataFileName);
-            if (_partsInventoryVM.PartsCollection is not null)
-            {
-               JsonReader.SaveJsonFile(partsSavePath, _partsInventoryVM.PartsCollection, true);
-            }
+            // Replaced with API
+            //var partsSavePath = Path.Combine(_dirSettings.Value.AppDataPath, _dirSettings.Value.AppDataFileName);
+            //if (_partsInventoryVM.PartsCollection is not null)
+            //{
+            //   JsonReader.SaveJsonFile(partsSavePath, _partsInventoryVM.PartsCollection, true);
+            //}
+
+
          }
          catch (Exception e)
          {
@@ -105,12 +108,15 @@ namespace PartsInventory.ViewModels.Main
       {
          try
          {
-            var partsSavePath = Path.Combine(_dirSettings.Value.AppDataPath, _dirSettings.Value.AppDataFileName);
-            if (File.Exists(partsSavePath))
-            {
-               var parts = JsonReader.OpenJsonFile<PartsCollection>(partsSavePath);
-               PartsChangedEvent?.Invoke(this, parts);
-            }
+            // Replaced with API
+            //var partsSavePath = Path.Combine(_dirSettings.Value.AppDataPath, _dirSettings.Value.AppDataFileName);
+            //if (File.Exists(partsSavePath))
+            //{
+            //   var parts = JsonReader.OpenJsonFile<PartsCollection>(partsSavePath);
+            //   PartsChangedEvent?.Invoke(this, parts);
+            //}
+
+
          }
          catch (Exception e)
          {

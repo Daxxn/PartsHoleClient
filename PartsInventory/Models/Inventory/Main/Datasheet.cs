@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.Inventory.Main
 {
-   public class Datasheet : Model
+   public class Datasheet : BaseModel
    {
       #region Local Props
       private Uri? _filePath = null;
@@ -50,8 +50,10 @@ namespace PartsInventory.Models
       {
          get
          {
-            if (Path is null) return null;
-            if (Path.IsFile) return "File";
+            if (Path is null)
+               return null;
+            if (Path.IsFile)
+               return "File";
             return "Link";
          }
       }

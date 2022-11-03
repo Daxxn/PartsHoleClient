@@ -2,15 +2,15 @@
 using System.Collections.ObjectModel;
 
 using MVVMLibrary;
-
-using PartsInventory.Models;
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels
 {
    public interface IPartNumberGeneratorViewModel
    {
-      PartsCollection? AllParts { get; set; }
+      UserModel? AllParts { get; set; }
       Command AssignToSelectedCmd { get; init; }
       Command ClearCmd { get; init; }
       Command NewCmd { get; init; }
@@ -21,7 +21,7 @@ namespace PartsInventory.ViewModels
       PartNumberType Type { get; set; }
 
       void PartNumberCreated_PNTemp(object sender, PartNumber e);
-      void PartsChanged_Main(object sender, PartsCollection e);
+      void PartsChanged_Main(object sender, UserModel e);
       void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e);
    }
 }

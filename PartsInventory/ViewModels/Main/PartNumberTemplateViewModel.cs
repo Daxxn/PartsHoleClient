@@ -1,5 +1,7 @@
 ﻿using MVVMLibrary;
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace PartsInventory.ViewModels.Main
       #region Local Props
       public event EventHandler<PartNumber> CreatePartNumber;
 
-      private PartNumber _partNum = new();
+      private PartNumber _partNum = null!;
 
       #region Commands
       public Command CreatePartNumCmd { get; init; }
@@ -49,7 +51,8 @@ namespace PartsInventory.ViewModels.Main
 
       private void CreatePartNumberEvent(object? sender, PartNumber e)
       {
-         PartNumber = new();
+         // TODO - replace with DI interfaces.
+         PartNumber = new PartNumber();
       }
 
       #endregion

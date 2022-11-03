@@ -68,8 +68,10 @@ namespace PartsInventory.Resources.Packages.Passives
          DependencyProperty.Register("PadWidth", typeof(double), typeof(SmdDisplay), new PropertyMetadata(default(double)));
 
       private readonly IOptions<GeneralSettings> _generalSettings;
-      public SmdDisplay(IOptions<GeneralSettings> settings)
+      public SmdDisplay()
       {
+         var settings = (IOptions<GeneralSettings>)App.AppHost!.Services.GetService(typeof(IOptions<GeneralSettings>))!;
+
          _generalSettings = settings;
          InitializeComponent();
          //CalcSize();

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using MVVMLibrary;
-
-using PartsInventory.Models;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels
 {
    public interface IPartsInventoryViewModel
    {
       Command AddPartCmd { get; init; }
-      PartsCollection? PartsCollection { get; set; }
+      UserModel? PartsCollection { get; set; }
       Command RemovePartCmd { get; init; }
       BinModel? SelectedBin { get; set; }
       string? SelectedBinName { get; set; }
@@ -24,6 +24,6 @@ namespace PartsInventory.ViewModels
 
       void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e);
       void OpenDatasheet(object sender, PartModel part);
-      void PartsChanged_Main(object sender, PartsCollection e);
+      void PartsChanged_Main(object sender, UserModel e);
    }
 }

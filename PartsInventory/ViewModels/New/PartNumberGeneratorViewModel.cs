@@ -1,6 +1,8 @@
 ﻿using MVVMLibrary;
-using PartsInventory.Models;
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +17,7 @@ namespace PartsInventory.ViewModels.New
    {
       #region Local Props
       private ObservableCollection<PartModel>? _selectedParts = null;
-      private PartsCollection? _allParts = null;
+      private UserModel? _allParts = null;
       private PartNumber? _newPartNum = new();
 
       private PartNumberType _type = PartNumberType.Other;
@@ -104,7 +106,7 @@ namespace PartsInventory.ViewModels.New
          SelectedParts = new(e);
       }
 
-      public void PartsChanged_Main(object sender, PartsCollection e)
+      public void PartsChanged_Main(object sender, UserModel e)
       {
          AllParts = e;
       }
@@ -127,7 +129,7 @@ namespace PartsInventory.ViewModels.New
          }
       }
 
-      public PartsCollection? AllParts
+      public UserModel? AllParts
       {
          get => _allParts;
          set

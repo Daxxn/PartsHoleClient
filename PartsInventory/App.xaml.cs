@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using PartsInventory.Models;
+using PartsInventory.Models.API;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 using PartsInventory.ViewModels;
 #if IMPL == MAIN
@@ -40,6 +43,7 @@ namespace PartsInventory
          AppHost = Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration((config) =>
             {
+               config.AddJsonFile(@".\Resources\Settings\APIEndpoints.json");
                config.AddJsonFile(@".\Resources\Settings\Settings.json");
                config.AddUserSecrets(Assembly.GetExecutingAssembly());
             })
@@ -54,8 +58,10 @@ namespace PartsInventory
             {
                services.Configure<DirSettings>(hostContext.Configuration.GetSection("Dirs"));
                services.Configure<GeneralSettings>(hostContext.Configuration.GetSection("Settings"));
+               services.Configure<APISettings>(hostContext.Configuration.GetSection("API"));
                ConnectViewSevices(services);
                ConnectViewModelServices(services);
+               ConnectModelServices(services);
             })
             .Build();
       }
@@ -78,7 +84,7 @@ namespace PartsInventory
          base.OnExit(e);
       }
 
-      private void ConnectViewSevices(IServiceCollection services)
+      private static void ConnectViewSevices(IServiceCollection services)
       {
          services.AddSingleton<MainWindow>();
          services.AddSingleton<PassivesView>();
@@ -92,7 +98,7 @@ namespace PartsInventory
          services.AddTransient<PassiveBookDialog>();
       }
 
-      private void ConnectViewModelServices(IServiceCollection services)
+      private static void ConnectViewModelServices(IServiceCollection services)
       {
          services.AddSingleton<IMainViewModel, MainViewModel>();
          services.AddSingleton<IInvoiceParserViewModel, InvoiceParserViewModel>();
@@ -104,6 +110,19 @@ namespace PartsInventory
          services.AddSingleton<IPassivesViewModel, PassivesViewModel>();
          services.AddSingleton<IProjectBOMViewModel, ProjectBOMViewModel>();
          services.AddSingleton<IPackageViewModel, PackageViewModel>();
+      }
+
+      private static void ConnectModelServices(IServiceCollection services)
+      {
+         services.AddSingleton<IAPIController, APIController>();
+
+         // OMG !! this is gonna suck...
+         //services.AddTransient<IPartModel, PartModel>();
+         //services.AddTransient<IPartsCollection, PartsCollection>();
+         //services.AddTransient<IInvoiceModel, InvoiceModel>();
+         //services.AddTransient<IBinModel, BinModel>();
+         //services.AddTransient<IDatasheet, Datasheet>();
+         //services.AddTransient<IPartNumber, PartNumber>();
       }
    }
 }

@@ -1,6 +1,8 @@
 ﻿using JsonReaderLibrary;
 using MVVMLibrary;
-using PartsInventory.Models;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +30,7 @@ namespace PartsInventory.ViewModels.Testing
       private string _aspectRatio = Settings.Default.AspectRatio;
 
       #region Events
-      public static EventHandler<PartsCollection> PartsChangedEvent;
+      public static EventHandler<UserModel> PartsChangedEvent;
       #endregion
 
       #region Commands
@@ -81,7 +83,7 @@ namespace PartsInventory.ViewModels.Testing
             var partsSavePath = Path.Combine(PathSettings.Default.AppDataPath, PathSettings.Default.AppDataFileName);
             if (File.Exists(partsSavePath))
             {
-               var parts = JsonReader.OpenJsonFile<PartsCollection>(partsSavePath);
+               var parts = JsonReader.OpenJsonFile<UserModel>(partsSavePath);
                PartsChangedEvent?.Invoke(this, parts);
             }
          }

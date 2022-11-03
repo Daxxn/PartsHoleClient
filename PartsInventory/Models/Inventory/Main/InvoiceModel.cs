@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PartsInventory.Models
+namespace PartsInventory.Models.Inventory.Main
 {
-   public class InvoiceModel : Model
+   public class InvoiceModel : BaseModel
    {
       #region Local Props
       private uint _orderNumber = 0;

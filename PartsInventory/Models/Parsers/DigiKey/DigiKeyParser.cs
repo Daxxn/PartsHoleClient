@@ -1,6 +1,9 @@
 ﻿using CSVParserLibrary;
 using CSVParserLibrary.Models;
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+
 using System;
 using System.Collections.Generic;
 using System.IO;

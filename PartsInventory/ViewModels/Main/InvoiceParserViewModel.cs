@@ -1,7 +1,8 @@
 ﻿using Microsoft.Win32;
 using MVVMLibrary;
-using PartsInventory.Models;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.Parsers.DigiKey;
 using PartsInventory.Models.Parsers.Mouser;
 using System;

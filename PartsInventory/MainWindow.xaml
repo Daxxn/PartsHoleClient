@@ -42,6 +42,9 @@
 					</Grid>
 				</MenuItem>
 			</MenuItem>
+			<MenuItem Header="API Testing">
+				<MenuItem Header="Part" Click="GetPart_Click"/>
+			</MenuItem>
         </Menu>
 
         <TabControl Grid.Row="1">

@@ -1,4 +1,6 @@
-﻿using PartsInventory.ViewModels;
+﻿using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
+using PartsInventory.ViewModels;
 
 using System;
 using System.Collections.Generic;
@@ -28,7 +30,7 @@ public partial class PartNumberTemplateDialog : Window
       VM.CreatePartNumber += VM_CreatePartNumber;
    }
 
-   private void VM_CreatePartNumber(object? sender, Models.PartNumber e)
+   private void VM_CreatePartNumber(object? sender, PartNumber e)
    {
       Close();
    }
