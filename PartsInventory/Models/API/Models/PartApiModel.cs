@@ -34,13 +34,13 @@ namespace PartsInventory.Models.API.Models
       #endregion
 
       #region Methods
-      public PartModel Convert()
+      public PartModel ToModel()
       {
          var reference = Reference is null ? new() : new PartNumber(Reference);
          var datasheet = new Datasheet(Datasheet);
          return new PartModel()
          {
-            Id = new(Id),
+            Id = Id,
             AllocatedQty = AllocatedQty,
             Backorder = Backorder,
             UnitPrice = UnitPrice,
@@ -52,6 +52,25 @@ namespace PartsInventory.Models.API.Models
             Slippage = Slippage,
             SupplierPartNumber = SupplierPartNumber,
             Tags = Tags,
+         };
+      }
+
+      public static PartApiModel FromModel(PartModel model)
+      {
+         return new()
+         {
+            Id = model.Id,
+            AllocatedQty = model.AllocatedQty,
+            Backorder = model.Backorder,
+            UnitPrice = model.UnitPrice,
+            Datasheet = model.Datasheet?.Path?.AbsolutePath,
+            Description = model.Description,
+            PartNumber = model.PartNumber,
+            Quantity = model.Quantity,
+            Reference = model.Reference?.ToString(),
+            Slippage = model.Slippage,
+            SupplierPartNumber = model.SupplierPartNumber,
+            Tags = model.Tags
          };
       }
       #endregion

@@ -25,18 +25,31 @@ namespace PartsInventory.Models.API.Models
       #endregion
 
       #region Methods
-      public UserModel Convert()
+      public UserModel ToModel()
       {
          return new()
          {
             Id = new(Id),
             InvoiceIDs = Invoices,
             PartIDs = Parts,
+            AuthID = AuthID,
             Email = Email,
             UserName = UserName,
          };
       }
 
+      public static UserApiModel FromModel(UserModel model)
+      {
+         return new UserApiModel()
+         {
+            Id = model.Id,
+            UserName = model.UserName,
+            Email = model.Email,
+            AuthID = model.AuthID,
+            Invoices = model.InvoiceIDs,
+            Parts = model.PartIDs,
+         };
+      }
       #endregion
 
       #region Full Props

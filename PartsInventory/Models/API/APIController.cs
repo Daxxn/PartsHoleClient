@@ -9,27 +9,37 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 
 using Microsoft.Extensions.Options;
 
-using MongoDB.Bson;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
-
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.API.Models;
+using PartsInventory.Models.API.RequestModels;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
+using Newtonsoft.Json;
+using RestSharp;
+using System.Windows.Shapes;
 
 namespace PartsInventory.Models.API
 {
+   /// <summary>
+   /// Main intermediary between the application and the Rest client.
+   /// </summary>
    public class APIController : IAPIController
    {
       #region Local Props
+      /// <summary>
+      /// Settings for the API, including the base path and the endpoints.
+      /// </summary>
       private readonly IOptions<APISettings> _apiSettings;
-      private static HttpClient Client { get; set; } = null!;
+      /// <summary>
+      /// Rest client that wraps the HttpClient (Devil class). Making requests alot simpler.
+      /// </summary>
+      private static RestClient Client { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -44,15 +54,26 @@ namespace PartsInventory.Models.API
       #endregion
 
       #region Methods
+      #region Helpers
+      /// <summary>
+      /// Creates a new Rest Client and initializes it.
+      /// </summary>
+      /// <param name="apiSettings">API Endpoints</param>
       private static void InitializeClient(IOptions<APISettings> apiSettings)
       {
-         Client = new HttpClient();
-         Client.BaseAddress = new Uri(BuildBaseUrl(apiSettings));
-         Client.DefaultRequestHeaders.Accept.Clear();
-         Client.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
+         Client = new RestClient(BuildBaseUrl(apiSettings));
       }
 
+      /// <summary>
+      /// Replaces the port placeholder with the actual port.
+      /// <para>
+      /// This is only a problem because the API keeps changing its port.
+      /// Probably something to do with https.
+      /// </para>
+      /// <para>Not used in Production.</para>
+      /// </summary>
+      /// <param name="apiSettings">API Endpoints</param>
+      /// <returns>Base Url string.</returns>
       private static string BuildBaseUrl(IOptions<APISettings> apiSettings)
       {
          if (apiSettings.Value.BaseUrl.Contains("{Port}"))
@@ -61,91 +82,386 @@ namespace PartsInventory.Models.API
          }
          return apiSettings.Value.BaseUrl;
       }
+      #endregion
 
-      public async Task<IEnumerable<PartModel>?> GetParts(string[] ids)
+      #region User
+      public async Task<UserModel?> GetUser(UserModel user)
       {
          try
          {
-            var response = await Client.PostAsync($"{_apiSettings.Value.PartsEndpoint}", JsonContent.Create(ids));
-            if (response == null)
-               return null;
-            return response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<IEnumerable<PartModel>>() : null;
+            var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/{user.Id}", Method.Get);
+            return (await Client.GetAsync<UserApiModel>(request))?.ToModel();
          }
-         catch (Exception)
+         catch (Exception e)
          {
+            MessageBox.Show(e.Message, "GET Error");
             throw;
          }
       }
 
+      public async Task<UserData?> GetUserData(UserModel user)
+      {
+         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/data", Method.Post)
+            .AddJsonBody(UserApiModel.FromModel(user));
+         return await Client.PostAsync<UserData>(request);
+      }
+      #endregion
+
+      #region Parts
       public async Task<PartModel?> GetPart(string id)
       {
          try
          {
-            var response = await Client.GetAsync($"{_apiSettings.Value.PartsEndpoint}/{id}");
-            if (response == null)
-               return null;
-            return response.IsSuccessStatusCode ? (await response.Content.ReadFromJsonAsync<PartApiModel>())?.Convert() : null;
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/{id}");
+            return await Client.GetAsync<PartModel>(request);
          }
-         catch (Exception)
+         catch (Exception e)
          {
-            throw;
+            MessageBox.Show(e.Message, "GET Error");
+            return null;
+         }
+      }
+      
+      public async Task<IEnumerable<PartModel>?> GetParts(string[] ids)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many")
+               .AddJsonBody(ids);
+            var data = await Client.PostAsync<IEnumerable<PartApiModel>>(request);
+            return data?.Select(x => x.ToModel());
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "GET Error");
+            return null;
+         }
+      }
+      
+      public async Task<bool> CreatePart(PartModel part)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Post)
+               .AddJsonBody(PartApiModel.FromModel(part));
+            return await Client.PostAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "GET Error");
+            return false;
+         }
+      }
+      
+      public async Task<IEnumerable<PartModel>?> CreateParts(IEnumerable<PartModel> parts)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Post)
+               .AddJsonBody(parts.Select(x => PartApiModel.FromModel(x)));
+            var response = await Client.PostAsync<IEnumerable<bool>>(request);
+            if (response?.Any(x => x == false) == true)
+            {
+               var partData = parts.ToList();
+               var failedParts = new List<PartModel>();
+               var data = response.ToList();
+               for (int i = 0; i < data.Count; i++)
+               {
+                  if (data[i])
+                     failedParts.Add(partData[i]);
+               }
+               return failedParts;
+            }
+            return null;
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST Error");
+            return null;
+         }
+      }
+      
+      public async Task<bool> UpdatePart(PartModel part)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Put)
+               .AddJsonBody(PartApiModel.FromModel(part));
+            return await Client.PutAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "PUT Error");
+            return false;
+         }
+      }
+      
+      public async Task<bool> DeletePart(string id)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/{id}", Method.Delete);
+            return await Client.DeleteAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE Error");
+            return false;
+         }
+      }
+      
+      public async Task<int> DeleteParts(string[] ids)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Delete)
+               .AddJsonBody(ids);
+            return await Client.DeleteAsync<int>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE Error");
+            return 0;
+         }
+      }
+      #endregion
+
+      #region Invoices
+      public async Task<InvoiceModel?> GetInvoice(string id)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{id}");
+            return (await Client.GetAsync<InvoiceApiModel>(request))?.ToModel();
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST Error");
+            return null;
          }
       }
 
       public async Task<IEnumerable<InvoiceModel>?> GetInvoices(string[] ids)
       {
-         var data = await Post<IEnumerable<InvoiceApiModel>, string[]>($"{_apiSettings.Value.InvoicesEndpoint}", ids);
-         return data?.Select((d) => d.Convert());
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/many").AddJsonBody(ids);
+            var data = await Client.PostAsync<IEnumerable<InvoiceApiModel>>(request);
+            return data?.Select((d) => d.ToModel());
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST Error");
+            return null;
+         }
       }
 
-      public async Task<InvoiceModel?> GetInvoice(string id)
+      public async Task<bool> CreateInvoice(InvoiceModel invoice)
       {
-         return (await Get<InvoiceApiModel>($"{_apiSettings.Value.UserEndpoint}/{id}"))?.Convert();
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Post)
+               .AddJsonBody(invoice);
+            return await Client.PostAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST Error");
+            return false;
+         }
       }
 
-      public async Task<UserModel?> GetUser(UserModel user)
+      public async Task<IEnumerable<InvoiceModel>?> CreateInvoices(IEnumerable<InvoiceModel> invoices)
       {
-         return (await Get<UserApiModel>($"{ _apiSettings.Value.UserEndpoint}/{ user.Id}"))?.Convert();
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Post)
+               .AddJsonBody(invoices.Select(x => InvoiceApiModel.FromModel(x)));
+            var response = await Client.PostAsync<IEnumerable<bool>>(request);
+            if (response?.Any(x => x == false) == true)
+            {
+               var partData = invoices.ToList();
+               var failedParts = new List<InvoiceModel>();
+               var data = response.ToList();
+               for (int i = 0; i < data.Count; i++)
+               {
+                  if (data[i])
+                     failedParts.Add(partData[i]);
+               }
+               return failedParts;
+            }
+            return null;
+         }
+         catch (Exception e)
+         {
+
+            return null;
+         }
       }
 
-      public async Task<UserData?> GetUserData(UserModel user)
+      public async Task<bool> UpdateInvoice(InvoiceModel invoice)
       {
-
-         return await Post<UserData, UserModel>($"{_apiSettings.Value.UserEndpoint}/data", user);
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Put)
+               .AddJsonBody(InvoiceApiModel.FromModel(invoice));
+            return await Client.PutAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "PUT Error");
+            return false;
+         }
       }
 
-      private static async Task<TData?> Get<TData>(string url) where TData : class
+      public async Task<bool> DeleteInvoice(string id)
       {
-         var response = await Client.GetAsync(url);
-         return response?.IsSuccessStatusCode == true ? await response.Content.ReadFromJsonAsync<TData>() : null;
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{id}", Method.Delete);
+            return await Client.DeleteAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE Error");
+            return false;
+         }
       }
 
-      private static async Task<TData?> Post<TData, TInput>(string url, TInput input) where TData : class where TInput : class
+      public async Task<int> DeleteInvoices(string[] ids)
       {
-         // Well this didnt work...
-         // The doc writer needs some args?? IDK...
-         // Probably just going to implement another converter method in UserApiModel.
-         var writer = new BsonDocumentWriter(new());
-         BsonSerializer.Serialize(writer, input);
-         var str = writer.ToJson();
-         var response = await Client.PostAsJsonAsync(url, str);
-         return response?.IsSuccessStatusCode == true ? await response.Content.ReadFromJsonAsync<TData>() : null;
-      }
-
-      private static async Task<TData?> Put<TData, TInput>(string url, TInput input) where TData : class
-      {
-         var response = await Client.PutAsJsonAsync(url, input);
-         return response?.IsSuccessStatusCode == true ? await response.Content.ReadFromJsonAsync<TData>() : null;
-      }
-
-      private static async Task<bool> Delete(string url)
-      {
-         var response = await Client.DeleteAsync(url);
-         return response?.IsSuccessStatusCode == true;
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Delete)
+               .AddJsonBody(ids);
+            return await Client.DeleteAsync<int>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE Error");
+            return 0;
+         }
       }
       #endregion
 
-      #region Full Props
+      #region Bins
+      public async Task<BinModel?> GetBin(string id)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/{id}");
+            return await Client.GetAsync<BinModel>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "GET Error");
+            return null;
+         }
+      }
+
+      public async Task<IEnumerable<BinModel>?> GetBins(string[] ids)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/many")
+               .AddJsonBody(ids);
+            return await Client.PostAsync<IEnumerable<BinModel>>(request);
+            //return data?.Select(x => x.ToModel());
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "GET Error");
+            return null;
+         }
+      }
+
+      public async Task<bool> CreateBin(BinModel bin)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Post)
+               .AddJsonBody(bin);
+            return await Client.PostAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "GET Error");
+            return false;
+         }
+      }
+
+      public async Task<IEnumerable<BinModel>?> CreateBins(IEnumerable<BinModel> bins)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Post)
+               .AddJsonBody(bins);
+            var response = await Client.PostAsync<IEnumerable<bool>>(request);
+            if (response?.Any(x => x == false) == true)
+            {
+               var partData = bins.ToList();
+               var failedParts = new List<BinModel>();
+               var data = response.ToList();
+               for (int i = 0; i < data.Count; i++)
+               {
+                  if (data[i])
+                     failedParts.Add(partData[i]);
+               }
+               return failedParts;
+            }
+            return null;
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST Error");
+            return null;
+         }
+      }
+
+      public async Task<bool> UpdateBin(BinModel bin)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Put)
+               .AddJsonBody(bin);
+            return await Client.PutAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "PUT Error");
+            return false;
+         }
+      }
+
+      public async Task<bool> DeleteBin(string id)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/{id}", Method.Delete);
+            return await Client.DeleteAsync<bool>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE Error");
+            return false;
+         }
+      }
+
+      public async Task<int> DeleteBins(string[] ids)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Delete)
+               .AddJsonBody(ids);
+            return await Client.DeleteAsync<int>(request);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE Error");
+            return 0;
+         }
+      }
+      #endregion
 
       #endregion
    }

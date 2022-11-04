@@ -4,14 +4,13 @@
 	<!--#region Colors-->
 	<SolidColorBrush x:Key="AccentBase" Color="#e6e6e6"/>
 	<SolidColorBrush x:Key="DataGridAlternating" Color="#ebebeb"/>
-	<SolidColorBrush x:Key="MenuPopupBrush" Color="Red"/>
-	<SolidColorBrush x:Key="BorderMediumBrush" Color="Blue"/>
+	<SolidColorBrush x:Key="MenuPopupBrush" Color="Transparent"/>
+	<SolidColorBrush x:Key="BorderMediumBrush" Color="Transparent"/>
 	<!--#endregion-->
 
     <Style TargetType="DataGrid" x:Key="PartsDataGrid">
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="CanUserAddRows" Value="False"/>
+		<Setter Property="FontSize" Value="15"/>
+		<Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="SelectionMode" Value="Extended"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>

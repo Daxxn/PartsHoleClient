@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace PartsInventory.Models.API.Models
       public IEnumerable<string> Parts { get; set; }
       public string Path { get; set; }
       public decimal SubTotal { get; set; }
-      public SupplierType SupplierType { get; set; }
+      public SupplierType? SupplierType { get; set; }
       #endregion
 
       #region Constructors
@@ -28,16 +29,29 @@ namespace PartsInventory.Models.API.Models
       #endregion
 
       #region Methods
-      public InvoiceModel Convert()
+      public InvoiceModel ToModel()
       {
          return new()
          {
-            Id = new(Id),
+            Id = Id,
             OrderNumber = OrderNumber,
             PartIDs = Parts,
             Path = Path,
             SubTotal = SubTotal,
             SupplierType = SupplierType,
+         };
+      }
+
+      public static InvoiceApiModel FromModel(InvoiceModel model)
+      {
+         return new()
+         {
+            Id = model.Id,
+            OrderNumber = model.OrderNumber,
+            Path = model.Path,
+            SubTotal = model.SubTotal,
+            SupplierType = model.SupplierType,
+            Parts = model.Parts.Select(x => x.Id),
          };
       }
       #endregion

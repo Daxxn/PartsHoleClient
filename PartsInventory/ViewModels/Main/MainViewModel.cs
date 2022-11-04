@@ -145,7 +145,7 @@ namespace PartsInventory.ViewModels.Main
 
          var devUser = new UserModel()
          {
-            Id = new(devObjId)
+            Id = devObjId
          };
 
          // Get UserModel from API:
@@ -154,6 +154,10 @@ namespace PartsInventory.ViewModels.Main
          if (_partsInventoryVM.PartsCollection is null)
             return;
          var data = await _apiController.GetUserData(_partsInventoryVM.PartsCollection);
+         if (data is null)
+            return;
+         _partsInventoryVM.PartsCollection.Parts = data.Parts != null ? new(data.ToParts()!) : new();
+         _partsInventoryVM.PartsCollection.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
       }
       #endregion
 

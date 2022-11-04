@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PartsInventory.Models.API;
+using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.Models.API.Models;
@@ -12,12 +13,23 @@ namespace PartsInventory.Models.API.Models;
 public class UserData : IUserData
 {
    #region Local Props
-   public List<PartModel> Parts { get; set; } = null!;
-   public List<InvoiceModel> Invoices { get; set; } = null!;
+   public IEnumerable<PartApiModel>? Parts { get; set; } = null!;
+   public IEnumerable<InvoiceApiModel>? Invoices { get; set; } = null!;
+   public string? Id { get; set; } = null;
    #endregion
 
    #region Constructors
    public UserData() { }
+
+   public IEnumerable<PartModel>? ToParts()
+   {
+      return Parts?.Select(x => x.ToModel());
+   }
+
+   public IEnumerable<InvoiceModel>? ToInvoices()
+   {
+      return Invoices?.Select(x => x.ToModel());
+   }
    #endregion
 
    #region Methods

@@ -10,6 +10,7 @@ namespace PartsInventory.Models.API.Interfaces
    {
       string Id { get; set; }
 
-      T Convert();
+      T ToModel();
+      //object FromModel(T model);
    }
 }
