@@ -16,8 +16,9 @@ namespace PartsInventory.ViewModels.Main
    public class PartNumberGeneratorViewModel : ViewModel, IPartNumberGeneratorViewModel
    {
       #region Local Props
+      private readonly IUserModel _user;
       private ObservableCollection<PartModel>? _selectedParts = null;
-      private UserModel? _allParts = null;
+      //private UserModel? _allParts = null;
       private PartNumber? _newPartNum = null;
 
       private PartNumberType _type = PartNumberType.Other;
@@ -33,8 +34,10 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public PartNumberGeneratorViewModel()
+      public PartNumberGeneratorViewModel(IUserModel user)
       {
+         _user = user;
+
          NewCmd = new(New);
          ClearCmd = new(() => NewPartNumber = null);
          AssignToSelectedCmd = new(AssignToSelectedPart);
@@ -47,10 +50,10 @@ namespace PartsInventory.ViewModels.Main
       /// </summary>
       private void New()
       {
-         if (AllParts is null)
+         if (User.Parts is null)
             return;
          NewPartNumber = PartNumber.Create(Type, SubType);
-         var matchingTypes = AllParts.Parts.Where((p) => p.Reference.TypeNum == NewPartNumber.TypeNum).ToArray();
+         var matchingTypes = User.Parts.Where((p) => p.Reference?.TypeNum == NewPartNumber.TypeNum).ToArray();
 
          if (matchingTypes != null)
          {
@@ -60,19 +63,19 @@ namespace PartsInventory.ViewModels.Main
             }
             else if (matchingTypes.Length > 1)
             {
-               var ordered = matchingTypes.OrderBy((p) => p.Reference.TypeNum).ToArray();
+               var ordered = matchingTypes.OrderBy((p) => p.Reference?.TypeNum).ToArray();
                for (uint i = 0; i < ordered.Length; i++)
                {
-                  if (ordered[i].Reference.ID != i + 1)
+                  if (ordered[i].Reference?.ID != i + 1)
                   {
                      NewPartNumber.ID = i;
                   }
                }
-               NewPartNumber.ID = ordered[^1].Reference.ID + 1;
+               NewPartNumber.ID = ordered[^1].Reference!.ID + 1;
             }
             else
             {
-               NewPartNumber.ID = matchingTypes[0].Reference.ID + 1;
+               NewPartNumber.ID = matchingTypes[0].Reference!.ID + 1;
             }
          }
       }
@@ -107,10 +110,10 @@ namespace PartsInventory.ViewModels.Main
          SelectedParts = new(e);
       }
 
-      public void PartsChanged_Main(object sender, UserModel e)
-      {
-         AllParts = e;
-      }
+      //public void PartsChanged_Main(object sender, UserModel e)
+      //{
+      //   User = e;
+      //}
 
       public void PartNumberCreated_PNTemp(object sender, PartNumber e)
       {
@@ -120,6 +123,10 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
+      public IUserModel User
+      {
+         get => _user;
+      }
       public ObservableCollection<PartModel>? SelectedParts
       {
          get => _selectedParts;
@@ -130,15 +137,15 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      public UserModel? AllParts
-      {
-         get => _allParts;
-         set
-         {
-            _allParts = value;
-            OnPropertyChanged();
-         }
-      }
+      //public UserModel? AllParts
+      //{
+      //   get => _allParts;
+      //   set
+      //   {
+      //      _allParts = value;
+      //      OnPropertyChanged();
+      //   }
+      //}
 
       public PartNumber? NewPartNumber
       {

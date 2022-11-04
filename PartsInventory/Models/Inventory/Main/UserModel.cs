@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class UserModel : BaseModel
+   public class UserModel : BaseModel, IUserModel
    {
       #region Local Props
       private string _userName = null!;
       private string? _email = null!;
-      public string AuthID { get; set; }
+      public string AuthID { get; set; } = null!;
 
       private ObservableCollection<PartModel> _parts = new();
       private ObservableCollection<InvoiceModel> _invoices = new();

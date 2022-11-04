@@ -1,10 +1,15 @@
-﻿using MVVMLibrary;
-using PartsInventory.ViewModels.Main;
+﻿using System.Threading.Tasks;
+
+using MVVMLibrary;
+
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels
 {
    public interface IMainViewModel
    {
+      IUserModel User { get; set; }
       string AspectRatio { get; set; }
       double MonitorSize { get; set; }
       Command OpenCmd { get; init; }
@@ -12,5 +17,7 @@ namespace PartsInventory.ViewModels
 
       void Open();
       void Save();
+
+      Task<bool> AddPart(PartModel part);
    }
 }

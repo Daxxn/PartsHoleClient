@@ -20,8 +20,9 @@ namespace PartsInventory.ViewModels.Main
    public class PassivesViewModel : ViewModel, IPassivesViewModel
    {
       #region Local Props
+      private IUserModel _user;
+
       public event EventHandler<NewBookEventArgs> NewBookEvent = (s, e) => { };
-      private UserModel? _parts = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
       private ObservableCollection<PartModel>? _selectedAddParts = null;
       private PassiveBookModel? _selectedBook = null;
@@ -41,8 +42,10 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public PassivesViewModel()
+      public PassivesViewModel(IUserModel user)
       {
+         _user = user;
+
          AddAllPartsCmd = new(AddAllParts);
          AddSelectedPartsCmd = new(AddSelectedParts);
          ParseAllPartsCmd = new(ParseAllParts);
@@ -55,7 +58,7 @@ namespace PartsInventory.ViewModels.Main
       #region Methods
       private void AddAllParts()
       {
-         if (Parts is null)
+         if (User is null)
             return;
          if (SelectedParts is null)
             return;
@@ -64,13 +67,13 @@ namespace PartsInventory.ViewModels.Main
             IPassive? newPassive = Passive.ConvertPartAuto(part);
             if (newPassive is null)
                continue;
-            Parts.Passives.Add(newPassive);
+            User.Passives.Add(newPassive);
          }
       }
 
       private void AddSelectedParts()
       {
-         if (Parts is null)
+         if (User is null)
             return;
          if (SelectedAddParts is null)
             return;
@@ -79,15 +82,15 @@ namespace PartsInventory.ViewModels.Main
             IPassive? newPassive = Passive.ConvertPartAuto(part);
             if (newPassive is null)
                continue;
-            Parts.Passives.Add(newPassive);
+            User.Passives.Add(newPassive);
          }
       }
 
       private void ParseAllParts()
       {
-         if (Parts is null)
+         if (User is null)
             return;
-         var passives = Parts.Passives;
+         var passives = User.Passives;
          if (passives.Capacitors.Count > 0 || passives.Resistors.Count > 0 || passives.Inductors.Count > 0)
          {
             var result = MessageBox.Show("There is currently passives saved. Overwrite??", "Hold on..", MessageBoxButton.YesNo);
@@ -95,20 +98,20 @@ namespace PartsInventory.ViewModels.Main
                return;
          }
 
-         Parts.Passives = new();
+         User.Passives = new();
 
-         foreach (var part in Parts.Parts)
+         foreach (var part in User.Parts)
          {
             IPassive? newPassive = Passive.ConvertPartAuto(part);
             if (newPassive is null)
                continue;
-            Parts.Passives.Add(newPassive);
+            User.Passives.Add(newPassive);
          }
       }
 
       private void Search()
       {
-         if (Parts is null)
+         if (User is null)
             return;
          if (SearchProp is null)
             return;
@@ -117,7 +120,7 @@ namespace PartsInventory.ViewModels.Main
             SearchResults = null;
             return;
          }
-         var results = SearchPassives(Parts.Passives.GetPassivesList(CurrentTabIndex));
+         var results = SearchPassives(User.Passives.GetPassivesList(CurrentTabIndex));
          if (results is null)
             return;
          SearchResults = new(results);
@@ -165,7 +168,7 @@ namespace PartsInventory.ViewModels.Main
 
       private void AddBook()
       {
-         if (Parts is null)
+         if (User is null)
             return;
          if (SelectedBook is null)
             return;
@@ -212,24 +215,24 @@ namespace PartsInventory.ViewModels.Main
             }
          }
 
-         Parts.Passives.AddRange(data);
+         User.Passives.AddRange(data);
          SelectedBook.AddedToPassives = true;
       }
 
       public void AddNewBook_Book(object sender, PassiveBookModel e)
       {
-         if (Parts is null)
+         if (User is null)
             return;
-         if (Parts.Passives.Books.Any(b => b.BIN.Name == e.BIN.Name))
+         if (User.Passives.Books.Any(b => b.BIN.Name == e.BIN.Name))
             return;
-         Parts.Passives.Books.Add(e);
+         User.Passives.Books.Add(e);
          SelectedBook = e;
       }
 
-      public void PartsChanged_Main(object sender, UserModel e)
-      {
-         Parts = e;
-      }
+      //public void PartsChanged_Main(object sender, UserModel e)
+      //{
+      //   User = e;
+      //}
 
       public void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e)
       {
@@ -243,14 +246,9 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
-      public UserModel? Parts
+      public IUserModel User
       {
-         get => _parts;
-         set
-         {
-            _parts = value;
-            OnPropertyChanged();
-         }
+         get => _user;
       }
 
       public ObservableCollection<PartModel>? SelectedParts

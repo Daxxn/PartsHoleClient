@@ -8,7 +8,8 @@ namespace PartsInventory.ViewModels
 {
    public interface IPartSearchViewModel
    {
-      UserModel? AllParts { get; set; }
+      IUserModel User { get; }
+      //UserModel? AllParts { get; set; }
       bool MatchCase { get; set; }
       Command SearchCmd { get; init; }
       ObservableCollection<PartModel> SearchParts { get; set; }

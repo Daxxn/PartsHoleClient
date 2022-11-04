@@ -148,7 +148,7 @@
         <TabControl Grid.Column="1" SelectedIndex="{Binding Path=CurrentTabIndex}">
             <TabItem Header="Resistors">
                 <DataGrid
-                    ItemsSource="{Binding Path=Parts.Passives.Resistors}"
+                    ItemsSource="{Binding Path=User.Passives.Resistors}"
                     Style="{StaticResource PassivesDataGrid}"
                 >
                     <DataGrid.Columns>
@@ -260,7 +260,7 @@
             </TabItem>
             <TabItem Header="Capacitors">
                 <DataGrid
-                    ItemsSource="{Binding Path=Parts.Passives.Capacitors}"
+                    ItemsSource="{Binding Path=User.Passives.Capacitors}"
                     Style="{StaticResource PassivesDataGrid}"
                 >
                     <DataGrid.Columns>
@@ -334,7 +334,7 @@
             </TabItem>
             <TabItem Header="Inductors">
                 <DataGrid
-                    ItemsSource="{Binding Path=Parts.Passives.Inductors}"
+                    ItemsSource="{Binding Path=User.Passives.Inductors}"
                     Style="{StaticResource PassivesDataGrid}"
                 >
                     <DataGrid.Columns>

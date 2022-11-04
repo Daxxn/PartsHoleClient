@@ -14,13 +14,13 @@ namespace PartsInventory.ViewModels
 {
    public interface IPassivesViewModel
    {
+      IUserModel User { get; }
+      int CurrentTabIndex { get; set; }
       Command AddAllPartsCmd { get; init; }
       Command AddBookCmd { get; init; }
       Command AddSelectedPartsCmd { get; init; }
-      int CurrentTabIndex { get; set; }
       Command NewBookCmd { get; init; }
       Command ParseAllPartsCmd { get; init; }
-      UserModel? Parts { get; set; }
       Command SearchCmd { get; init; }
       PassiveSearchProp? SearchProp { get; set; }
       ObservableCollection<IPassive>? SearchResults { get; set; }
@@ -33,7 +33,7 @@ namespace PartsInventory.ViewModels
       event EventHandler<NewBookEventArgs> NewBookEvent;
 
       void AddNewBook_Book(object sender, PassiveBookModel e);
-      void PartsChanged_Main(object sender, UserModel e);
+      //void PartsChanged_Main(object sender, UserModel e);
       void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e);
    }
 }

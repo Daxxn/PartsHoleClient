@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PartsInventory.Models.API.Interfaces;
+using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.Models.API.Models
 {
-   public class UserApiModel : IApiConverter<UserModel>
+   public class UserApiModel : IApiConverter<IUserModel>
    {
       #region Local Props
       public string Id { get; set; } = null!;
@@ -25,9 +26,9 @@ namespace PartsInventory.Models.API.Models
       #endregion
 
       #region Methods
-      public UserModel ToModel()
+      public IUserModel ToModel()
       {
-         return new()
+         return new UserModel()
          {
             Id = new(Id),
             InvoiceIDs = Invoices,
@@ -38,7 +39,7 @@ namespace PartsInventory.Models.API.Models
          };
       }
 
-      public static UserApiModel FromModel(UserModel model)
+      public static UserApiModel FromModel(IUserModel model)
       {
          return new UserApiModel()
          {

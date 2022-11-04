@@ -10,15 +10,15 @@ namespace PartsInventory.ViewModels
 {
    public interface IProjectBOMViewModel
    {
-      Command AllocateCmd { get; init; }
-      UserModel? AllParts { get; set; }
-      Command ClearProjectCmd { get; init; }
+      IUserModel User { get; }
       int CurrentTab { get; set; }
-      Command ParseProjectCmd { get; init; }
       ProjectModel? Project { get; set; }
+      Command AllocateCmd { get; init; }
+      Command ClearProjectCmd { get; init; }
+      Command ParseProjectCmd { get; init; }
 
       void Exit(object sender, EventArgs e);
       void Loaded(object sender, EventArgs e);
-      void PartsChanged_Main(object sender, UserModel e);
+      //void PartsChanged_Main(object sender, UserModel e);
    }
 }

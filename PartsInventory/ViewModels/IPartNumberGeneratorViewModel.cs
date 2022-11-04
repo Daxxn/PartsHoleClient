@@ -10,7 +10,8 @@ namespace PartsInventory.ViewModels
 {
    public interface IPartNumberGeneratorViewModel
    {
-      UserModel? AllParts { get; set; }
+      IUserModel User { get; }
+      //UserModel? AllParts { get; set; }
       Command AssignToSelectedCmd { get; init; }
       Command ClearCmd { get; init; }
       Command NewCmd { get; init; }
@@ -21,7 +22,7 @@ namespace PartsInventory.ViewModels
       PartNumberType Type { get; set; }
 
       void PartNumberCreated_PNTemp(object sender, PartNumber e);
-      void PartsChanged_Main(object sender, UserModel e);
       void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e);
+      //void PartsChanged_Main(object sender, UserModel e);
    }
 }

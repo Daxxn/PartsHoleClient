@@ -96,6 +96,7 @@ namespace PartsInventory
          services.AddTransient<PartNumberTemplateDialog>();
          services.AddTransient<PartSearchDialog>();
          services.AddTransient<PassiveBookDialog>();
+         services.AddTransient<NewPartView>();
       }
 
       private static void ConnectViewModelServices(IServiceCollection services)
@@ -110,11 +111,14 @@ namespace PartsInventory
          services.AddSingleton<IPassivesViewModel, PassivesViewModel>();
          services.AddSingleton<IProjectBOMViewModel, ProjectBOMViewModel>();
          services.AddSingleton<IPackageViewModel, PackageViewModel>();
+         services.AddSingleton<INewPartViewModel, NewPartViewModel>();
       }
 
       private static void ConnectModelServices(IServiceCollection services)
       {
          services.AddSingleton<IAPIController, APIController>();
+
+         services.AddSingleton<IUserModel, UserModel>();
 
          // OMG !! this is gonna suck...
          //services.AddTransient<IPartModel, PartModel>();

@@ -22,9 +22,7 @@ namespace PartsInventory.ViewModels.Main
    public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
-      private readonly IPartsInventoryViewModel _partsInventoryVM;
       private readonly IInvoiceParserViewModel _invoiceParserVM;
-      private readonly IPackageViewModel _packageVM;
       private readonly IProjectBOMViewModel _projectBOMVM;
       private readonly IPartNumberGeneratorViewModel _partNumGenVM;
       private readonly IPartNumberTemplateViewModel _partNumTempVM;
@@ -33,7 +31,7 @@ namespace PartsInventory.ViewModels.Main
       private readonly IOptions<DirSettings> _dirSettings;
       private readonly IOptions<APISettings> _apiSettings;
       private readonly IAPIController _apiController;
-      private UserModel? _user = null;
+      private IUserModel _user;
 
       #region Events
       public static EventHandler<UserModel> PartsChangedEvent;
@@ -48,9 +46,7 @@ namespace PartsInventory.ViewModels.Main
 
       #region Constructors
       public MainViewModel(
-         IPartsInventoryViewModel partsVM,
          IInvoiceParserViewModel parserVM,
-         IPackageViewModel packageVM,
          IProjectBOMViewModel bomVM,
          IPartNumberGeneratorViewModel partNumGenVM,
          IPartNumberTemplateViewModel partNumTempVM,
@@ -58,12 +54,11 @@ namespace PartsInventory.ViewModels.Main
          IPassiveBookViewModel bookVM,
          IOptions<DirSettings> dirSettings,
          IOptions<APISettings> apiSettings,
-         IAPIController apiController
+         IAPIController apiController,
+         IUserModel user
          )
       {
-         _partsInventoryVM = partsVM;
          _invoiceParserVM = parserVM;
-         _packageVM = packageVM;
          _projectBOMVM = bomVM;
          _partNumGenVM = partNumGenVM;
          _partNumTempVM = partNumTempVM;
@@ -72,20 +67,19 @@ namespace PartsInventory.ViewModels.Main
          _dirSettings = dirSettings;
          _apiSettings = apiSettings;
          _apiController = apiController;
+         _user = user;
          SaveCmd = new(Save);
          OpenCmd = new(Open);
 
          GetUserTestAsyncCmd = new Command(GetUserTestAsync);
 
-         _invoiceParserVM.AddToPartsEvent += _partsInventoryVM.NewPartsEventHandler;
+         //PartsChangedEvent += _projectBOMVM.PartsChanged_Main;
+         //PartsChangedEvent += _partsInventoryVM.PartsChanged_Main;
+         //PartsChangedEvent += _partNumGenVM.PartsChanged_Main;
+         //PartsChangedEvent += _passivesVM.PartsChanged_Main;
 
-         PartsChangedEvent += _projectBOMVM.PartsChanged_Main;
-         PartsChangedEvent += _partsInventoryVM.PartsChanged_Main;
-         PartsChangedEvent += _partNumGenVM.PartsChanged_Main;
-         PartsChangedEvent += _passivesVM.PartsChanged_Main;
-
-         _partsInventoryVM.SelectedPartsChanged += _partNumGenVM.SelectedPartsChanged_Inv;
-         _partsInventoryVM.SelectedPartsChanged += _passivesVM.SelectedPartsChanged_Inv;
+         //_partsInventoryVM.SelectedPartsChanged += _partNumGenVM.SelectedPartsChanged_Inv;
+         //_partsInventoryVM.SelectedPartsChanged += _passivesVM.SelectedPartsChanged_Inv;
          _partNumTempVM.CreatePartNumber += _partNumGenVM.PartNumberCreated_PNTemp;
          _passivesVM.NewBookEvent += _bookVM.NewBook_Psv;
          _bookVM.AddNewBookEvent += _passivesVM.AddNewBook_Book;
@@ -137,6 +131,16 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
+      public async Task<bool> AddPart(PartModel part)
+      {
+         var success = await _apiController.CreatePart(part);
+         if (success)
+         {
+            User.Parts.Add(part);
+         }
+         return success;
+      }
+
       private async void GetUserTestAsync()
       {
          // Try to get Auth0 token...
@@ -150,14 +154,27 @@ namespace PartsInventory.ViewModels.Main
 
          // Get UserModel from API:
 
-         _partsInventoryVM.PartsCollection = await _apiController.GetUser(devUser);
-         if (_partsInventoryVM.PartsCollection is null)
+         var tempUser = await _apiController.GetUser(devUser);
+         if (tempUser == null)
+         {
+            MessageBox.Show("Login Failure.", "Error");
             return;
-         var data = await _apiController.GetUserData(_partsInventoryVM.PartsCollection);
+         }
+         User = tempUser;
+         var data = await _apiController.GetUserData(User);
          if (data is null)
             return;
-         _partsInventoryVM.PartsCollection.Parts = data.Parts != null ? new(data.ToParts()!) : new();
-         _partsInventoryVM.PartsCollection.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
+         User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
+         User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
+
+         //_partsInventoryVM.PartsCollection = await _apiController.GetUser(devUser);
+         //if (_partsInventoryVM.PartsCollection is null)
+         //   return;
+         //var data = await _apiController.GetUserData(_partsInventoryVM.PartsCollection);
+         //if (data is null)
+         //   return;
+         //_partsInventoryVM.PartsCollection.Parts = data.Parts != null ? new(data.ToParts()!) : new();
+         //_partsInventoryVM.PartsCollection.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
       }
       #endregion
 
@@ -183,7 +200,7 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      public UserModel? User
+      public IUserModel User
       {
          get => _user;
          set

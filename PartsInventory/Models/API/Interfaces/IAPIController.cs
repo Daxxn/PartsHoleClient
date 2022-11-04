@@ -21,7 +21,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="user">Incomplete <see cref="UserModel"/> data after login finishes.</param>
       /// <returns>Combined user data from server.</returns>
-      Task<UserModel?> GetUser(UserModel user);
+      Task<IUserModel?> GetUser(IUserModel user);
       /// <summary>
       /// Gets the <see cref="UserData"/> after login. Should be called ONCE per login.
       /// <para>
@@ -33,7 +33,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="user">Newly logged in user.</param>
       /// <returns>All <see cref="UserData"/>.</returns>
-      Task<UserData?> GetUserData(UserModel user);
+      Task<IUserData?> GetUserData(IUserModel user);
       #endregion
       #region Parts
       /// <summary>

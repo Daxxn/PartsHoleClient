@@ -1,4 +1,7 @@
-﻿using MVVMLibrary;
+﻿using MongoDB.Bson;
+
+using MVVMLibrary;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +14,7 @@ namespace PartsInventory.Models.Inventory.Main
    public class PartModel : BaseModel
    {
       #region Local Props
+      public const string BlankPartNumber = "BLANK_PART";
       private string _supplierPartNumber = "";
       private string _partNumber = "";
       private string? _desc = null;
@@ -32,6 +36,64 @@ namespace PartsInventory.Models.Inventory.Main
       #endregion
 
       #region Methods
+      public static PartModel CreateNew()
+      {
+         return new()
+         {
+            Id = ObjectId.GenerateNewId().ToString(),
+            PartNumber = BlankPartNumber,
+         };
+      }
+
+      public void ParseRawProps(string[] lines)
+      {
+         for (int i = 0; i < lines.Length; i++)
+         {
+            switch (i)
+            {
+               case 0:
+                  if (uint.TryParse(lines[i], out uint qty))
+                  {
+                     Quantity = qty;
+                  }
+                  break;
+               case 1:
+                  PartNumber = lines[i].Trim();
+                  break;
+               case 2:
+                  SupplierPartNumber = lines[i].Trim();
+                  break;
+               case 3:
+                  Reference = new(lines[i].Trim());
+                  break;
+               case 4:
+                  Description = lines[i].Trim();
+                  break;
+               case 5:
+                  if (decimal.TryParse(lines[i], out decimal price))
+                  {
+                     UnitPrice = price;
+                  }
+                  break;
+               case 6:
+                  Datasheet = new(lines[i].Trim());
+                  break;
+               case 7:
+                  // TODO - Add tags later
+                  // The tag system isnt even started yet. GAWD!! theres too much to do...
+               default:
+                  break;
+            }
+         }
+      }
+
+      public bool CheckPart()
+      {
+         return !string.IsNullOrEmpty(SupplierPartNumber)
+            && !string.IsNullOrEmpty(PartNumber)
+            && Quantity != 0;
+      }
+
       public void ParseProp(string prop, string value)
       {
          switch (prop.ToLower())

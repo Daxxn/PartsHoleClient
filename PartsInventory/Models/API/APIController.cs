@@ -85,7 +85,7 @@ namespace PartsInventory.Models.API
       #endregion
 
       #region User
-      public async Task<UserModel?> GetUser(UserModel user)
+      public async Task<IUserModel?> GetUser(IUserModel user)
       {
          try
          {
@@ -99,7 +99,7 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<UserData?> GetUserData(UserModel user)
+      public async Task<IUserData?> GetUserData(IUserModel user)
       {
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/data", Method.Post)
             .AddJsonBody(UserApiModel.FromModel(user));

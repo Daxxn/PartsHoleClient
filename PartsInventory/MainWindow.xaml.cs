@@ -42,7 +42,8 @@ namespace PartsInventory
          InvoiceParserView invoiceView,
          ProjectBOMView bomView,
          PartNumberGeneratorView pnView,
-         PassivesView passView)
+         PassivesView passView,
+         PackageView pkgView)
       {
          VM = mainVM;
          _dirSettings = dirSettings;
@@ -58,6 +59,7 @@ namespace PartsInventory
          BomViewTab.Content = bomView;
          PartNumViewTab.Content = pnView;
          PassivesViewTab.Content = passView;
+         PackagesViewTab.Content = pkgView;
       }
 
       private async void GetPart_Click(object sender, RoutedEventArgs e)

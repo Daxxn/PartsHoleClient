@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.ViewModels;
@@ -25,10 +26,12 @@ namespace PartsInventory.Views;
 public partial class PartsInventoryView : UserControl
 {
    private readonly IPartsInventoryViewModel VM;
-   public PartsInventoryView(IPartsInventoryViewModel vm)
+   private readonly NewPartView _newPartView;
+   public PartsInventoryView(IPartsInventoryViewModel vm, NewPartView newPartView)
    {
       VM = vm;
       DataContext = VM;
+      _newPartView = newPartView;
       InitializeComponent();
    }
 
@@ -105,5 +108,11 @@ public partial class PartsInventoryView : UserControl
          }
          VM.SelectedParts = new(temp);
       }
+   }
+
+   private void AddPart_Click(object sender, RoutedEventArgs e)
+   {
+      _newPartView.Show();
+
    }
 }

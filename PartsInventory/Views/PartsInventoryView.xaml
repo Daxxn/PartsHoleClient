@@ -9,13 +9,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <ObjectDataProvider
+		<ObjectDataProvider
             x:Key="BinDictProvider"
             ObjectType="{x:Type models:BinModel}"
             MethodName="GetBins"
         />
-
-        <conv:PartNumberConverter x:Key="PartNumberConverter"/>
+		<conv:PartNumberConverter x:Key="PartNumberConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -41,7 +40,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0" Command="{Binding Path=AddPartCmd}">Add Part</Button>
+                        <Button Grid.Row="0" Click="AddPart_Click">Add Part</Button>
                         <Button Grid.Row="2" Command="{Binding Path=RemovePartCmd}">Remove Part</Button>
                     </Grid>
                 </Border>
@@ -50,7 +49,7 @@
 
         <DataGrid
             Grid.Column="1"
-            ItemsSource="{Binding Path=PartsCollection.Parts}"
+            ItemsSource="{Binding Path=MainVM.User.Parts}"
             SelectionChanged="PartsList_SelectionChanged"
             Style="{StaticResource PartsDataGrid}"
         >
@@ -198,7 +197,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock>All Invoices</TextBlock>
-                            <ListView Grid.Row="1" ItemsSource="{Binding Path=PartsCollection.Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
+							<ListView Grid.Row="1" ItemsSource="{Binding Path=MainVM.User.Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Path=OrderNumber}"/>

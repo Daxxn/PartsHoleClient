@@ -14,7 +14,7 @@ namespace PartsInventory.ViewModels.Main
    public class PartSearchViewModel : ViewModel, IPartSearchViewModel
    {
       #region Local Props
-      private UserModel? _allParts = null;
+      private IUserModel _user;
       private ObservableCollection<PartModel> _searchParts = new();
       private ObservableCollection<PartModel>? _selectedParts = null;
 
@@ -28,8 +28,9 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public PartSearchViewModel()
+      public PartSearchViewModel(IUserModel user)
       {
+         _user = user;
          SearchCmd = new(Search);
       }
       #endregion
@@ -39,14 +40,14 @@ namespace PartsInventory.ViewModels.Main
       {
          if (string.IsNullOrEmpty(SearchText))
             return;
-         if (AllParts is null)
+         if (User is null)
             return;
 
          SearchText = SearchText.Trim();
 
          SearchParts.Clear();
 
-         foreach (var part in AllParts.Parts)
+         foreach (var part in User.Parts)
          {
             if (part.Search(SearchText, MatchCase))
             {
@@ -57,14 +58,9 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
-      public UserModel? AllParts
+      public IUserModel User
       {
-         get => _allParts;
-         set
-         {
-            _allParts = value;
-            OnPropertyChanged();
-         }
+         get => _user;
       }
 
       public ObservableCollection<PartModel> SearchParts

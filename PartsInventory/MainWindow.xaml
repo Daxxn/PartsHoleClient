@@ -49,21 +49,12 @@
         </Menu>
 
         <TabControl Grid.Row="1">
-            <TabItem Header="Inventory" x:Name="PartsViewTab">
-                <!--<views:PartsInventoryView x:Name="PartsView"/>-->
-            </TabItem>
-            <TabItem Header="Invoices" x:Name="InvoiceViewTab">
-                <!--<views:InvoiceParserView x:Name="InvoiceView"/>-->
-            </TabItem>
-            <TabItem Header="Project BOM" x:Name="BomViewTab">
-                <!--<views:ProjectBOMView x:Name="ProjectBOMView" />-->
-            </TabItem>
-            <TabItem Header="PN Creation" x:Name="PartNumViewTab">
-                <!--<views:PartNumberGeneratorView x:Name="PartNumberGenView"/>-->
-            </TabItem>
-            <TabItem Header="Passives" x:Name="PassivesViewTab">
-                <!--<views:PassivesView x:Name="PassivesView"/>-->
-            </TabItem>
-        </TabControl>
+			<TabItem Header="Inventory" x:Name="PartsViewTab"/>
+			<TabItem Header="Invoices" x:Name="InvoiceViewTab"/>
+			<TabItem Header="Project BOM" x:Name="BomViewTab"/>
+			<TabItem Header="PN Creation" x:Name="PartNumViewTab"/>
+			<TabItem Header="Passives" x:Name="PassivesViewTab"/>
+			<TabItem Header="Packages" x:Name="PackagesViewTab"/>
+		</TabControl>
     </Grid>
 </Window>

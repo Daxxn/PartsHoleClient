@@ -11,8 +11,8 @@ namespace PartsInventory.ViewModels
 {
    public interface IPartsInventoryViewModel
    {
+      IMainViewModel MainVM { get; }
       Command AddPartCmd { get; init; }
-      UserModel? PartsCollection { get; set; }
       Command RemovePartCmd { get; init; }
       BinModel? SelectedBin { get; set; }
       string? SelectedBinName { get; set; }
@@ -24,6 +24,6 @@ namespace PartsInventory.ViewModels
 
       void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e);
       void OpenDatasheet(object sender, PartModel part);
-      void PartsChanged_Main(object sender, UserModel e);
+      //void PartsChanged_Main(object sender, UserModel e);
    }
 }

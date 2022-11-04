@@ -15,11 +15,11 @@ namespace PartsInventory.ViewModels.Main
    public class PartsInventoryViewModel : ViewModel, IPartsInventoryViewModel
    {
       #region Local Props
+      private readonly IMainViewModel _mainViewModel;
+
       public event EventHandler<PartModel> OpenDatasheetEvent = (s, e) => { };
       public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s, e) => { };
-      private UserModel? _partsCollection = null;
       private InvoiceModel? _selectedInvoice = null;
-      //private PartModel? _selectedPart = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
       private BinModel? _selectedBin = null;
       private string? _selectedBinName = null;
@@ -31,8 +31,9 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public PartsInventoryViewModel()
+      public PartsInventoryViewModel(IMainViewModel mainViewModel)
       {
+         _mainViewModel = mainViewModel;
          AddPartCmd = new(AddPart);
          RemovePartCmd = new(RemovePart);
       }
@@ -41,9 +42,7 @@ namespace PartsInventory.ViewModels.Main
       #region Methods
       public void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e)
       {
-         if (PartsCollection is null)
-            PartsCollection = new();
-         PartsCollection.AddInvoices(e.NewInvoices);
+         MainVM.User.AddInvoices(e.NewInvoices);
       }
 
       public void OpenDatasheet(object sender, PartModel part)
@@ -53,50 +52,28 @@ namespace PartsInventory.ViewModels.Main
 
       private void AddPart()
       {
-         if (PartsCollection is null)
+         if (MainVM.User is null)
             return;
-         PartsCollection.Parts.Add(new());
+         MainVM.User.Parts.Add(new());
       }
 
       private void RemovePart()
       {
-         if (PartsCollection is null || SelectedParts is null)
+         if (MainVM.User is null || SelectedParts is null)
             return;
 
-         //PartsCollection.Parts.Remove(SelectedPart);
          foreach (var part in SelectedParts)
          {
-            PartsCollection.Parts.Remove(part as PartModel);
+            MainVM.User.Parts.Remove(part as PartModel);
          }
-      }
-
-      public void PartsChanged_Main(object sender, UserModel e)
-      {
-         PartsCollection = e;
       }
       #endregion
 
       #region Full Props
-      public UserModel? PartsCollection
+      public IMainViewModel MainVM
       {
-         get => _partsCollection;
-         set
-         {
-            _partsCollection = value;
-            OnPropertyChanged();
-         }
+         get => _mainViewModel;
       }
-
-      //public PartModel? SelectedPart
-      //{
-      //   get => _selectedPart;
-      //   set
-      //   {
-      //      _selectedPart = value;
-      //      OnPropertyChanged();
-      //      SelectedPartChanged?.Invoke(this, value);
-      //   }
-      //}
 
       public ObservableCollection<PartModel>? SelectedParts
       {

@@ -98,8 +98,4 @@
     </Resource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\Mock\" />
-  </ItemGroup>
-
 </Project>

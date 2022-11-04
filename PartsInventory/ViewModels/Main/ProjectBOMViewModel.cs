@@ -19,7 +19,7 @@ namespace PartsInventory.ViewModels.Main
    public class ProjectBOMViewModel : ViewModel, IProjectBOMViewModel
    {
       #region Local Props
-      private UserModel? _allParts = null;
+      private IUserModel _user;
       private ProjectModel? _project = null;
       private int _currentTab = 0;
 
@@ -72,7 +72,7 @@ namespace PartsInventory.ViewModels.Main
             return;
          if (Project.BOM is null)
             return;
-         if (AllParts is null)
+         if (User is null)
             return;
 
          Project.Parts = new();
@@ -80,7 +80,7 @@ namespace PartsInventory.ViewModels.Main
          {
             if (bom.Reference == null)
                continue;
-            var foundParts = AllParts.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
+            var foundParts = User.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
             if (foundParts.Length > 0)
             {
                foreach (var part in foundParts)
@@ -123,13 +123,18 @@ namespace PartsInventory.ViewModels.Main
          });
       }
 
-      public void PartsChanged_Main(object sender, UserModel e)
-      {
-         AllParts = e;
-      }
+      //public void PartsChanged_Main(object sender, UserModel e)
+      //{
+      //   User = e;
+      //}
       #endregion
 
       #region Full Props
+      public IUserModel User
+      {
+         get => _user;
+      }
+
       public ProjectModel? Project
       {
          get => _project;
@@ -146,16 +151,6 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             _currentTab = value;
-            OnPropertyChanged();
-         }
-      }
-
-      public UserModel? AllParts
-      {
-         get => _allParts;
-         set
-         {
-            _allParts = value;
             OnPropertyChanged();
          }
       }
