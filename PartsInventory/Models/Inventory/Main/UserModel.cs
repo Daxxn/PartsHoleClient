@@ -39,22 +39,38 @@ namespace PartsInventory.Models.Inventory.Main
       {
          foreach (var invoice in invoices)
          {
-            if (!Invoices.Any(inv => inv.OrderNumber == invoice.OrderNumber))
+            AddInvoice(invoice);
+         }
+      }
+
+      public IEnumerable<PartModel>? AddInvoice(InvoiceModel invoice)
+      {
+         if (!invoice.IsAddedToParts)
+         {
+            var foundParts = new List<PartModel>();
+            foreach (var part in invoice.Parts)
             {
-               Invoices.Add(invoice);
-               foreach (var part in invoice.Parts)
+               if (Parts.FirstOrDefault(p => p?.EqualsPartNumber(part) == true, null) is PartModel pt)
                {
-                  if (Parts.FirstOrDefault(p => p?.Equals(part) == true, null) is PartModel pt)
-                  {
-                     pt.Quantity += part.Quantity;
-                  }
-                  else
-                  {
-                     Parts.Add(part);
-                  }
+                  part.Id = pt.Id;
+                  pt.Quantity += part.Quantity;
+                  foundParts.Add(pt);
+               }
+               else
+               {
+                  part.Id = ObjectId.GenerateNewId().ToString();
+                  //Parts.Add(part);
+                  foundParts.Add(part);
                }
             }
+            return foundParts;
          }
+         return null;
+      }
+
+      public void AddUpdatedParts(IEnumerable<PartModel> parts)
+      {
+         Parts.MergeAdd((a, b) => a.Id == b.Id, parts);
       }
       #endregion
 

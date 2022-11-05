@@ -60,7 +60,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/>s.</param>
       /// <returns><see cref="List{T}"/> of <see cref="PartModel"/>s.</returns>
-      Task<IEnumerable<PartModel>?> GetParts(string[] ids);
+      Task<IEnumerable<PartModel>?> GetParts(IEnumerable<string> ids);
       /// <summary>
       /// Creates a new <see cref="PartModel"/>.
       /// <para>
@@ -98,6 +98,18 @@ namespace PartsInventory.Models.API
       /// <returns>True if successful.</returns>
       Task<bool> UpdatePart(PartModel part);
       /// <summary>
+      /// Updates a <see cref="List{T}"/> of changed <see cref="PartModel"/>
+      /// <para>
+      /// PUT /api/Parts/many
+      /// </para>
+      /// <para>
+      /// Body : <see cref="PartModel"/> <paramref name="part"/>
+      /// </para>
+      /// </summary>
+      /// <param name="parts">Changed <see cref="PartModel"/>s</param>
+      /// <returns>List of updated parts.</returns>
+      Task<IEnumerable<bool>?> UpdateParts(IEnumerable<PartModel> parts);
+      /// <summary>
       /// Deletes a <see cref="PartModel"/>.
       /// <para>
       /// DELETE /api/Parts/{id}
@@ -117,7 +129,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="PartModel"/>s deleted.</returns>
-      Task<int> DeleteParts(string[] ids);
+      Task<int> DeleteParts(IEnumerable<string> ids);
       #endregion
       #region Invoices
       /// <summary>
@@ -140,7 +152,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="ids">List of <see cref="ObjectId"/>s</param>
       /// <returns>Array of <see cref="InvoiceModel"/>s, only contains part IDs.</returns>
-      Task<IEnumerable<InvoiceModel>?> GetInvoices(string[] ids);
+      Task<IEnumerable<InvoiceModel>?> GetInvoices(IEnumerable<string> ids);
       /// <summary>
       /// Creates a new <see cref="InvoiceModel"/>.
       /// <para>
@@ -197,7 +209,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="InvoiceModel"/>s deleted.</returns>
-      Task<int> DeleteInvoices(string[] ids);
+      Task<int> DeleteInvoices(IEnumerable<string> ids);
       #endregion
       #region Bins
       /// <summary>
@@ -220,7 +232,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/>s.</param>
       /// <returns><see cref="List{T}"/> of <see cref="BinModel"/>s.</returns>
-      Task<IEnumerable<BinModel>?> GetBins(string[] ids);
+      Task<IEnumerable<BinModel>?> GetBins(IEnumerable<string> ids);
       /// <summary>
       /// Creates a new <see cref="BinModel"/>.
       /// <para>
@@ -277,7 +289,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="BinModel"/>s deleted.</returns>
-      Task<int> DeleteBins(string[] ids);
+      Task<int> DeleteBins(IEnumerable<string> ids);
       #endregion
       #endregion
    }

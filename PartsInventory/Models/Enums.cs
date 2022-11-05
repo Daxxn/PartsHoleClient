@@ -38,6 +38,7 @@ namespace PartsInventory.Models.Enums
    {
       DigiKey,
       Mouser,
+      NA,
    };
 
    #region Passives

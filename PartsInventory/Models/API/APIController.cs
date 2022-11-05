@@ -143,7 +143,7 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<IEnumerable<PartModel>?> GetParts(string[] ids)
+      public async Task<IEnumerable<PartModel>?> GetParts(IEnumerable<string> ids)
       {
          try
          {
@@ -234,6 +234,24 @@ namespace PartsInventory.Models.API
          }
       }
 
+      public async Task<IEnumerable<bool>?> UpdateParts(IEnumerable<PartModel> parts)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many", Method.Put)
+               .AddJsonBody(parts.Select(x => PartApiModel.FromModel(x)));
+            var response = await Client.PutAsync<APIResponse<IEnumerable<bool>>>(request);
+            if (response is null) return null;
+            if (response.Body is null) return null;
+            return response.Body;
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "PUT Error");
+            return null;
+         }
+      }
+
       public async Task<bool> DeletePart(string id)
       {
          try
@@ -256,7 +274,7 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<int> DeleteParts(string[] ids)
+      public async Task<int> DeleteParts(IEnumerable<string> ids)
       {
          try
          {
@@ -296,7 +314,7 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<IEnumerable<InvoiceModel>?> GetInvoices(string[] ids)
+      public async Task<IEnumerable<InvoiceModel>?> GetInvoices(IEnumerable<string> ids)
       {
          try
          {
@@ -319,7 +337,7 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Post)
                .AddJsonBody(invoice);
-            return await Client.PostAsync<bool>(request);
+            return (await Client.PostAsync<APIResponse<bool>>(request))?.Body == true;
          }
          catch (Exception e)
          {
@@ -351,7 +369,7 @@ namespace PartsInventory.Models.API
          }
          catch (Exception e)
          {
-
+            MessageBox.Show(e.Message, "PUT Error");
             return null;
          }
       }
@@ -360,9 +378,9 @@ namespace PartsInventory.Models.API
       {
          try
          {
-            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Put)
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{invoice.Id}", Method.Put)
                .AddJsonBody(InvoiceApiModel.FromModel(invoice));
-            return await Client.PutAsync<bool>(request);
+            return (await Client.PutAsync<APIResponse<bool>>(request))?.Body == true;
          }
          catch (Exception e)
          {
@@ -376,7 +394,7 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{id}", Method.Delete);
-            return await Client.DeleteAsync<bool>(request);
+            return (await Client.DeleteAsync<APIResponse<bool>>(request))?.Body == true;
          }
          catch (Exception e)
          {
@@ -385,14 +403,14 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<int> DeleteInvoices(string[] ids)
+      public async Task<int> DeleteInvoices(IEnumerable<string> ids)
       {
          try
          {
             var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Delete)
                .AddJsonBody(idList);
-            return await Client.DeleteAsync<int>(request);
+            return (await Client.DeleteAsync<APIResponse<int>>(request))?.Body ?? 0;
          }
          catch (Exception e)
          {
@@ -417,7 +435,7 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<IEnumerable<BinModel>?> GetBins(string[] ids)
+      public async Task<IEnumerable<BinModel>?> GetBins(IEnumerable<string> ids)
       {
          try
          {
@@ -440,7 +458,7 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Post)
                .AddJsonBody(bin);
-            return await Client.PostAsync<bool>(request);
+            return (await Client.PostAsync<APIResponse<bool>>(request))?.Body == true;
          }
          catch (Exception e)
          {
@@ -483,7 +501,7 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Put)
                .AddJsonBody(bin);
-            return await Client.PutAsync<bool>(request);
+            return (await Client.PutAsync<APIResponse<bool>>(request))?.Body == true;
          }
          catch (Exception e)
          {
@@ -497,7 +515,7 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/{id}", Method.Delete);
-            return await Client.DeleteAsync<bool>(request);
+            return (await Client.DeleteAsync<APIResponse<bool>>(request))?.Body == true;
          }
          catch (Exception e)
          {
@@ -506,14 +524,14 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<int> DeleteBins(string[] ids)
+      public async Task<int> DeleteBins(IEnumerable<string> ids)
       {
          try
          {
             var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Delete)
                .AddJsonBody(idList);
-            return await Client.DeleteAsync<int>(request);
+            return (await Client.DeleteAsync<APIResponse<int>>(request))?.Body ?? 0;
          }
          catch (Exception e)
          {

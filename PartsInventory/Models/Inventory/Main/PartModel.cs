@@ -92,6 +92,10 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
+      /// <summary>
+      /// Confirms the part can be created in the database.
+      /// </summary>
+      /// <returns>True if able.</returns>
       public bool CheckPart()
       {
          return !string.IsNullOrEmpty(SupplierPartNumber)
@@ -99,6 +103,11 @@ namespace PartsInventory.Models.Inventory.Main
             && Quantity != 0;
       }
 
+      /// <summary>
+      /// parses the <paramref name="value"/> and sets it to <paramref name="prop"/>.
+      /// </summary>
+      /// <param name="prop">Property name</param>
+      /// <param name="value">Property value to parse</param>
       public void ParseProp(string prop, string value)
       {
          switch (prop.ToLower())
@@ -125,18 +134,17 @@ namespace PartsInventory.Models.Inventory.Main
                Backorder = ParseUint(value);
                break;
 
-            // Dont really need it. The unit price & quantity are enough.
-            // Keep for now, just in case.
-            //case "Extended Price":
-            //   var val = value.Replace("$", "");
-            //   ExtendedPrice = ParseDec(val);
-            //   break;
-
             default:
                break;
          }
       }
 
+      /// <summary>
+      /// Checks equality.
+      /// Favors <see cref="Reference"/> match.
+      /// </summary>
+      /// <param name="part"><see cref="PartModel"/> to check against</param>
+      /// <returns></returns>
       public bool Equals(PartModel part)
       {
          if (part.Reference is null)
@@ -148,6 +156,24 @@ namespace PartsInventory.Models.Inventory.Main
                return true;
             }
          }
+         if (PartNumber == part.PartNumber)
+         {
+            return true;
+         }
+         if (SupplierPartNumber == part.SupplierPartNumber)
+         {
+            return true;
+         }
+         return false;
+      }
+
+      /// <summary>
+      /// Checks equality specifically for <see cref="PartNumber"/> and <see cref="SupplierPartNumber"/>.
+      /// </summary>
+      /// <param name="part"><see cref="PartModel"/> to check against.</param>
+      /// <returns>True if <see cref="PartNumber"/> and <see cref="SupplierPartNumber"/> are equal.</returns>
+      public bool EqualsPartNumber(PartModel part)
+      {
          if (PartNumber == part.PartNumber)
          {
             return true;

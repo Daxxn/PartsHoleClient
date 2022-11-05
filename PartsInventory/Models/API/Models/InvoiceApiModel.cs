@@ -21,7 +21,8 @@ namespace PartsInventory.Models.API.Models
       public IEnumerable<string> Parts { get; set; }
       public string Path { get; set; }
       public decimal SubTotal { get; set; }
-      public SupplierType? SupplierType { get; set; }
+      public int? SupplierType { get; set; }
+      public bool IsAddedToParts { get; set; }
       #endregion
 
       #region Constructors
@@ -38,7 +39,8 @@ namespace PartsInventory.Models.API.Models
             PartIDs = Parts,
             Path = Path,
             SubTotal = SubTotal,
-            SupplierType = SupplierType,
+            SupplierType = (SupplierType)(SupplierType ?? 2),
+            IsAddedToParts = IsAddedToParts
          };
       }
 
@@ -50,8 +52,9 @@ namespace PartsInventory.Models.API.Models
             OrderNumber = model.OrderNumber,
             Path = model.Path,
             SubTotal = model.SubTotal,
-            SupplierType = model.SupplierType,
-            Parts = model.Parts.Select(x => x.Id),
+            SupplierType = (int?)model.SupplierType,
+            Parts = model.PartIDs,
+            IsAddedToParts = model.IsAddedToParts,
          };
       }
       #endregion

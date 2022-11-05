@@ -12,5 +12,6 @@ namespace PartsInventory.Models.Inventory
       string Path { get; set; }
       decimal SubTotal { get; set; }
       SupplierType? SupplierType { get; set; }
+      bool IsAddedToParts { get; set; }
    }
 }

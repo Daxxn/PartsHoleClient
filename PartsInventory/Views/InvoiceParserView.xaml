@@ -53,8 +53,9 @@
         <ListView
             Grid.Column="1"
             Grid.IsSharedSizeScope="True"
-            ItemsSource="{Binding Path=Invoices}"
-            SelectedItem="{Binding Path=SelectedInvoice}"
+            ItemsSource="{Binding Path=MainVM.User.Invoices}"
+			SelectionChanged="InvoiceView_SelectionChanged"
+			SelectionMode="Multiple"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
         >

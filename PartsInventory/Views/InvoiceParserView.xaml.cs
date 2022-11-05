@@ -1,4 +1,5 @@
-﻿using PartsInventory.ViewModels;
+﻿using PartsInventory.Models.Inventory.Main;
+using PartsInventory.ViewModels;
 
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,23 @@ public partial class InvoiceParserView : UserControl
       VM = vm;
       DataContext = VM;
       InitializeComponent();
+   }
+
+   private void InvoiceView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   {
+      if (sender is ListView lv)
+      {
+         if (lv.SelectedItems.Count > 0)
+         {
+            VM.SelectedInvoices = new();
+            foreach (var item in lv.SelectedItems)
+            {
+               if (item is InvoiceModel invoice)
+               {
+                  VM.SelectedInvoices.Add(invoice);
+               }
+            }
+         }
+      }
    }
 }

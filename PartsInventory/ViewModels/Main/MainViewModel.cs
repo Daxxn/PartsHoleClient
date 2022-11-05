@@ -22,7 +22,6 @@ namespace PartsInventory.ViewModels.Main
    public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
-      private readonly IInvoiceParserViewModel _invoiceParserVM;
       private readonly IProjectBOMViewModel _projectBOMVM;
       private readonly IPartNumberGeneratorViewModel _partNumGenVM;
       private readonly IPartNumberTemplateViewModel _partNumTempVM;
@@ -45,7 +44,6 @@ namespace PartsInventory.ViewModels.Main
 
       #region Constructors
       public MainViewModel(
-         IInvoiceParserViewModel parserVM,
          IProjectBOMViewModel bomVM,
          IPartNumberGeneratorViewModel partNumGenVM,
          IPartNumberTemplateViewModel partNumTempVM,
@@ -57,7 +55,6 @@ namespace PartsInventory.ViewModels.Main
          IUserModel user
          )
       {
-         _invoiceParserVM = parserVM;
          _projectBOMVM = bomVM;
          _partNumGenVM = partNumGenVM;
          _partNumTempVM = partNumTempVM;

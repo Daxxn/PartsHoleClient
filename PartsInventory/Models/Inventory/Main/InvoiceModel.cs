@@ -1,4 +1,7 @@
 ﻿using CSVParserLibrary.Models;
+
+using MongoDB.Bson;
+
 using MVVMLibrary;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Parsers.DigiKey;
@@ -19,6 +22,7 @@ namespace PartsInventory.Models.Inventory.Main
       private decimal _subTotal = 0;
       private ObservableCollection<PartModel> _parts = new();
       private SupplierType? _supplierType = null;
+      private bool _isAddedToParts = false;
       public IEnumerable<string> PartIDs { get; set; }
       #endregion
 
@@ -50,9 +54,18 @@ namespace PartsInventory.Models.Inventory.Main
          }
          return part;
       }
+
+      public static InvoiceModel Create()
+      {
+         return new InvoiceModel()
+         {
+            Id = ObjectId.GenerateNewId().ToString()
+         };
+      }
       #endregion
 
       #region Full Props
+
       public ObservableCollection<PartModel> Parts
       {
          get => _parts;
@@ -99,6 +112,16 @@ namespace PartsInventory.Models.Inventory.Main
          set
          {
             _subTotal = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public bool IsAddedToParts
+      {
+         get => _isAddedToParts;
+         set
+         {
+            _isAddedToParts = value;
             OnPropertyChanged();
          }
       }

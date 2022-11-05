@@ -26,6 +26,23 @@ namespace PartsInventory.Models.Inventory
       ObservableCollection<PartModel> Parts { get; set; }
       PassivesCollection Passives { get; set; }
 
+      /// <summary>
+      /// <para>OLD!!!</para>
+      /// Checks the all invoice parts against the main parts list.
+      /// </summary>
+      /// <param name="invoices"></param>
       void AddInvoices(IList<InvoiceModel> invoices);
+      /// <summary>
+      /// Checks the invoice parts against the main parts list.
+      /// </summary>
+      /// <param name="invoice"></param>
+      /// <returns>All parts with updated quantitys and Ids.</returns>
+      IEnumerable<PartModel>? AddInvoice(InvoiceModel invoice);
+
+      /// <summary>
+      /// Updates old parts and appends new parts.
+      /// </summary>
+      /// <param name="parts">updated parts</param>
+      void AddUpdatedParts(IEnumerable<PartModel> parts);
    }
 }

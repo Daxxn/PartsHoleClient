@@ -45,7 +45,7 @@ namespace PartsInventory.Models.Parsers.DigiKey
       public InvoiceModel Parse()
       {
          using StreamReader reader = new(FilePath);
-         InvoiceModel model = new();
+         InvoiceModel model = InvoiceModel.Create();
          GetOrderDetails(model, FilePath);
          Queue<string> lines = new();
          while (!reader.EndOfStream) lines.Enqueue(reader.ReadLine());
