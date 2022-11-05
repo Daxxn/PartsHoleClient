@@ -7,8 +7,10 @@
         xmlns:views="clr-namespace:PartsInventory.Views"
         mc:Ignorable="d"
         WindowState="Maximized"
+		Closing="Window_Closing"
+		Loaded="Window_Loaded"
         Icon="./Resources/PartsInventoryLogo.ico"
-        Title="Parts Inventory" Height="450" Width="800">
+        Title="Parts Hole" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

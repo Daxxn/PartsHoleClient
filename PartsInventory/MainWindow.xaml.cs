@@ -33,6 +33,9 @@ namespace PartsInventory
       private readonly IMainViewModel VM;
       private readonly IOptions<DirSettings> _dirSettings;
       private readonly IAPIController _api;
+      private readonly NewPartView _newPartView;
+      private readonly PartNumberTemplateDialog _partNumberTempDialog;
+      private readonly PartSearchDialog _searchDialog;
 
       public MainWindow(
          IMainViewModel mainVM,
@@ -43,16 +46,21 @@ namespace PartsInventory
          ProjectBOMView bomView,
          PartNumberGeneratorView pnView,
          PassivesView passView,
-         PackageView pkgView)
+         PackageView pkgView,
+         NewPartView newPartView,
+         PartNumberTemplateDialog partNumTempDialog,
+         PartSearchDialog searchDialog)
       {
          VM = mainVM;
          _dirSettings = dirSettings;
          _api = api;
+         _newPartView = newPartView;
+         _partNumberTempDialog = partNumTempDialog;
+         _searchDialog = searchDialog;
          DataContext = VM;
          InitializeComponent();
 
          Loaded += MainWindow_Loaded;
-         Closed += MainWindow_Closed;
 
          PartsViewTab.Content = partsView;
          InvoiceViewTab.Content = invoiceView;
@@ -65,11 +73,6 @@ namespace PartsInventory
       private async void GetPart_Click(object sender, RoutedEventArgs e)
       {
          var part = await _api.GetPart("6360180d1a792e2787223cff");
-      }
-
-      private void MainWindow_Closed(object? sender, EventArgs e)
-      {
-         VM.Save();
       }
 
       private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -85,6 +88,20 @@ namespace PartsInventory
       private void Saturn_Click(object sender, RoutedEventArgs e)
       {
          Process.Start(_dirSettings.Value.SaturnPCBExe);
+      }
+
+      private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+      {
+         _newPartView.Close();
+         _partNumberTempDialog.Close();
+         _searchDialog.Close();
+         await App.AppHost!.StopAsync();
+         VM.Save();
+      }
+
+      private void Window_Loaded(object sender, RoutedEventArgs e)
+      {
+         VM.GetUserTestAsync();
       }
    }
 }

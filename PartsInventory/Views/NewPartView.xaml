@@ -36,7 +36,7 @@
 			<TextBlock Grid.Row="3">Supplier Number</TextBlock>
 			<TextBox Grid.Row="4" Text="{Binding Path=NewPart.SupplierPartNumber}"/>
 
-			<TextBlock Grid.Row="5"> Number</TextBlock>
+			<TextBlock Grid.Row="5">My Number</TextBlock>
 			<TextBox Grid.Row="6" Text="{Binding Path=NewPart.Reference, Converter={StaticResource PartNumberConverter}}"/>
 		</Grid>
 

@@ -19,5 +19,7 @@ namespace PartsInventory.ViewModels
       void Save();
 
       Task<bool> AddPart(PartModel part);
+      Task RemovePart(PartModel part);
+      void GetUserTestAsync();
    }
 }

@@ -32,5 +32,9 @@
       "Main": 0,
       "Passives": 0
     }
+  },
+  "User": {
+    "AuthID": "",
+    "Id": ""
   }
 }

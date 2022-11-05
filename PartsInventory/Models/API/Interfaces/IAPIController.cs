@@ -34,6 +34,10 @@ namespace PartsInventory.Models.API
       /// <param name="user">Newly logged in user.</param>
       /// <returns>All <see cref="UserData"/>.</returns>
       Task<IUserData?> GetUserData(IUserModel user);
+
+      Task<bool> AddPartToUser(string userId, string partId);
+
+      Task<bool> AddInvoiceToUser(string userId, string invoiceId);
       #endregion
       #region Parts
       /// <summary>

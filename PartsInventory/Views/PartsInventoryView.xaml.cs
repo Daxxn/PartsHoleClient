@@ -113,6 +113,5 @@ public partial class PartsInventoryView : UserControl
    private void AddPart_Click(object sender, RoutedEventArgs e)
    {
       _newPartView.Show();
-
    }
 }

@@ -38,7 +38,7 @@ namespace PartsInventory.ViewModels.Main
       public async Task<bool> Submit()
       {
          if (NewPart is null) return false;
-         if (NewPart?.CheckPart() == true) return false;
+         if (NewPart?.CheckPart() == false) return false;
          var success = await _mainViewModel.AddPart(NewPart!);
          if (success)
             NewPart = PartModel.CreateNew();
@@ -56,7 +56,7 @@ namespace PartsInventory.ViewModels.Main
          {
             if (CSVLine is null) return;
             if (NewPart is null) return;
-            var split = CSVLine.Split("\n");
+            var split = CSVLine.Split("\r\n");
             if (split.Length < 3) return;
             NewPart.ParseRawProps(split);
          }

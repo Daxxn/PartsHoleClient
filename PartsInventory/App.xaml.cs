@@ -27,6 +27,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -71,13 +72,12 @@ namespace PartsInventory
 
          var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
          mainWindow.Show();
-         //MainViewModel.Instance.Open();
+
          DatasheetFinder.OnStartup();
          base.OnStartup(e);
       }
       protected override async void OnExit(ExitEventArgs e)
       {
-         //MainViewModel.Instance.Save();
          Settings.Default.Save();
          PathSettings.Default.Save();
          await AppHost!.StopAsync();
@@ -86,17 +86,22 @@ namespace PartsInventory
 
       private static void ConnectViewSevices(IServiceCollection services)
       {
+         // Main Window
          services.AddSingleton<MainWindow>();
+
+         // Main Window Child Views
          services.AddSingleton<PassivesView>();
          services.AddSingleton<InvoiceParserView>();
          services.AddSingleton<PackageView>();
          services.AddSingleton<PartNumberGeneratorView>();
          services.AddSingleton<PartsInventoryView>();
          services.AddSingleton<ProjectBOMView>();
-         services.AddTransient<PartNumberTemplateDialog>();
-         services.AddTransient<PartSearchDialog>();
-         services.AddTransient<PassiveBookDialog>();
-         services.AddTransient<NewPartView>();
+
+         // Dialog Windows
+         services.AddSingleton<PartNumberTemplateDialog>();
+         services.AddSingleton<PartSearchDialog>();
+         services.AddSingleton<PassiveBookDialog>();
+         services.AddSingleton<NewPartView>();
       }
 
       private static void ConnectViewModelServices(IServiceCollection services)

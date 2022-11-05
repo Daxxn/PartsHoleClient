@@ -25,7 +25,6 @@ namespace PartsInventory.ViewModels.Main
       private string? _selectedBinName = null;
 
       #region commands
-      public Command AddPartCmd { get; init; }
       public Command RemovePartCmd { get; init; }
       #endregion
       #endregion
@@ -34,7 +33,6 @@ namespace PartsInventory.ViewModels.Main
       public PartsInventoryViewModel(IMainViewModel mainViewModel)
       {
          _mainViewModel = mainViewModel;
-         AddPartCmd = new(AddPart);
          RemovePartCmd = new(RemovePart);
       }
       #endregion
@@ -50,22 +48,22 @@ namespace PartsInventory.ViewModels.Main
          OpenDatasheetEvent?.Invoke(sender, part);
       }
 
-      private void AddPart()
+      private async void RemovePart()
       {
          if (MainVM.User is null)
             return;
-         MainVM.User.Parts.Add(new());
-      }
-
-      private void RemovePart()
-      {
-         if (MainVM.User is null || SelectedParts is null)
+         if (SelectedParts is null)
             return;
+         if (SelectedParts.Count != 1)
+            return;
+         await MainVM.RemovePart(SelectedParts[0]);
+         //if (MainVM.User is null || SelectedParts is null)
+         //   return;
 
-         foreach (var part in SelectedParts)
-         {
-            MainVM.User.Parts.Remove(part as PartModel);
-         }
+         //foreach (var part in SelectedParts)
+         //{
+         //   MainVM.User.Parts.Remove(part as PartModel);
+         //}
       }
       #endregion
 

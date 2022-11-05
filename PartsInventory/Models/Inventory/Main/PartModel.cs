@@ -49,6 +49,11 @@ namespace PartsInventory.Models.Inventory.Main
       {
          for (int i = 0; i < lines.Length; i++)
          {
+            if (string.IsNullOrEmpty(lines[i])) continue;
+            if (lines[i][0] == '{')
+            {
+               if (lines[i] == "{NA}") continue;
+            }
             switch (i)
             {
                case 0:

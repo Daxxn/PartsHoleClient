@@ -1,28 +1,19 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 
 using Microsoft.Extensions.Options;
 
-using PartsInventory.Models.API.Interfaces;
+using PartsHoleRestLibrary.Requests;
+
 using PartsInventory.Models.API.Models;
-using PartsInventory.Models.API.RequestModels;
-using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
-using Newtonsoft.Json;
+
 using RestSharp;
-using System.Windows.Shapes;
 
 namespace PartsInventory.Models.API
 {
@@ -95,7 +86,7 @@ namespace PartsInventory.Models.API
          catch (Exception e)
          {
             MessageBox.Show(e.Message, "GET Error");
-            throw;
+            return null;
          }
       }
 
@@ -104,6 +95,36 @@ namespace PartsInventory.Models.API
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/data", Method.Post)
             .AddJsonBody(UserApiModel.FromModel(user));
          return await Client.PostAsync<UserData>(request);
+      }
+
+      public async Task<bool> AddPartToUser(string userId, string partId)
+      {
+         var data = new AppendRequestModel(){ UserId = userId, ModelId = partId};
+         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-part", Method.Post)
+            .AddJsonBody(data);
+         var response = await Client.PostAsync<APIResponse<bool>>(request);
+         if (response == null) return false;
+         if (response.Body == false)
+         {
+            MessageBox.Show(response.Message);
+            return false;
+         }
+         return true;
+      }
+
+      public async Task<bool> AddInvoiceToUser(string userId, string invoiceId)
+      {
+         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-part/{userId}", Method.Post)
+            .AddBody(invoiceId);
+         var response = await Client.PostAsync<APIResponse<bool>>(request);
+         if (response == null)
+            return false;
+         if (response.Body == false)
+         {
+            MessageBox.Show(response.Message);
+            return false;
+         }
+         return true;
       }
       #endregion
 
@@ -121,13 +142,14 @@ namespace PartsInventory.Models.API
             return null;
          }
       }
-      
+
       public async Task<IEnumerable<PartModel>?> GetParts(string[] ids)
       {
          try
          {
+            var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many")
-               .AddJsonBody(ids);
+               .AddJsonBody(idList);
             var data = await Client.PostAsync<IEnumerable<PartApiModel>>(request);
             return data?.Select(x => x.ToModel());
          }
@@ -137,14 +159,22 @@ namespace PartsInventory.Models.API
             return null;
          }
       }
-      
+
       public async Task<bool> CreatePart(PartModel part)
       {
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Post)
                .AddJsonBody(PartApiModel.FromModel(part));
-            return await Client.PostAsync<bool>(request);
+            var response = await Client.PostAsync<APIResponse<bool>>(request);
+            if (response == null)
+               return false;
+            if (response.Body == false)
+            {
+               MessageBox.Show(response.Message);
+               return false;
+            }
+            return true;
          }
          catch (Exception e)
          {
@@ -152,20 +182,20 @@ namespace PartsInventory.Models.API
             return false;
          }
       }
-      
+
       public async Task<IEnumerable<PartModel>?> CreateParts(IEnumerable<PartModel> parts)
       {
          try
          {
-            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Post)
+            var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many", Method.Post)
                .AddJsonBody(parts.Select(x => PartApiModel.FromModel(x)));
-            var response = await Client.PostAsync<IEnumerable<bool>>(request);
-            if (response?.Any(x => x == false) == true)
+            var response = await Client.PostAsync<APIResponse<IEnumerable<bool>>>(request);
+            if (response?.Body?.Any(x => x == false) == true)
             {
                var partData = parts.ToList();
                var failedParts = new List<PartModel>();
-               var data = response.ToList();
-               for (int i = 0; i < data.Count; i++)
+               var data = response?.Body.ToList();
+               for (int i = 0; i < data?.Count; i++)
                {
                   if (data[i])
                      failedParts.Add(partData[i]);
@@ -180,14 +210,22 @@ namespace PartsInventory.Models.API
             return null;
          }
       }
-      
+
       public async Task<bool> UpdatePart(PartModel part)
       {
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Put)
                .AddJsonBody(PartApiModel.FromModel(part));
-            return await Client.PutAsync<bool>(request);
+            var response = await Client.PutAsync<APIResponse<bool>>(request);
+            if (response == null)
+               return false;
+            if (response.Body == false)
+            {
+               MessageBox.Show(response.Message);
+               return false;
+            }
+            return true;
          }
          catch (Exception e)
          {
@@ -195,13 +233,21 @@ namespace PartsInventory.Models.API
             return false;
          }
       }
-      
+
       public async Task<bool> DeletePart(string id)
       {
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/{id}", Method.Delete);
-            return await Client.DeleteAsync<bool>(request);
+            var response = await Client.DeleteAsync<APIResponse<bool>>(request);
+            if (response == null)
+               return false;
+            if (response.Body == false)
+            {
+               MessageBox.Show(response.Message);
+               return false;
+            }
+            return true;
          }
          catch (Exception e)
          {
@@ -209,14 +255,23 @@ namespace PartsInventory.Models.API
             return false;
          }
       }
-      
+
       public async Task<int> DeleteParts(string[] ids)
       {
          try
          {
+            var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Delete)
-               .AddJsonBody(ids);
-            return await Client.DeleteAsync<int>(request);
+               .AddJsonBody(idList);
+            var response = await Client.DeleteAsync<APIResponse<int>>(request);
+            if (response == null)
+               return 0;
+            if (response.Body == 0)
+            {
+               MessageBox.Show(response.Message);
+               return 0;
+            }
+            return response.Body;
          }
          catch (Exception e)
          {
@@ -245,7 +300,9 @@ namespace PartsInventory.Models.API
       {
          try
          {
-            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/many").AddJsonBody(ids);
+            var idList = new IdListRequestModel(ids);
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/many")
+               .AddJsonBody(idList);
             var data = await Client.PostAsync<IEnumerable<InvoiceApiModel>>(request);
             return data?.Select((d) => d.ToModel());
          }
@@ -332,8 +389,9 @@ namespace PartsInventory.Models.API
       {
          try
          {
+            var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Delete)
-               .AddJsonBody(ids);
+               .AddJsonBody(idList);
             return await Client.DeleteAsync<int>(request);
          }
          catch (Exception e)
@@ -363,8 +421,9 @@ namespace PartsInventory.Models.API
       {
          try
          {
-            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/many")
-               .AddJsonBody(ids);
+            var data = new IdListRequestModel(ids);
+            var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/many", Method.Post)
+               .AddJsonBody(data);
             return await Client.PostAsync<IEnumerable<BinModel>>(request);
             //return data?.Select(x => x.ToModel());
          }
@@ -451,8 +510,9 @@ namespace PartsInventory.Models.API
       {
          try
          {
+            var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Delete)
-               .AddJsonBody(ids);
+               .AddJsonBody(idList);
             return await Client.DeleteAsync<int>(request);
          }
          catch (Exception e)

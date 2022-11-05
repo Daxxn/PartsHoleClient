@@ -34,7 +34,6 @@ namespace PartsInventory.ViewModels.Main
       private IUserModel _user;
 
       #region Events
-      public static EventHandler<UserModel> PartsChangedEvent;
       #endregion
 
       #region Commands
@@ -68,15 +67,11 @@ namespace PartsInventory.ViewModels.Main
          _apiSettings = apiSettings;
          _apiController = apiController;
          _user = user;
+
          SaveCmd = new(Save);
          OpenCmd = new(Open);
 
          GetUserTestAsyncCmd = new Command(GetUserTestAsync);
-
-         //PartsChangedEvent += _projectBOMVM.PartsChanged_Main;
-         //PartsChangedEvent += _partsInventoryVM.PartsChanged_Main;
-         //PartsChangedEvent += _partNumGenVM.PartsChanged_Main;
-         //PartsChangedEvent += _passivesVM.PartsChanged_Main;
 
          //_partsInventoryVM.SelectedPartsChanged += _partNumGenVM.SelectedPartsChanged_Inv;
          //_partsInventoryVM.SelectedPartsChanged += _passivesVM.SelectedPartsChanged_Inv;
@@ -136,12 +131,22 @@ namespace PartsInventory.ViewModels.Main
          var success = await _apiController.CreatePart(part);
          if (success)
          {
+            await _apiController.AddPartToUser(User.Id, part.Id);
             User.Parts.Add(part);
          }
          return success;
       }
 
-      private async void GetUserTestAsync()
+      public async Task RemovePart(PartModel part)
+      {
+         var success = await _apiController.DeletePart(part.Id);
+         if (success)
+         {
+            User.Parts.Remove(part);
+         }
+      }
+
+      public async void GetUserTestAsync()
       {
          // Try to get Auth0 token...
          // For now, just using the dev user.
@@ -166,15 +171,6 @@ namespace PartsInventory.ViewModels.Main
             return;
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
          User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
-
-         //_partsInventoryVM.PartsCollection = await _apiController.GetUser(devUser);
-         //if (_partsInventoryVM.PartsCollection is null)
-         //   return;
-         //var data = await _apiController.GetUserData(_partsInventoryVM.PartsCollection);
-         //if (data is null)
-         //   return;
-         //_partsInventoryVM.PartsCollection.Parts = data.Parts != null ? new(data.ToParts()!) : new();
-         //_partsInventoryVM.PartsCollection.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
       }
       #endregion
 
