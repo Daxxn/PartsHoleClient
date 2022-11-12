@@ -10,7 +10,7 @@ namespace PartsInventory.Models.API
       IEnumerable<InvoiceApiModel>? Invoices { get; set; }
       IEnumerable<PartApiModel>? Parts { get; set; }
 
-      IEnumerable<InvoiceModel>? ToInvoices();
+      IEnumerable<InvoiceModel>? ToInvoices(IEnumerable<PartModel> parts);
       IEnumerable<PartModel>? ToParts();
    }
 }

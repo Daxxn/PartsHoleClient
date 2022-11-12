@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
@@ -13,7 +16,9 @@ namespace PartsInventory.Models.API.Models
    public class UserApiModel : IApiConverter<IUserModel>
    {
       #region Local Props
-      public string Id { get; set; } = null!;
+      [BsonId]
+      [BsonRepresentation(BsonType.ObjectId)]
+      public string _id { get; set; } = null!;
       public string UserName { get; set; } = null!;
       public string AuthID { get; set; } = null!;
       public string? Email { get; set; }
@@ -30,7 +35,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new UserModel()
          {
-            Id = new(Id),
+            Id = _id,
             InvoiceIDs = Invoices,
             PartIDs = Parts,
             AuthID = AuthID,
@@ -43,7 +48,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new UserApiModel()
          {
-            Id = model.Id,
+            _id = model.Id,
             UserName = model.UserName,
             Email = model.Email,
             AuthID = model.AuthID,
@@ -51,10 +56,6 @@ namespace PartsInventory.Models.API.Models
             Parts = model.PartIDs,
          };
       }
-      #endregion
-
-      #region Full Props
-
       #endregion
    }
 }

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
@@ -13,7 +16,7 @@ namespace PartsInventory.Models.API.Models
    public class PartApiModel : IApiConverter<PartModel>
    {
       #region Local Props
-      public string Id { get; set; } = null!;
+      public string _id { get; set; } = null!;
       public string SupplierPartNumber { get; set; } = null!;
       public string PartNumber { get; set; } = null!;
       public string? Description { get; set; }
@@ -40,7 +43,7 @@ namespace PartsInventory.Models.API.Models
          var datasheet = new Datasheet(Datasheet);
          return new PartModel()
          {
-            Id = Id,
+            Id = _id,
             AllocatedQty = AllocatedQty,
             Backorder = Backorder,
             UnitPrice = UnitPrice,
@@ -59,7 +62,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new()
          {
-            Id = model.Id,
+            _id = model.Id,
             AllocatedQty = model.AllocatedQty,
             Backorder = model.Backorder,
             UnitPrice = model.UnitPrice,

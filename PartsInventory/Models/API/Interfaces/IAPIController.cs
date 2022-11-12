@@ -38,6 +38,8 @@ namespace PartsInventory.Models.API
       Task<bool> AddPartToUser(string userId, string partId);
 
       Task<bool> AddInvoiceToUser(string userId, string invoiceId);
+
+      Task<bool> UpdateUser(IUserModel user);
       #endregion
       #region Parts
       /// <summary>

@@ -15,7 +15,6 @@ public class UserData : IUserData
    #region Local Props
    public IEnumerable<PartApiModel>? Parts { get; set; } = null!;
    public IEnumerable<InvoiceApiModel>? Invoices { get; set; } = null!;
-   public string? Id { get; set; } = null;
    #endregion
 
    #region Constructors
@@ -26,9 +25,22 @@ public class UserData : IUserData
       return Parts?.Select(x => x.ToModel());
    }
 
-   public IEnumerable<InvoiceModel>? ToInvoices()
+   public IEnumerable<InvoiceModel>? ToInvoices(IEnumerable<PartModel> parts)
    {
-      return Invoices?.Select(x => x.ToModel());
+      //var invoices = Invoices?.Select(x => x.ToModel());
+      var invoices = new List<InvoiceModel>();
+      if (Invoices is null)
+         return null;
+      foreach (var i in Invoices)
+      {
+         invoices.Add(i.ToModel());
+      }
+      foreach (var inv in invoices)
+      {
+         var foundParts = parts.Where(p => inv.PartIDs.Contains(p.Id));
+         inv.Parts = new(foundParts);
+      }
+      return invoices;
    }
    #endregion
 

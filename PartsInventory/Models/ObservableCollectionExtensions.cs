@@ -24,8 +24,6 @@ namespace PartsInventory.Models
 
       public static void MergeAdd<T>(this ObservableCollection<T> list, Func<T, T, bool> predicate, IEnumerable<T> changedList)
       {
-         var add = new List<T>();
-
          foreach (var item in changedList)
          {
             int index = 0;
@@ -34,6 +32,7 @@ namespace PartsInventory.Models
                if (predicate(item, list[i]))
                {
                   index = i;
+                  break;
                }
             }
             if (index != 0)

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Enums;
@@ -16,10 +17,10 @@ namespace PartsInventory.Models.API.Models
    public class InvoiceApiModel : IApiConverter<InvoiceModel>
    {
       #region Local Props
-      public string Id { get; set; }
+      public string _id { get; set; } = null!;
       public uint OrderNumber { get; set; }
-      public IEnumerable<string> Parts { get; set; }
-      public string Path { get; set; }
+      public IEnumerable<string> Parts { get; set; } = null!;
+      public string Path { get; set; } = null!;
       public decimal SubTotal { get; set; }
       public int? SupplierType { get; set; }
       public bool IsAddedToParts { get; set; }
@@ -34,7 +35,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new()
          {
-            Id = Id,
+            Id = _id,
             OrderNumber = OrderNumber,
             PartIDs = Parts,
             Path = Path,
@@ -48,7 +49,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new()
          {
-            Id = model.Id,
+            _id = model.Id,
             OrderNumber = model.OrderNumber,
             Path = model.Path,
             SubTotal = model.SubTotal,

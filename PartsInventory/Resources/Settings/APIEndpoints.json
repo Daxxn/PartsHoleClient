@@ -1,6 +1,6 @@
 {
   "API": {
-    "Port": 49155,
+    "Port": 49153,
     "BaseUrl": "https://localhost:{Port}/api/",
     "UserEndpoint": "User",
     "PartsEndpoint": "Parts",

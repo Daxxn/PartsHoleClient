@@ -72,6 +72,12 @@ namespace PartsInventory.Models.Inventory.Main
       {
          Parts.MergeAdd((a, b) => a.Id == b.Id, parts);
       }
+
+      public void SyncIDs()
+      {
+         PartIDs = Parts.Select(p => p.Id);
+         InvoiceIDs = Invoices.Select(p => p.Id);
+      }
       #endregion
 
       #region Full Props

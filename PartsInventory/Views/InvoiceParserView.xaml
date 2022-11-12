@@ -79,16 +79,16 @@
                             <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=SupplierType}"/>
                             <Expander Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Header="Parts">
                                 <DataGrid
-                                    ItemsSource="{Binding Path=Parts, Mode=OneWay}"
+                                    ItemsSource="{Binding Path=Parts}"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Stretch"
                                     CanUserAddRows="False"
                                     CanUserDeleteRows="False"
                                     AutoGenerateColumns="False"
                                 >
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Qty" MinWidth="30" FontSize="16" Binding="{Binding Path=Quantity}"/>
-                                        <DataGridTextColumn Header="MFG Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
+									<DataGrid.Columns>
+										<DataGridTextColumn Header="Qty" MinWidth="30" FontSize="16" Binding="{Binding Path=Quantity}"/>
+										<DataGridTextColumn Header="MFG Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
                                         <DataGridTextColumn Header="My Part #" MinWidth="120" Binding="{Binding Path=Reference}"/>
                                         <DataGridTextColumn Header="Supplier Part #" MinWidth="120" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
                                         <DataGridTextColumn Header="Description" MinWidth="250" Width="Auto" Binding="{Binding Path=Description, Mode=OneWay}"/>

@@ -149,25 +149,28 @@ namespace PartsInventory.ViewModels.Main
             // Adds all the parts from the invoice to the parts inventory,
             var foundParts = MainVM.User.AddInvoice(invoice);
             if (foundParts is null)
-               return;
+               continue;
             invoice.PartIDs = foundParts.Select(x => x.Id);
             // then updates the server with the new/updated parts.
             if (await AddInvoice(invoice))
             {
                MainVM.User.AddUpdatedParts(invoice.Parts);
+               await _apiController.UpdateUser(MainVM.User);
             }
          }
       }
 
       private async Task<bool> AddInvoice(InvoiceModel invoice)
       {
+         invoice.IsAddedToParts = true;
          if (await _apiController.UpdateInvoice(invoice))
          {
-            MainVM.User.Invoices.Add(invoice);
-            InvoicesAdded = false;
-
             var updatedParts = await _apiController.UpdateParts(invoice.Parts);
-            return updatedParts?.All(x => x == true) == true;
+            if (updatedParts?.All(x => x == true) == true)
+            {
+               invoice.IsAddedToParts = true;
+               return true;
+            }
          }
          return false;
       }

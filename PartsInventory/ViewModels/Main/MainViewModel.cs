@@ -167,7 +167,7 @@ namespace PartsInventory.ViewModels.Main
          if (data is null)
             return;
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
-         User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
+         User.Invoices = data.Invoices != null ? new(data.ToInvoices(User.Parts)!) : new();
       }
       #endregion
 
