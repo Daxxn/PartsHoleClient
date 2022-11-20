@@ -14,7 +14,7 @@ namespace PartsInventory.ViewModels
       double MonitorSize { get; set; }
       Command OpenCmd { get; init; }
       Command SaveCmd { get; init; }
-
+      Command SendFileTestCmd { get; init; }
       void Open();
       void Save();
 

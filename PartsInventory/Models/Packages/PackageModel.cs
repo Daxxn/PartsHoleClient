@@ -1,4 +1,5 @@
 ﻿using MVVMLibrary;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace PartsInventory.Models.Packages
 
       #region Constructors
       public PackageModel() { }
+      public PackageModel(string data)
+      {
+         ParseData(data);
+      }
       #endregion
 
       #region Methods
@@ -54,9 +59,35 @@ namespace PartsInventory.Models.Packages
          };
       }
 
+      public void ParseData(string data)
+      {
+         var split = data.Split(':');
+         if (split.Length == 2)
+         {
+            if (split[1].Contains('_'))
+            {
+               var nameSplit = split[1].Split('_', StringSplitOptions.RemoveEmptyEntries);
+               if (nameSplit.Length > 1)
+               {
+                  SubLibrary = split[0];
+                  Name = nameSplit[0];
+                  Dims = string.Join(' ', nameSplit[1..]);
+                  return;
+               }
+            }
+            else
+            {
+               SubLibrary = split[0];
+               Name = split[1];
+               return;
+            }
+         }
+         Name = data;
+      }
+
       public override string ToString()
       {
-         return $"{Name}";
+         return $"{Name} {SubLibrary} {PinCount} {Dims}";
       }
       #endregion
 

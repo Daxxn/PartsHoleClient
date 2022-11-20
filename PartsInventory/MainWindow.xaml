@@ -9,7 +9,7 @@
         WindowState="Maximized"
 		Closing="Window_Closing"
 		Loaded="Window_Loaded"
-        Icon="./Resources/PartsInventoryLogo.ico"
+        Icon="./Resources/FlippedDieIcon.png"
         Title="Parts Hole" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -47,6 +47,7 @@
 			<MenuItem Header="API Testing">
 				<MenuItem Header="Part" Click="GetPart_Click"/>
 				<MenuItem Header="Get User" Command="{Binding Path=GetUserTestAsyncCmd}"/>
+				<MenuItem Header="Send File Test" Command="{Binding Path=SendFileTestCmd}"/>
 			</MenuItem>
         </Menu>
 

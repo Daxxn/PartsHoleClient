@@ -77,13 +77,13 @@
                             CanUserDeleteRows="False"
                         >
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="REF" Binding="{Binding Path=ReferenceDesignator}"/>
-                                <DataGridTextColumn Header="Value" Binding="{Binding Path=Value.Display}"/>
-                                <DataGridTextColumn Header="Package" Binding="{Binding Path=Package.Name}"/>
+                                <DataGridTextColumn Header="REF" Binding="{Binding Path=ReferenceDesignator, Mode=OneWay}"/>
+								<DataGridTextColumn Header="Value" Binding="{Binding Path=Value.Display, Mode=OneWay}"/>
+								<DataGridTextColumn Header="Package" Binding="{Binding Path=Package, Mode=OneWay}"/>
                                 <DataGridTemplateColumn Header="Datasheet">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Click="Datasheet_Click" Content="{Binding Path=Datasheet.Display}">
+											<Button Click="Datasheet_Click" Content="{Binding Path=Datasheet.Display, Mode=OneWay}">
                                                 <Button.Style>
                                                     <Style TargetType="Button">
                                                         <Setter Property="Visibility" Value="Hidden"/>
@@ -99,13 +99,13 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding Path=Path, Converter={StaticResource StringURIConverter}}"/>
+											<TextBox Text="{Binding Path=Path, Mode=OneWay, Converter={StaticResource StringURIConverter}}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Library" Binding="{Binding Path=Library}"/>
-                                <DataGridTextColumn Header="Type" Binding="{Binding Path=Type}"/>
-                                <DataGridTextColumn Header="Part Number" Binding="{Binding Path=Reference}"/>
+								<DataGridTextColumn Header="Library" Binding="{Binding Path=Library, Mode=OneWay}"/>
+								<DataGridTextColumn Header="Type" Binding="{Binding Path=Type, Mode=OneWay}"/>
+								<DataGridTextColumn Header="Part Number" Binding="{Binding Path=Reference, Mode=OneWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

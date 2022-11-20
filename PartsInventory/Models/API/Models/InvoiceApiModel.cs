@@ -19,7 +19,7 @@ namespace PartsInventory.Models.API.Models
       #region Local Props
       public string _id { get; set; } = null!;
       public uint OrderNumber { get; set; }
-      public IEnumerable<string> Parts { get; set; } = null!;
+      public IEnumerable<DigiKeyPartModel> Parts { get; set; } = null!;
       public string Path { get; set; } = null!;
       public decimal SubTotal { get; set; }
       public int? SupplierType { get; set; }
@@ -37,7 +37,7 @@ namespace PartsInventory.Models.API.Models
          {
             Id = _id,
             OrderNumber = OrderNumber,
-            PartIDs = Parts,
+            Parts = new(Parts),
             Path = Path,
             SubTotal = SubTotal,
             SupplierType = (SupplierType)(SupplierType ?? 2),
@@ -54,7 +54,7 @@ namespace PartsInventory.Models.API.Models
             Path = model.Path,
             SubTotal = model.SubTotal,
             SupplierType = (int?)model.SupplierType,
-            Parts = model.PartIDs,
+            Parts = model.Parts,
             IsAddedToParts = model.IsAddedToParts,
          };
       }

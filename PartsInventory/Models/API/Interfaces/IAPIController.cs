@@ -212,6 +212,12 @@ namespace PartsInventory.Models.API
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="InvoiceModel"/>s deleted.</returns>
       Task<int> DeleteInvoices(IEnumerable<string> ids);
+      /// <summary>
+      /// Sends a DigiKey invoice file to the API to have a new invoice created.
+      /// </summary>
+      /// <param name="filePath">Path to the invoice file.</param>
+      /// <returns>New <see cref="InvoiceModel"/> created by the API.</returns>
+      Task<InvoiceModel> ParseInvoiceFile(string filePath);
       #endregion
       #region Bins
       /// <summary>
@@ -292,6 +298,10 @@ namespace PartsInventory.Models.API
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="BinModel"/>s deleted.</returns>
       Task<int> DeleteBins(IEnumerable<string> ids);
+      #endregion
+
+      #region Testing
+      InvoiceModel? ParseFileTest(string path);
       #endregion
       #endregion
    }

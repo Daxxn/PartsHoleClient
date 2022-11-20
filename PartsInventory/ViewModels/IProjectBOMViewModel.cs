@@ -10,7 +10,7 @@ namespace PartsInventory.ViewModels
 {
    public interface IProjectBOMViewModel
    {
-      IUserModel User { get; }
+      IMainViewModel MainVM { get; }
       int CurrentTab { get; set; }
       ProjectModel? Project { get; set; }
       Command AllocateCmd { get; init; }

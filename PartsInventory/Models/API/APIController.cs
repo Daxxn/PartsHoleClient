@@ -123,11 +123,14 @@ namespace PartsInventory.Models.API
       public async Task<bool> AddInvoiceToUser(string userId, string invoiceId)
       {
          var data = new AppendRequestModel(){ UserId = userId, ModelId = invoiceId};
-         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-invoice/{userId}", Method.Post)
+         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-invoice", Method.Post)
             .AddJsonBody(data);
          var response = await Client.PostAsync<APIResponse<bool>>(request);
          if (response == null)
+         {
+            MessageBox.Show("Response was null.");
             return false;
+         }
          if (response.Body == false)
          {
             MessageBox.Show(response.Message);
@@ -443,6 +446,22 @@ namespace PartsInventory.Models.API
             return 0;
          }
       }
+
+      public async Task<InvoiceModel> ParseInvoiceFile(string path)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/files/single", Method.Post)
+            .AddFile("file", path, "text/csv");
+            var newInvoice = (await Client.PostAsync<InvoiceApiModel>(request))?.ToModel();
+            return newInvoice ?? throw new Exception("Response from API did not contain an invoice.");
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "File Parse Error");
+            throw;
+         }
+      }
       #endregion
 
       #region Bins
@@ -563,6 +582,15 @@ namespace PartsInventory.Models.API
             MessageBox.Show(e.Message, "DELETE Error");
             return 0;
          }
+      }
+      #endregion
+
+      #region Testing
+      public InvoiceModel? ParseFileTest(string path)
+      {
+         var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/files/test", Method.Post)
+            .AddFile("file", path, "text/csv");
+         return Client.Post<InvoiceApiModel>(request)?.ToModel();
       }
       #endregion
 

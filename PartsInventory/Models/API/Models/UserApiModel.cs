@@ -22,8 +22,8 @@ namespace PartsInventory.Models.API.Models
       public string UserName { get; set; } = null!;
       public string AuthID { get; set; } = null!;
       public string? Email { get; set; }
-      public IEnumerable<string> Invoices { get; set; } = null!;
-      public IEnumerable<string> Parts { get; set; } = null!;
+      public List<string> Invoices { get; set; } = null!;
+      public List<string> Parts { get; set; } = null!;
       #endregion
 
       #region Constructors

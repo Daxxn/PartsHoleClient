@@ -1,6 +1,7 @@
 ﻿using JsonReaderLibrary;
 
 using Microsoft.Extensions.Options;
+using Microsoft.Win32;
 
 using MVVMLibrary;
 
@@ -22,7 +23,6 @@ namespace PartsInventory.ViewModels.Main
    public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
-      private readonly IProjectBOMViewModel _projectBOMVM;
       private readonly IPartNumberGeneratorViewModel _partNumGenVM;
       private readonly IPartNumberTemplateViewModel _partNumTempVM;
       private readonly IPassivesViewModel _passivesVM;
@@ -39,12 +39,12 @@ namespace PartsInventory.ViewModels.Main
       public Command SaveCmd { get; init; }
       public Command OpenCmd { get; init; }
       public Command GetUserTestAsyncCmd { get; init; }
+      public Command SendFileTestCmd { get; init; }
       #endregion
       #endregion
 
       #region Constructors
       public MainViewModel(
-         IProjectBOMViewModel bomVM,
          IPartNumberGeneratorViewModel partNumGenVM,
          IPartNumberTemplateViewModel partNumTempVM,
          IPassivesViewModel passivesVM,
@@ -55,7 +55,6 @@ namespace PartsInventory.ViewModels.Main
          IUserModel user
          )
       {
-         _projectBOMVM = bomVM;
          _partNumGenVM = partNumGenVM;
          _partNumTempVM = partNumTempVM;
          _passivesVM = passivesVM;
@@ -67,6 +66,7 @@ namespace PartsInventory.ViewModels.Main
 
          SaveCmd = new(Save);
          OpenCmd = new(Open);
+         SendFileTestCmd = new(SendFileTest);
 
          GetUserTestAsyncCmd = new Command(GetUserTestAsync);
 
@@ -79,6 +79,29 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Methods
+      private void SendFileTest()
+      {
+         try
+         {
+            OpenFileDialog dialog = new()
+            {
+               CheckFileExists= true,
+               DefaultExt = ".csv",
+               Filter = "*.csv|CSV File|*.*|All Files"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+               var newInvoice = _apiController.ParseFileTest(dialog.FileName);
+               MessageBox.Show(newInvoice?.ToString() ?? "Nothing returned", "Response:");
+            }
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "Error");
+         }
+      }
+
       public void Save()
       {
          try
@@ -89,8 +112,6 @@ namespace PartsInventory.ViewModels.Main
             //{
             //   JsonReader.SaveJsonFile(partsSavePath, _partsInventoryVM.PartsCollection, true);
             //}
-
-
          }
          catch (Exception e)
          {
@@ -167,7 +188,7 @@ namespace PartsInventory.ViewModels.Main
          if (data is null)
             return;
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
-         User.Invoices = data.Invoices != null ? new(data.ToInvoices(User.Parts)!) : new();
+         User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
       }
       #endregion
 

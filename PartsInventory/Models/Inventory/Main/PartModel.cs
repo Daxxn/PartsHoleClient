@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using CSVParserLibrary.Models;
+
+using MongoDB.Bson;
 
 using MVVMLibrary;
 
@@ -274,6 +276,7 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
+      [CSVProperty("PartNumber")]
       public PartNumber? Reference
       {
          get => _reference;
@@ -339,6 +342,7 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
+      [CSVProperty("Datasheet")]
       public Datasheet? Datasheet
       {
          get => _datasheet;

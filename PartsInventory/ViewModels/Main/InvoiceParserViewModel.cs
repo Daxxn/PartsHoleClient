@@ -6,8 +6,6 @@ using PartsInventory.Models.API;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
-using PartsInventory.Models.Parsers.DigiKey;
-using PartsInventory.Models.Parsers.Mouser;
 using PartsInventory.Resources.Settings;
 
 using System;
@@ -99,15 +97,33 @@ namespace PartsInventory.ViewModels.Main
 
          if (MainVM.User.Invoices.Count > 0 && SelectedInvoices is null)
          {
-            SelectedInvoices = new();
-            SelectedInvoices.Add(MainVM.User.Invoices[0]);
+            SelectedInvoices = new()
+            {
+               MainVM.User.Invoices[0]
+            };
          }
       }
-      private void ParseTest()
+      private async void ParseTest()
       {
-         DigiKeyParser parser = new(@"C:\Users\Daxxn\Documents\Electrical\PartInvoices\DigiKey\67927544.csv");
-         SelectedInvoices ??= new();
-         SelectedInvoices.Add(parser.Parse());
+         OpenFileDialog dialog = new()
+         {
+            InitialDirectory = PathSettings.Default.DigiKeyDir,
+            Multiselect = false,
+            CheckFileExists = true,
+            Title = "Select Invoice (.csv)",
+            Filter = "Invoice|*.csv|All Files|*.*"
+         };
+         if (dialog.ShowDialog() == true)
+         {
+            var invoice = _apiController.ParseFileTest(dialog.FileName);
+            if (invoice is null)
+               return;
+            if (await _apiController.AddInvoiceToUser(MainVM.User.Id, invoice.Id))
+            {
+               MainVM.User.Invoices.Add(invoice);
+               MainVM.User.InvoiceIDs.Add(invoice.Id);
+            }
+         }
       }
 
       private void ParseInvoices(string[] paths)
@@ -122,57 +138,61 @@ namespace PartsInventory.ViewModels.Main
                   var ext = Path.GetExtension(path);
                   if (ext == ".csv")
                   {
-                     DigiKeyParser parser = new(path);
-                     MainVM.User.Invoices.Add(parser.Parse());
-                     InvoicesAdded = false;
+                     _apiController.ParseFileTest(path);
+                     //DigiKeyParser parser = new(path);
+
+                     //MainVM.User.Invoices.Add(parser.Parse());
+                     //InvoicesAdded = false;
                   }
                   // Not working. Switching over to EXCEL parser.
                   else if (ext == ".xls")
                   {
-                     MouserParser parser = new(path);
-                     MainVM.User.Invoices.Add(parser.Parse());
-                     InvoicesAdded = false;
+                     //MouserParser parser = new(path);
+                     //MainVM.User.Invoices.Add(parser.Parse());
+                     //InvoicesAdded = false;
                   }
                }
             }
          }
       }
 
-      private async void AddToParts()
+      private void AddToParts()
       {
-         foreach (var invoice in MainVM.User.Invoices)
-         {
-            if (MainVM.User.Invoices.Count == 0)
-               return;
-            //AddToPartsEvent?.Invoke(this, new(MainVM.User.Invoices));
+         throw new NotImplementedException("Part of old busted calls to the API.");
+         //foreach (var invoice in MainVM.User.Invoices)
+         //{
+         //   if (MainVM.User.Invoices.Count == 0)
+         //      return;
+         //   //AddToPartsEvent?.Invoke(this, new(MainVM.User.Invoices));
 
-            // Adds all the parts from the invoice to the parts inventory,
-            var foundParts = MainVM.User.AddInvoice(invoice);
-            if (foundParts is null)
-               continue;
-            invoice.PartIDs = foundParts.Select(x => x.Id);
-            // then updates the server with the new/updated parts.
-            if (await AddInvoice(invoice))
-            {
-               MainVM.User.AddUpdatedParts(invoice.Parts);
-               await _apiController.UpdateUser(MainVM.User);
-            }
-         }
+         //   // Adds all the parts from the invoice to the parts inventory,
+         //   var foundParts = MainVM.User.AddInvoice(invoice);
+         //   if (foundParts is null)
+         //      continue;
+         //   invoice.PartIDs = foundParts.Select(x => x.Id);
+         //   // then updates the server with the new/updated parts.
+         //   if (await AddInvoice(invoice))
+         //   {
+         //      //MainVM.User.AddUpdatedParts(invoice.Parts);
+         //      await _apiController.UpdateUser(MainVM.User);
+         //   }
+         //}
       }
 
       private async Task<bool> AddInvoice(InvoiceModel invoice)
       {
-         invoice.IsAddedToParts = true;
-         if (await _apiController.UpdateInvoice(invoice))
-         {
-            var updatedParts = await _apiController.UpdateParts(invoice.Parts);
-            if (updatedParts?.All(x => x == true) == true)
-            {
-               invoice.IsAddedToParts = true;
-               return true;
-            }
-         }
-         return false;
+         throw new NotImplementedException("Part of old busted calls to the API.");
+         //invoice.IsAddedToParts = true;
+         //if (await _apiController.UpdateInvoice(invoice))
+         //{
+         //   var updatedParts = await _apiController.UpdateParts(invoice.Parts);
+         //   if (updatedParts?.All(x => x == true) == true)
+         //   {
+         //      invoice.IsAddedToParts = true;
+         //      return true;
+         //   }
+         //}
+         //return false;
       }
 
       private void This_AddToPartsEvent(object? sender, AddInvoiceToPartsEventArgs e)

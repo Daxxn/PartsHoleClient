@@ -17,8 +17,8 @@ namespace PartsInventory.Models.Inventory
       string UserName { get; set; }
       string? Email { get; set; }
       string AuthID { get; set; }
-      IEnumerable<string> InvoiceIDs { get; set; }
-      IEnumerable<string> PartIDs { get; set; }
+      List<string> InvoiceIDs { get; set; }
+      List<string> PartIDs { get; set; }
 
       PartModel? this[PartNumber pn] { get; }
 

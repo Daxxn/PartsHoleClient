@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 using PartsInventory.Models.API;
 using PartsInventory.Models.API.Interfaces;
@@ -25,23 +26,28 @@ public class UserData : IUserData
       return Parts?.Select(x => x.ToModel());
    }
 
-   public IEnumerable<InvoiceModel>? ToInvoices(IEnumerable<PartModel> parts)
+   public IEnumerable<InvoiceModel>? ToInvoices()
    {
-      //var invoices = Invoices?.Select(x => x.ToModel());
-      var invoices = new List<InvoiceModel>();
-      if (Invoices is null)
-         return null;
-      foreach (var i in Invoices)
-      {
-         invoices.Add(i.ToModel());
-      }
-      foreach (var inv in invoices)
-      {
-         var foundParts = parts.Where(p => inv.PartIDs.Contains(p.Id));
-         inv.Parts = new(foundParts);
-      }
-      return invoices;
+      return Invoices?.Select(x => x.ToModel());
    }
+
+   //public IEnumerable<InvoiceModel>? ToInvoices(IEnumerable<PartModel> parts)
+   //{
+   //   //var invoices = Invoices?.Select(x => x.ToModel());
+   //   var invoices = new List<InvoiceModel>();
+   //   if (Invoices is null)
+   //      return null;
+   //   foreach (var i in Invoices)
+   //   {
+   //      invoices.Add(i.ToModel());
+   //   }
+   //   foreach (var inv in invoices)
+   //   {
+   //      var foundParts = parts.Where(p => inv.PartIDs.Contains(p.Id));
+   //      inv.Parts = new(foundParts);
+   //   }
+   //   return invoices;
+   //}
    #endregion
 
    #region Methods

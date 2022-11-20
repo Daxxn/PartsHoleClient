@@ -5,7 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\PartsInventoryLogo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\FlippedDieIcon.ico</ApplicationIcon>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>PartInventoryLogo.png</PackageIcon>
@@ -13,11 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\FlippedDieIcon.ico" />
+    <None Remove="Resources\FlippedDieIcon.png" />
     <None Remove="Resources\PartNumberTemplateREV1.png" />
     <None Remove="Resources\PartNumberTemplateREV1.svg" />
     <None Remove="Resources\PartNumberTemplates.svg" />
-    <None Remove="Resources\PartsInventoryLogo.ico" />
-    <None Remove="Resources\PartsInventoryLogo.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,14 +57,10 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>PathSettings.Designer.cs</LastGenOutput>
     </None>
-    <None Update="Resources\PartInventoryLogo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Update="Resources\Settings\APIEndpoints.json">
+    <None Update="APIEndpoints.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Settings\Settings.json">
+    <None Update="Settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Settings.settings">
@@ -81,19 +77,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\PartInventoryLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\FlippedDieIcon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\FlippedDieIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\PartNumberTemplateREV1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\PartNumberTemplateREV1.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\PartsInventoryLogo.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\PartsInventoryLogo.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

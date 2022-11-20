@@ -8,7 +8,7 @@ namespace PartsInventory.Models.Inventory
    public interface IInvoiceModel
    {
       uint OrderNumber { get; set; }
-      ObservableCollection<IPartModel> Parts { get; set; }
+      ObservableCollection<DigiKeyPartModel> Parts { get; set; }
       string Path { get; set; }
       decimal SubTotal { get; set; }
       SupplierType? SupplierType { get; set; }

@@ -1,4 +1,6 @@
-﻿using MVVMLibrary;
+﻿using CSVParserLibrary.Models;
+
+using MVVMLibrary;
 
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
@@ -139,19 +141,33 @@ namespace PartsInventory.Models.BOM
          }
          return b.ToString();
       }
+
+      public override string ToString()
+      {
+         return $"{ReferenceDesignator} {Reference} {Value} {Library}";
+      }
       #endregion
 
       #region Full Props
+      [CSVProperty("Ref")]
       public string ReferenceDesignator
       {
          get => _refDes;
          set
          {
             _refDes = value;
+            if (value.Length <= 0)
+               return;
+            var refDes = GetRefDesType(value);
+            if (PartTypeDecoder.ContainsKey(refDes))
+            {
+               Type = PartTypeDecoder[refDes];
+            }
             OnPropertyChanged();
          }
       }
 
+      [CSVProperty("Value")]
       public ValueModel Value
       {
          get => _value;
@@ -162,6 +178,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
+      [CSVProperty("Footprint")]
       public PackageModel? Package
       {
          get => _package;
@@ -172,6 +189,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
+      [CSVProperty("Library")]
       public string Library
       {
          get => _library;
@@ -192,6 +210,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
+      [CSVProperty("Symbol")]
       public string? Symbol
       {
          get => _symbol;

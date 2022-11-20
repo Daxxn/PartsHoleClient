@@ -26,8 +26,8 @@ namespace PartsInventory.Models.Inventory.Main
 
       private PassivesCollection _passives = new();
 
-      public IEnumerable<string> InvoiceIDs { get; set; } = null!;
-      public IEnumerable<string> PartIDs { get; set; } = null!;
+      public List<string> InvoiceIDs { get; set; } = null!;
+      public List<string> PartIDs { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -45,27 +45,28 @@ namespace PartsInventory.Models.Inventory.Main
 
       public IEnumerable<PartModel>? AddInvoice(InvoiceModel invoice)
       {
-         if (!invoice.IsAddedToParts)
-         {
-            var foundParts = new List<PartModel>();
-            foreach (var part in invoice.Parts)
-            {
-               if (Parts.FirstOrDefault(p => p?.EqualsPartNumber(part) == true, null) is PartModel pt)
-               {
-                  part.Id = pt.Id;
-                  pt.Quantity += part.Quantity;
-                  foundParts.Add(pt);
-               }
-               else
-               {
-                  part.Id = ObjectId.GenerateNewId().ToString();
-                  //Parts.Add(part);
-                  foundParts.Add(part);
-               }
-            }
-            return foundParts;
-         }
-         return null;
+         throw new NotImplementedException("Part of old busted calls to the API.");
+         //if (!invoice.IsAddedToParts)
+         //{
+         //   var foundParts = new List<PartModel>();
+         //   foreach (var part in invoice.Parts)
+         //   {
+         //      if (Parts.FirstOrDefault(p => p?.EqualsPartNumber(part) == true, null) is PartModel pt)
+         //      {
+         //         part.Id = pt.Id;
+         //         pt.Quantity += part.Quantity;
+         //         foundParts.Add(pt);
+         //      }
+         //      else
+         //      {
+         //         part.Id = ObjectId.GenerateNewId().ToString();
+         //         //Parts.Add(part);
+         //         foundParts.Add(part);
+         //      }
+         //   }
+         //   return foundParts;
+         //}
+         //return null;
       }
 
       public void AddUpdatedParts(IEnumerable<PartModel> parts)
@@ -75,8 +76,8 @@ namespace PartsInventory.Models.Inventory.Main
 
       public void SyncIDs()
       {
-         PartIDs = Parts.Select(p => p.Id);
-         InvoiceIDs = Invoices.Select(p => p.Id);
+         PartIDs = Parts.Select(p => p.Id).ToList();
+         InvoiceIDs = Invoices.Select(p => p.Id).ToList();
       }
       #endregion
 

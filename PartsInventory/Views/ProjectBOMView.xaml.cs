@@ -1,4 +1,5 @@
 ﻿using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.ViewModels;
 
 using System;
@@ -33,7 +34,7 @@ public partial class ProjectBOMView : UserControl
    {
       if (sender is Button btn)
       {
-         if (btn.DataContext is IPartModel comp)
+         if (btn.DataContext is PartModel comp)
          {
             if (comp.Datasheet?.Path is null)
                return;
@@ -41,7 +42,6 @@ public partial class ProjectBOMView : UserControl
             {
                ProcessStartInfo proc = new()
                {
-                  //FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
                   FileName = "explorer.exe",
                   Arguments = comp.Datasheet.Path.AbsoluteUri,
                };

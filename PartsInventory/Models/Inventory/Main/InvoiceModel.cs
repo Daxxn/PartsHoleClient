@@ -4,7 +4,6 @@ using MongoDB.Bson;
 
 using MVVMLibrary;
 using PartsInventory.Models.Enums;
-using PartsInventory.Models.Parsers.DigiKey;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,7 +19,7 @@ namespace PartsInventory.Models.Inventory.Main
       private uint _orderNumber = 0;
       private string _path = "";
       private decimal _subTotal = 0;
-      private ObservableCollection<PartModel> _parts = new();
+      private ObservableCollection<DigiKeyPartModel> _parts = new();
       private SupplierType? _supplierType = null;
       private bool _isAddedToParts = false;
       public IEnumerable<string> PartIDs { get; set; }
@@ -28,33 +27,9 @@ namespace PartsInventory.Models.Inventory.Main
 
       #region Constructors
       public InvoiceModel() { }
-
-      public InvoiceModel(OrderCSVPage order)
-      {
-         Parts = new(ParseOrder(order));
-      }
       #endregion
 
       #region Methods
-      private static IEnumerable<PartModel> ParseOrder(OrderCSVPage order)
-      {
-         List<PartModel> parts = new();
-         foreach (var line in order.Lines)
-         {
-            parts.Add(ParsePart(line, order.Props));
-         }
-         return parts;
-      }
-      private static PartModel ParsePart(ILine line, IList<string> props)
-      {
-         PartModel part = new();
-         for (int i = 0; i < props.Count; i++)
-         {
-            part.ParseProp(props[i], line.Data[i]);
-         }
-         return part;
-      }
-
       public static InvoiceModel Create()
       {
          return new InvoiceModel()
@@ -66,7 +41,7 @@ namespace PartsInventory.Models.Inventory.Main
 
       #region Full Props
 
-      public ObservableCollection<PartModel> Parts
+      public ObservableCollection<DigiKeyPartModel> Parts
       {
          get => _parts;
          set

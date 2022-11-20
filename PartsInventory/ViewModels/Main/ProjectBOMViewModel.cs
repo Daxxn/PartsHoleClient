@@ -1,27 +1,28 @@
-﻿using CSVParserLibrary;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+
+using CSVParserLibrary;
+
 using Microsoft.Win32;
+
 using MVVMLibrary;
+
 using PartsInventory.Models;
 using PartsInventory.Models.BOM;
 using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Main;
-using PartsInventory.Models.KiCAD;
-using PartsInventory.Models.Parsers.BOM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace PartsInventory.ViewModels.Main
 {
    public class ProjectBOMViewModel : ViewModel, IProjectBOMViewModel
    {
       #region Local Props
-      private IUserModel _user;
+      private readonly IMainViewModel _mainViewModel;
+      private readonly IAbstractFactory<ICSVParser> _parserFactory;
       private ProjectModel? _project = null;
       private int _currentTab = 0;
+      private ICSVParserOptions _parserOptions;
 
       #region Commands
       public Command ParseProjectCmd { get; init; }
@@ -31,11 +32,50 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public ProjectBOMViewModel()
+      public ProjectBOMViewModel(IMainViewModel mainViewModel, IAbstractFactory<ICSVParser> parserFactory)
       {
+         _parserFactory = parserFactory;
+         _mainViewModel = mainViewModel;
          ParseProjectCmd = new(ParseProject);
          ClearProjectCmd = new(() => Project = null);
          AllocateCmd = new(Allocate);
+         _parserOptions = new CSVParserOptions()
+         {
+            ExclusionFunctions = new()
+                  {
+                     { "end-of-parts", (line) => line.Length == 1 && line[0] == "end" },
+                     { "source-line", (line) =>
+                     {
+                        if (line.Length > 1)
+                        {
+                           if (line[0] == "Source")
+                           {
+                              Project!.Source = line[1];
+                              return true;
+                           }
+                        }
+                        return false;
+                     } },
+                     { "date-line", (line) =>
+                     {
+                        if (line.Length > 1)
+                        {
+                           if (line[0] == "Date")
+                           {
+                              if (DateTime.TryParse(line[1], out DateTime date))
+                              {
+                                 Project!.Date = date;
+                              }
+                              return true;
+                           }
+                        }
+                        return false;
+                     } },
+                     { "part-count-line", (line) => line.Length == 2 || line[0] == "PartCount" },
+                  },
+            IgnoreCase = false,
+            IgnoreLineParseErrors = true,
+         };
       }
       #endregion
 
@@ -48,16 +88,21 @@ namespace PartsInventory.ViewModels.Main
             InitialDirectory = PathSettings.Default.BOMs,
             Multiselect = false,
             Title = "Open BOM (.csv)",
-            Filter = "BOM File|*.csv|All Files|*.*"
+            Filter = "BOM|*.csv|All Files|*.*"
          };
 
          if (dialog.ShowDialog() == true)
          {
             try
             {
-               var parser = new BOMParser(dialog.FileName);
+
                Project = new(dialog.FileName);
-               Project.BOM = parser.Parse(Project);
+               var parser = _parserFactory.Create();
+               var result = parser.ParseFile<BOMItemModel>(dialog.FileName, _parserOptions);
+               Project.BOM = new()
+               {
+                  Parts = new(result.Values),
+               };
             }
             catch (Exception e)
             {
@@ -68,29 +113,29 @@ namespace PartsInventory.ViewModels.Main
 
       private void Allocate()
       {
-         if (Project is null)
-            return;
-         if (Project.BOM is null)
-            return;
-         if (User is null)
-            return;
+         //if (Project is null)
+         //   return;
+         //if (Project.BOM is null)
+         //   return;
+         //if (User is null)
+         //   return;
 
-         Project.Parts = new();
-         foreach (var bom in Project.BOM.Parts)
-         {
-            if (bom.Reference == null)
-               continue;
-            var foundParts = User.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
-            if (foundParts.Length > 0)
-            {
-               foreach (var part in foundParts)
-               {
-                  part.AllocatedQty = bom.Quantity;
-                  Project.Parts.Parts.Add(part);
+         //Project.Parts = new();
+         //foreach (var bom in Project.BOM.Parts)
+         //{
+         //   if (bom.Reference == null)
+         //      continue;
+         //   var foundParts = User.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
+         //   if (foundParts.Length > 0)
+         //   {
+         //      foreach (var part in foundParts)
+         //      {
+         //         part.AllocatedQty = bom.Quantity;
+         //         Project.Parts.Parts.Add(part);
 
-               }
-            }
-         }
+         //      }
+         //   }
+         //}
       }
 
       public async void Loaded(object sender, EventArgs e)
@@ -130,9 +175,9 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
-      public IUserModel User
+      public IMainViewModel MainVM
       {
-         get => _user;
+         get => _mainViewModel;
       }
 
       public ProjectModel? Project
