@@ -515,6 +515,8 @@ namespace PartsInventory.Models.API
       {
          try
          {
+            if (!bins.Any())
+               return null;
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Post)
                .AddJsonBody(bins);
             var response = await Client.PostAsync<IEnumerable<bool>>(request);

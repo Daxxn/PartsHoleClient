@@ -23,11 +23,13 @@ namespace PartsInventory.Models.Inventory.Main
 
       private ObservableCollection<PartModel> _parts = new();
       private ObservableCollection<InvoiceModel> _invoices = new();
+      private ObservableCollection<BinModel> _bins = new();
 
       private PassivesCollection _passives = new();
 
       public List<string> InvoiceIDs { get; set; } = null!;
       public List<string> PartIDs { get; set; } = null!;
+      public List<string> BinIDs { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -125,6 +127,16 @@ namespace PartsInventory.Models.Inventory.Main
          set
          {
             _invoices = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<BinModel> Bins
+      {
+         get => _bins;
+         set
+         {
+            _bins = value;
             OnPropertyChanged();
          }
       }

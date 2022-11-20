@@ -40,7 +40,7 @@ namespace PartsInventory.ViewModels.Main
       #region Methods
       public void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e)
       {
-         MainVM.User.AddInvoices(e.NewInvoices);
+         //MainVM.User.AddInvoices(e.NewInvoices);
       }
 
       public void OpenDatasheet(object sender, PartModel part)

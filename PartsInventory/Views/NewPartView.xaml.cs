@@ -14,32 +14,28 @@ using System.Windows.Shapes;
 
 using PartsInventory.ViewModels;
 
-namespace PartsInventory.Views
-{
-   /// <summary>
-   /// Interaction logic for NewPartView.xaml
-   /// </summary>
-   public partial class NewPartView : Window
-   {
-      private const string PropsText =
-         "The parser is configured to accept new lines (\\n) as delimiters.\n"
-         + "Add \"{NA}\" to skip over a Property."
-         + "Tags Format: [\"<value>\",\"<value>\",...]"
-         + "  Property Order:\n\n"
-         + "Quantity\nPart #\nSupplier Part #\nMy Part #\nDescription\n"
-         + "Unit Price\nDatasheet\nTags";
-      private readonly INewPartViewModel _newPartViewModel;
-      public NewPartView(INewPartViewModel newPartVeiwModel)
-      {
-         _newPartViewModel = newPartVeiwModel;
-         DataContext = _newPartViewModel;
-         InitializeComponent();
-         PropsDisplay.Text = PropsText;
-      }
+namespace PartsInventory.Views;
 
-      private async void Submit_Click(object sender, RoutedEventArgs e)
-      {
-         await _newPartViewModel.Submit();
-      }
+public partial class NewPartView : Window
+{
+   private const string PropsText =
+      "The parser is configured to accept new lines (\\n) as delimiters.\n"
+      + "Add \"{NA}\" to skip over a Property."
+      + "Tags Format: [\"<value>\",\"<value>\",...]"
+      + "  Property Order:\n\n"
+      + "Quantity\nPart #\nSupplier Part #\nMy Part #\nDescription\n"
+      + "Unit Price\nDatasheet\nTags";
+   private readonly INewPartViewModel _newPartViewModel;
+   public NewPartView(INewPartViewModel newPartVeiwModel)
+   {
+      _newPartViewModel = newPartVeiwModel;
+      DataContext = _newPartViewModel;
+      InitializeComponent();
+      PropsDisplay.Text = PropsText;
+   }
+
+   private async void Submit_Click(object sender, RoutedEventArgs e)
+   {
+      await _newPartViewModel.Submit();
    }
 }

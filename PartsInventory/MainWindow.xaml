@@ -48,6 +48,8 @@
 				<MenuItem Header="Part" Click="GetPart_Click"/>
 				<MenuItem Header="Get User" Command="{Binding Path=GetUserTestAsyncCmd}"/>
 				<MenuItem Header="Send File Test" Command="{Binding Path=SendFileTestCmd}"/>
+				<MenuItem Header="Add BIN Test" Command="{Binding Path=AddBinTestCmd}"/>
+				<MenuItem Header="Get BIN Test" Command="{Binding Path=GetBinTestCmd}"/>
 			</MenuItem>
         </Menu>
 

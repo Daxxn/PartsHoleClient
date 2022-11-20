@@ -19,11 +19,13 @@ namespace PartsInventory.Models.Inventory
       string AuthID { get; set; }
       List<string> InvoiceIDs { get; set; }
       List<string> PartIDs { get; set; }
+      List<string> BinIDs { get; set; }
 
       PartModel? this[PartNumber pn] { get; }
 
       ObservableCollection<InvoiceModel> Invoices { get; set; }
       ObservableCollection<PartModel> Parts { get; set; }
+      ObservableCollection<BinModel> Bins { get; set; }
       PassivesCollection Passives { get; set; }
 
       /// <summary>

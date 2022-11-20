@@ -10,6 +10,7 @@ using MongoDB.Bson;
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
+using MVVMLibrary;
 
 namespace PartsInventory.Models.API.Models
 {
@@ -24,6 +25,7 @@ namespace PartsInventory.Models.API.Models
       public string? Email { get; set; }
       public List<string> Invoices { get; set; } = null!;
       public List<string> Parts { get; set; } = null!;
+      public List<string> Bins { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -36,11 +38,12 @@ namespace PartsInventory.Models.API.Models
          return new UserModel()
          {
             Id = _id,
-            InvoiceIDs = Invoices,
-            PartIDs = Parts,
             AuthID = AuthID,
             Email = Email,
             UserName = UserName,
+            InvoiceIDs = Invoices,
+            PartIDs = Parts,
+            BinIDs = Bins,
          };
       }
 
@@ -54,6 +57,7 @@ namespace PartsInventory.Models.API.Models
             AuthID = model.AuthID,
             Invoices = model.InvoiceIDs,
             Parts = model.PartIDs,
+            Bins = model.BinIDs,
          };
       }
       #endregion

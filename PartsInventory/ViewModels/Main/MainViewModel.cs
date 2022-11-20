@@ -3,6 +3,8 @@
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
 
+using MongoDB.Bson;
+
 using MVVMLibrary;
 
 using PartsInventory.Models.API;
@@ -40,6 +42,8 @@ namespace PartsInventory.ViewModels.Main
       public Command OpenCmd { get; init; }
       public Command GetUserTestAsyncCmd { get; init; }
       public Command SendFileTestCmd { get; init; }
+      public Command AddBinTestCmd { get; init; }
+      public Command GetBinTestCmd { get; init; }
       #endregion
       #endregion
 
@@ -66,12 +70,12 @@ namespace PartsInventory.ViewModels.Main
 
          SaveCmd = new(Save);
          OpenCmd = new(Open);
-         SendFileTestCmd = new(SendFileTest);
 
          GetUserTestAsyncCmd = new Command(GetUserTestAsync);
+         SendFileTestCmd = new(SendFileTest);
+         AddBinTestCmd = new(AddBinTest);
+         GetBinTestCmd = new(GetBinTest);
 
-         //_partsInventoryVM.SelectedPartsChanged += _partNumGenVM.SelectedPartsChanged_Inv;
-         //_partsInventoryVM.SelectedPartsChanged += _passivesVM.SelectedPartsChanged_Inv;
          _partNumTempVM.CreatePartNumber += _partNumGenVM.PartNumberCreated_PNTemp;
          _passivesVM.NewBookEvent += _bookVM.NewBook_Psv;
          _bookVM.AddNewBookEvent += _passivesVM.AddNewBook_Book;
@@ -189,6 +193,29 @@ namespace PartsInventory.ViewModels.Main
             return;
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
          User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
+         User.Bins = data.Bins != null ? new(data.ToBins()!) : new();
+      }
+
+      private async void AddBinTest()
+      {
+         var newBinID = ObjectId.GenerateNewId().ToString();
+         var newBin = new BinModel()
+         {
+            Id = newBinID,
+            Name = "Test BIN",
+            Horizontal = 10,
+            Vertical = 42,
+            IsBook = false,
+         };
+         if (!await _apiController.CreateBin(newBin))
+         {
+            MessageBox.Show("failed to create BIN.", "Error");
+         }
+      }
+
+      private async void GetBinTest()
+      {
+         var foundBin = await _apiController.GetBin("637a138439776a35867213dc");
       }
       #endregion
 

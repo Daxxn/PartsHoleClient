@@ -1,6 +1,7 @@
-﻿using CSVParserLibrary;
+﻿using System.Reflection;
+using System.Windows;
 
-using JsonReaderLibrary;
+using CSVParserLibrary;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,25 +14,8 @@ using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 using PartsInventory.ViewModels;
-#if IMPL == MAIN
 using PartsInventory.ViewModels.Main;
-#elif IMPL == TESTING
-using PartsInventory.ViewModels.Testing;
-#elif IMPL == MOCK
-using PartsInventory.ViewModels.Mock;
-#endif
 using PartsInventory.Views;
-
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace PartsInventory
 {
@@ -98,6 +82,7 @@ namespace PartsInventory
          services.AddSingleton<PartNumberGeneratorView>();
          services.AddSingleton<PartsInventoryView>();
          services.AddSingleton<ProjectBOMView>();
+         services.AddSingleton<BinsView>();
 
          // Dialog Windows
          services.AddSingleton<PartNumberTemplateDialog>();
@@ -119,6 +104,7 @@ namespace PartsInventory
          services.AddSingleton<IProjectBOMViewModel, ProjectBOMViewModel>();
          services.AddSingleton<IPackageViewModel, PackageViewModel>();
          services.AddSingleton<INewPartViewModel, NewPartViewModel>();
+         services.AddSingleton<IBinsViewModel, BinsViewModel>();
       }
 
       private static void ConnectModelServices(IServiceCollection services)
