@@ -2,6 +2,8 @@
 using Microsoft.Win32;
 using MVVMLibrary;
 
+using PartsHoleRestLibrary.Enums;
+
 using PartsInventory.Models.API;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Extensions;
@@ -120,7 +122,7 @@ namespace PartsInventory.ViewModels.Main
             var invoice = _apiController.ParseFileTest(dialog.FileName);
             if (invoice is null)
                return;
-            if (await _apiController.AddInvoiceToUser(MainVM.User.Id, invoice.Id))
+            if (await _apiController.AddModelToUser(MainVM.User.Id, invoice.Id, ModelIDSelector.INVOICES))
             {
                MainVM.User.Invoices.Add(invoice);
                MainVM.User.InvoiceIDs.Add(invoice.Id);

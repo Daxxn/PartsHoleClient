@@ -24,7 +24,21 @@ public class UserData : IUserData
 
    public IEnumerable<PartModel>? ToParts()
    {
-      return Parts?.Select(x => x.ToModel());
+      var parts = Parts?.Select(x => x.ToModel()).ToList();
+      if (parts != null)
+      {
+         if (Bins?.Any() == true)
+         {
+            foreach (var part in parts)
+            {
+               if (part.BinLocationId != null)
+               {
+                  part.BinLocation = Bins.FirstOrDefault(x => x._id == part.BinLocationId)?.ToModel() ?? new();
+               }
+            }
+         }
+      }
+      return parts;
    }
 
    public IEnumerable<InvoiceModel>? ToInvoices()

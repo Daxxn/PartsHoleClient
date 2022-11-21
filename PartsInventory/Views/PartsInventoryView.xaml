@@ -89,7 +89,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTemplateColumn Header="BIN">
+                <DataGridTemplateColumn Header="BIN" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -98,46 +98,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <!--<Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Style="{StaticResource BinEditBlock}">N: </TextBlock>
-                                <TextBox
-                                    Grid.Column="1"
-                                    MinWidth="50"
-                                    Text="{Binding
-                                        Path=BinLocation.Name,
-                                        UpdateSourceTrigger=PropertyChanged
-                                    }"
-                                    Style="{StaticResource BinEditBox}"
-                                />
-                                <TextBlock Grid.Column="2" Style="{StaticResource BinEditBlock}"> - H:</TextBlock>
-                                <TextBox
-                                    Grid.Column="3"
-                                    Text="{Binding
-                                        Path=BinLocation.Horizontal,
-                                        UpdateSourceTrigger=PropertyChanged
-                                    }"
-                                    Style="{StaticResource BinEditBox}"
-                                />
-                                <TextBlock Grid.Column="4" Style="{StaticResource BinEditBlock}"> - V:</TextBlock>
-                                <TextBox
-                                    Grid.Column="5"
-                                    Text="{Binding
-                                        Path=BinLocation.Vertical,
-                                        UpdateSourceTrigger=PropertyChanged
-                                    }"
-                                    Style="{StaticResource BinEditBox}"
-                                />
-                            </Grid>-->
+						<DataTemplate>
 							<Grid>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>

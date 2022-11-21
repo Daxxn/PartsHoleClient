@@ -6,6 +6,7 @@ using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 
 using MongoDB.Bson;
+using PartsHoleRestLibrary.Enums;
 
 namespace PartsInventory.Models.API
 {
@@ -35,9 +36,8 @@ namespace PartsInventory.Models.API
       /// <returns>All <see cref="UserData"/>.</returns>
       Task<IUserData?> GetUserData(IUserModel user);
 
-      Task<bool> AddPartToUser(string userId, string partId);
-
-      Task<bool> AddInvoiceToUser(string userId, string invoiceId);
+      Task<bool> AddModelToUser(string userId, string modelId, ModelIDSelector selector);
+      Task<bool> RemoveModelFromUser(string userId, string modelId, ModelIDSelector selector);
 
       Task<bool> UpdateUser(IUserModel user);
       #endregion

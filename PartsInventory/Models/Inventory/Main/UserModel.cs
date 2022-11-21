@@ -80,8 +80,9 @@ namespace PartsInventory.Models.Inventory.Main
 
       public void SyncIDs()
       {
-         PartIDs = Parts.Select(p => p.Id).ToList();
-         InvoiceIDs = Invoices.Select(p => p.Id).ToList();
+         PartIDs = Parts.Select(x => x.Id).ToList();
+         InvoiceIDs = Invoices.Select(x => x.Id).ToList();
+         BinIDs = Bins.Select(x => x.Id).ToList();
       }
       #endregion
 

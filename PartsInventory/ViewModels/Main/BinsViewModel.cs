@@ -1,5 +1,7 @@
 ﻿using MVVMLibrary;
 
+using PartsHoleRestLibrary.Enums;
+
 using PartsInventory.Models.API;
 using PartsInventory.Models.Inventory.Main;
 
@@ -41,9 +43,14 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Methods
-      private void CreateNewBin()
+      private async void CreateNewBin()
       {
-
+         if (await _apiController.CreateBin(NewBin))
+         {
+            await _apiController.AddModelToUser(MainVM.User.Id, NewBin.Id, ModelIDSelector.BINS);
+         }
+         _mainVM.User.Bins.Add(NewBin);
+         NewBin = new();
       }
 
       private void RemoveBins()

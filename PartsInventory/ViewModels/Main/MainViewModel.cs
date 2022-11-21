@@ -7,6 +7,8 @@ using MongoDB.Bson;
 
 using MVVMLibrary;
 
+using PartsHoleRestLibrary.Enums;
+
 using PartsInventory.Models.API;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
@@ -153,7 +155,7 @@ namespace PartsInventory.ViewModels.Main
          var success = await _apiController.CreatePart(part);
          if (success)
          {
-            await _apiController.AddPartToUser(User.Id, part.Id);
+            await _apiController.AddModelToUser(User.Id, part.Id, ModelIDSelector.PARTS);
             User.Parts.Add(part);
          }
          return success;
@@ -164,8 +166,35 @@ namespace PartsInventory.ViewModels.Main
          var success = await _apiController.DeletePart(part.Id);
          if (success)
          {
-            User.Parts.Remove(part);
+            if (await _apiController.RemoveModelFromUser(User.Id, part.Id, ModelIDSelector.PARTS))
+            {
+               User.Parts.Remove(part);
+            }
          }
+      }
+
+      public async void GetUserFromAPI()
+      {
+         // Try to get Auth0 token...
+         // For now, just using the dev user.
+         var devObjId = "636015e41a792e2787223cfa";
+
+         var devUser = new UserModel()
+         {
+            Id = devObjId
+         };
+
+         // Get UserModel from API:
+
+         var tempUser = await _apiController.GetUser(devUser);
+         if (tempUser == null)
+         {
+            MessageBox.Show("Login Failure.", "Error");
+            return;
+         }
+         User = tempUser;
+         // Get UserData from API:
+         await UpdateUserData();
       }
 
       public async void GetUserTestAsync()
@@ -189,12 +218,18 @@ namespace PartsInventory.ViewModels.Main
          }
          User = tempUser;
          // Get UserData from API:
+         await UpdateUserData();
+      }
+
+      public async Task<bool> UpdateUserData()
+      {
          var data = await _apiController.GetUserData(User);
          if (data is null)
-            return;
+            return false;
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
          User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
          User.Bins = data.Bins != null ? new(data.ToBins()!) : new();
+         return true;
       }
 
       private async void AddBinTest()

@@ -6,6 +6,7 @@ using System.Windows;
 
 using Microsoft.Extensions.Options;
 
+using PartsHoleRestLibrary.Enums;
 using PartsHoleRestLibrary.Requests;
 
 using PartsInventory.Models.API.Models;
@@ -94,8 +95,8 @@ namespace PartsInventory.Models.API
       {
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/data", Method.Post)
             .AddJsonBody(UserApiModel.FromModel(user));
-         var response = await Client.PostJsonAsync<UserApiModel, APIResponse<UserData>>($"{_apiSettings.Value.UserEndpoint}/data", UserApiModel.FromModel(user));
-         //var response = await Client.PostAsync<APIResponse<UserData>>(request);
+         //var response = await Client.PostJsonAsync<UserApiModel, APIResponse<UserData>>($"{_apiSettings.Value.UserEndpoint}/data", UserApiModel.FromModel(user));
+         var response = await Client.PostAsync<APIResponse<UserData>>(request);
          if (response is null) return null;
          if (response.Body is null)
          {
@@ -105,13 +106,14 @@ namespace PartsInventory.Models.API
          return response.Body;
       }
 
-      public async Task<bool> AddPartToUser(string userId, string partId)
+      public async Task<bool> AddModelToUser(string userId, string modelId, ModelIDSelector selector)
       {
-         var data = new RequestUpdateModel{ UserId = userId, ModelId = partId};
-         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-part", Method.Post)
+         var data = new RequestUpdateListModel{ UserId = userId, ModelId = modelId, PropId = (int)selector};
+         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-model", Method.Post)
             .AddJsonBody(data);
          var response = await Client.PostAsync<APIResponse<bool>>(request);
-         if (response == null) return false;
+         if (response == null)
+            return false;
          if (response.Body == false)
          {
             MessageBox.Show(response.Message);
@@ -120,17 +122,14 @@ namespace PartsInventory.Models.API
          return true;
       }
 
-      public async Task<bool> AddInvoiceToUser(string userId, string invoiceId)
+      public async Task<bool> RemoveModelFromUser(string userId, string modelId, ModelIDSelector selector)
       {
-         var data = new RequestUpdateModel{ UserId = userId, ModelId = invoiceId};
-         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-invoice", Method.Post)
+         var data = new RequestUpdateListModel{ UserId = userId, ModelId = modelId, PropId = (int)selector};
+         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/remove-model", Method.Delete)
             .AddJsonBody(data);
-         var response = await Client.PostAsync<APIResponse<bool>>(request);
+         var response = await Client.DeleteAsync<APIResponse<bool>>(request);
          if (response == null)
-         {
-            MessageBox.Show("Response was null.");
             return false;
-         }
          if (response.Body == false)
          {
             MessageBox.Show(response.Message);

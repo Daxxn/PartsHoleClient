@@ -5,6 +5,7 @@ using System.Linq;
 
 using MVVMLibrary;
 
+using PartsInventory.Models.API;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Inventory.Main;
 
@@ -14,6 +15,7 @@ namespace PartsInventory.ViewModels.Main
    {
       #region Local Props
       private readonly IMainViewModel _mainViewModel;
+      private readonly IAPIController _apiController;
 
       public event EventHandler<PartModel> OpenDatasheetEvent = (s, e) => { };
       public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s, e) => { };
@@ -30,9 +32,11 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public PartsInventoryViewModel(IMainViewModel mainViewModel)
+      public PartsInventoryViewModel(IMainViewModel mainViewModel, IAPIController apiController)
       {
          _mainViewModel = mainViewModel;
+         _apiController = apiController;
+
          RemovePartCmd = new(RemovePart);
       }
       #endregion
@@ -66,14 +70,17 @@ namespace PartsInventory.ViewModels.Main
          //}
       }
 
-      public void AddBinToPart()
+      public async void AddBinToPart()
       {
          if (SelectedParts is null) return;
          if (SelectedParts.Count != 1) return;
          if (SelectedBin is null) return;
 
          SelectedParts[0].BinLocation = SelectedBin;
-         BinSearchText = null;
+         if (await _apiController.UpdatePart(SelectedParts[0]))
+         {
+            BinSearchText = null;
+         }
       }
 
       public void UpdateBinSearch()
