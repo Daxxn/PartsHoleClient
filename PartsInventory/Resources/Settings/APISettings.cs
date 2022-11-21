@@ -11,11 +11,11 @@ namespace PartsInventory.Resources.Settings
    public class APISettings
    {
       public int Port { get; set; }
-      public string BaseUrl { get; set; }
-      public string UserEndpoint { get; set; }
-      public string PartsEndpoint { get; set; }
-      public string InvoicesEndpoint { get; set; }
-      public string BinsEndpoint { get; set; }
+      public string BaseUrl { get; set; } = null!;
+      public string UserEndpoint { get; set; } = null!;
+      public string PartsEndpoint { get; set; } = null!;
+      public string InvoicesEndpoint { get; set; } = null!;
+      public string BinsEndpoint { get; set; } = null!;
 
       public string GetModelSelectorEndpoint(ModelIDSelector selector, bool isAdd) => selector switch
       {
