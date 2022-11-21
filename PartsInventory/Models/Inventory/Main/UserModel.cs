@@ -2,6 +2,8 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 using MVVMLibrary;
+
+using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Passives;
 using PartsInventory.Models.Passives.Book;
 

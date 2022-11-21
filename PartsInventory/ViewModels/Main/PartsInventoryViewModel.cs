@@ -1,14 +1,12 @@
-﻿using MVVMLibrary;
-using PartsInventory.Models.Events;
-using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Main;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using MVVMLibrary;
+
+using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -21,7 +19,9 @@ namespace PartsInventory.ViewModels.Main
       public event EventHandler<IEnumerable<PartModel>?> SelectedPartsChanged = (s, e) => { };
       private InvoiceModel? _selectedInvoice = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
+      private ObservableCollection<BinModel>? _binSearchresults = null;
       private BinModel? _selectedBin = null;
+      private string? _binSearchText = null;
       private string? _selectedBinName = null;
 
       #region commands
@@ -64,6 +64,26 @@ namespace PartsInventory.ViewModels.Main
          //{
          //   MainVM.User.Parts.Remove(part as PartModel);
          //}
+      }
+
+      public void AddBinToPart()
+      {
+         if (SelectedParts is null) return;
+         if (SelectedParts.Count != 1) return;
+         if (SelectedBin is null) return;
+
+         SelectedParts[0].BinLocation = SelectedBin;
+         BinSearchText = null;
+      }
+
+      public void UpdateBinSearch()
+      {
+         if (string.IsNullOrEmpty(BinSearchText))
+         {
+            BinSearchResults = null;
+            return;
+         }
+         BinSearchResults = new(MainVM.User.Bins.Where(bin => bin.ToString().Contains(BinSearchText)));
       }
       #endregion
 
@@ -110,6 +130,26 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             _selectedBinName = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string? BinSearchText
+      {
+         get => _binSearchText;
+         set
+         {
+            _binSearchText = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<BinModel>? BinSearchResults
+      {
+         get => _binSearchresults;
+         set
+         {
+            _binSearchresults = value;
             OnPropertyChanged();
          }
       }

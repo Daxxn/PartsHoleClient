@@ -32,7 +32,6 @@ namespace PartsInventory
 
       private readonly IMainViewModel VM;
       private readonly IOptions<DirSettings> _dirSettings;
-      private readonly IAPIController _api;
       private readonly NewPartView _newPartView;
       private readonly PartNumberTemplateDialog _partNumberTempDialog;
       private readonly PartSearchDialog _searchDialog;
@@ -40,20 +39,19 @@ namespace PartsInventory
       public MainWindow(
          IMainViewModel mainVM,
          IOptions<DirSettings> dirSettings,
-         IAPIController api,
          PartsInventoryView partsView,
          InvoiceParserView invoiceView,
          ProjectBOMView bomView,
          PartNumberGeneratorView pnView,
          PassivesView passView,
          PackageView pkgView,
+         BinsView binsView,
          NewPartView newPartView,
          PartNumberTemplateDialog partNumTempDialog,
          PartSearchDialog searchDialog)
       {
          VM = mainVM;
          _dirSettings = dirSettings;
-         _api = api;
          _newPartView = newPartView;
          _partNumberTempDialog = partNumTempDialog;
          _searchDialog = searchDialog;
@@ -68,11 +66,7 @@ namespace PartsInventory
          PartNumViewTab.Content = pnView;
          PassivesViewTab.Content = passView;
          PackagesViewTab.Content = pkgView;
-      }
-
-      private async void GetPart_Click(object sender, RoutedEventArgs e)
-      {
-         var part = await _api.GetPart("6360180d1a792e2787223cff");
+         BinsViewTab.Content = binsView;
       }
 
       private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -92,11 +86,11 @@ namespace PartsInventory
 
       private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
       {
+         VM.Save();
          _newPartView.Close();
          _partNumberTempDialog.Close();
          _searchDialog.Close();
          await App.AppHost!.StopAsync();
-         VM.Save();
       }
 
       private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -23,5 +23,7 @@ namespace PartsInventory.ViewModels
 
       void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e);
       void OpenDatasheet(object sender, PartModel part);
+      void AddBinToPart();
+      void UpdateBinSearch();
    }
 }

@@ -45,7 +45,6 @@
 				</MenuItem>
 			</MenuItem>
 			<MenuItem Header="API Testing">
-				<MenuItem Header="Part" Click="GetPart_Click"/>
 				<MenuItem Header="Get User" Command="{Binding Path=GetUserTestAsyncCmd}"/>
 				<MenuItem Header="Send File Test" Command="{Binding Path=SendFileTestCmd}"/>
 				<MenuItem Header="Add BIN Test" Command="{Binding Path=AddBinTestCmd}"/>
@@ -60,6 +59,7 @@
 			<TabItem Header="PN Creation" x:Name="PartNumViewTab"/>
 			<TabItem Header="Passives" x:Name="PassivesViewTab"/>
 			<TabItem Header="Packages" x:Name="PackagesViewTab"/>
+			<TabItem Header="BINs" x:Name="BinsViewTab"/>
 		</TabControl>
     </Grid>
 </Window>

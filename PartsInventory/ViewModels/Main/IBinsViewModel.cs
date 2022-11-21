@@ -9,7 +9,7 @@ namespace PartsInventory.ViewModels.Main
    public interface IBinsViewModel
    {
       IMainViewModel MainVM { get; }
-      Command NewBinCmd { get; init; }
+      Command CreateNewBinCmd { get; init; }
       Command RemoveBinsCmd { get; init; }
       ObservableCollection<BinModel>? SelectedBins { get; set; }
    }

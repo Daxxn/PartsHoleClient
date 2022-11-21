@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:PartsInventory.Views"
              xmlns:models="clr-namespace:PartsInventory.Models.Inventory.Main"
              xmlns:conv="clr-namespace:PartsInventory.Utils.Converters"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+			 x:Name="partsView"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
 		<ObjectDataProvider
@@ -40,8 +41,8 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0" Click="AddPart_Click">Add Part</Button>
-                        <Button Grid.Row="2" Command="{Binding Path=RemovePartCmd}">Remove Part</Button>
+                        <Button Grid.Row="0" Click="AddPart_Click">ADD</Button>
+                        <Button Grid.Row="2" Command="{Binding Path=RemovePartCmd}">DEL</Button>
                     </Grid>
                 </Border>
             </Grid>
@@ -98,7 +99,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <!--<Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -136,7 +137,35 @@
                                     }"
                                     Style="{StaticResource BinEditBox}"
                                 />
-                            </Grid>
+                            </Grid>-->
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="*" MaxHeight="200"/>
+								</Grid.RowDefinitions>
+
+								<Grid Grid.Row="0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<TextBox
+										MinWidth="150"
+										Text="{Binding ElementName=partsView, Path=DataContext.BinSearchText, UpdateSourceTrigger=PropertyChanged}"
+										TextChanged="BinSearchTextBox_TextChanged"
+										Grid.Column="0"
+									/>
+									<Button Click="AddBins_Click" Grid.Column="1">+</Button>
+								</Grid>
+
+								<ListView
+									Grid.Row="1"
+									ItemsSource="{Binding ElementName=partsView, Path=DataContext.BinSearchResults, UpdateSourceTrigger=PropertyChanged}"
+									SelectedItem="{Binding ElementName=partsView, Path=DataContext.SelectedBin}"
+									SelectionMode="Single"
+									MinHeight="26"
+							    />
+							</Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>

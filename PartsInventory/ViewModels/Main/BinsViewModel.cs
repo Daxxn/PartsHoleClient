@@ -19,9 +19,10 @@ namespace PartsInventory.ViewModels.Main
       private readonly IAPIController _apiController;
 
       private ObservableCollection<BinModel>? _selectedBins = null;
+      private BinModel _newBin = new();
 
       #region Commands
-      public Command NewBinCmd { get; init; }
+      public Command CreateNewBinCmd { get; init; }
       public Command RemoveBinsCmd { get; init; }
       #endregion
       #endregion
@@ -33,15 +34,14 @@ namespace PartsInventory.ViewModels.Main
          _apiController = apiController;
 
          #region Init Commands
-         NewBinCmd = new Command(NewBin);
+         CreateNewBinCmd = new Command(CreateNewBin);
          RemoveBinsCmd = new Command(RemoveBins);
          #endregion
       }
       #endregion
 
       #region Methods
-
-      private void NewBin()
+      private void CreateNewBin()
       {
 
       }
@@ -50,7 +50,6 @@ namespace PartsInventory.ViewModels.Main
       {
 
       }
-
       #region Events
 
       #endregion
@@ -68,6 +67,16 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             _selectedBins = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public BinModel NewBin
+      {
+         get => _newBin;
+         set
+         {
+            _newBin = value;
             OnPropertyChanged();
          }
       }

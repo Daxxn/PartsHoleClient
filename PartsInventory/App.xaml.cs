@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 using PartsInventory.Models;
 using PartsInventory.Models.API;
+using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
@@ -113,16 +114,6 @@ namespace PartsInventory
          services.AddSingleton<IUserModel, UserModel>();
          services.AddAbstractFactory<ICSVParser, CSVParser>();
          services.AddSingleton<ICSVParserOptions, CSVParserOptions>();
-
-         // OMG !! this is gonna suck...
-         // It would require replacing everything with factories.
-         // Probably isnt worth it.
-         //services.AddTransient<IPartModel, PartModel>();
-         //services.AddTransient<IPartsCollection, PartsCollection>();
-         //services.AddTransient<IInvoiceModel, InvoiceModel>();
-         //services.AddTransient<IBinModel, BinModel>();
-         //services.AddTransient<IDatasheet, Datasheet>();
-         //services.AddTransient<IPartNumber, PartNumber>();
       }
    }
 }

@@ -58,10 +58,12 @@ namespace PartsInventory.Models.Inventory.Main
       {
          for (int i = 0; i < lines.Length; i++)
          {
-            if (string.IsNullOrEmpty(lines[i])) continue;
+            if (string.IsNullOrEmpty(lines[i]))
+               continue;
             if (lines[i][0] == '{')
             {
-               if (lines[i] == "{NA}") continue;
+               if (lines[i] == "{NA}")
+                  continue;
             }
             switch (i)
             {
@@ -87,8 +89,8 @@ namespace PartsInventory.Models.Inventory.Main
                   Datasheet = new(lines[i].Trim());
                   break;
                case 7:
-                  // TODO - Add tags later
-                  // The tag system isnt even started yet. GAWD!! theres too much to do...
+               // TODO - Add tags later
+               // The tag system isnt even started yet. GAWD!! theres too much to do...
                default:
                   break;
             }
@@ -314,6 +316,7 @@ namespace PartsInventory.Models.Inventory.Main
          set
          {
             _binLocation = value;
+            BinLocationId = value.Id;
             OnPropertyChanged();
          }
       }

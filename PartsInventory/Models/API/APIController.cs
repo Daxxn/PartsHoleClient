@@ -107,7 +107,7 @@ namespace PartsInventory.Models.API
 
       public async Task<bool> AddPartToUser(string userId, string partId)
       {
-         var data = new AppendRequestModel(){ UserId = userId, ModelId = partId};
+         var data = new RequestUpdateModel{ UserId = userId, ModelId = partId};
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-part", Method.Post)
             .AddJsonBody(data);
          var response = await Client.PostAsync<APIResponse<bool>>(request);
@@ -122,7 +122,7 @@ namespace PartsInventory.Models.API
 
       public async Task<bool> AddInvoiceToUser(string userId, string invoiceId)
       {
-         var data = new AppendRequestModel(){ UserId = userId, ModelId = invoiceId};
+         var data = new RequestUpdateModel{ UserId = userId, ModelId = invoiceId};
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-invoice", Method.Post)
             .AddJsonBody(data);
          var response = await Client.PostAsync<APIResponse<bool>>(request);

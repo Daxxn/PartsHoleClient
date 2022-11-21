@@ -98,20 +98,29 @@ public partial class PartsInventoryView : UserControl
    {
       if (sender is DataGrid dg)
       {
-         PartModel[] temp = new PartModel[dg.SelectedItems.Count];
-         for (int i = 0; i < dg.SelectedItems.Count; i++)
+         if (dg.SelectedItems.Count > 0)
          {
-            if (dg.SelectedItems[i] is PartModel part)
-            {
-               temp[i] = part;
-            }
+            VM.SelectedParts = new(dg.SelectedItems.Cast<PartModel>());
          }
-         VM.SelectedParts = new(temp);
+         else
+         {
+            VM.SelectedParts = null;
+         }
       }
    }
 
    private void AddPart_Click(object sender, RoutedEventArgs e)
    {
       _newPartView.Show();
+   }
+
+   private void AddBins_Click(object sender, RoutedEventArgs e)
+   {
+      VM.AddBinToPart();
+   }
+
+   private void BinSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+   {
+      VM.UpdateBinSearch();
    }
 }

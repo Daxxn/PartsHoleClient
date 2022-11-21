@@ -188,6 +188,7 @@ namespace PartsInventory.ViewModels.Main
             return;
          }
          User = tempUser;
+         // Get UserData from API:
          var data = await _apiController.GetUserData(User);
          if (data is null)
             return;
