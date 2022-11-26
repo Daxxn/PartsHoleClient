@@ -26,6 +26,7 @@ namespace PartsInventory.Models.API.Models
       public List<string> Invoices { get; set; } = null!;
       public List<string> Parts { get; set; } = null!;
       public List<string> Bins { get; set; } = null!;
+      public List<string> PartNumbers { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -44,6 +45,7 @@ namespace PartsInventory.Models.API.Models
             InvoiceIDs = Invoices,
             PartIDs = Parts,
             BinIDs = Bins,
+            PartNumberIDs = PartNumbers,
          };
       }
 
@@ -58,6 +60,7 @@ namespace PartsInventory.Models.API.Models
             Invoices = model.InvoiceIDs,
             Parts = model.PartIDs,
             Bins = model.BinIDs,
+            PartNumbers = model.PartNumberIDs,
          };
       }
       #endregion

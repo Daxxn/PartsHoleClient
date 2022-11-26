@@ -2,12 +2,11 @@
 using Microsoft.Win32;
 using MVVMLibrary;
 
-using PartsHoleRestLibrary.Enums;
-
 using PartsInventory.Models.API;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Enums;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 

@@ -53,29 +53,29 @@ namespace PartsInventory.ViewModels.Main
          if (User.Parts is null)
             return;
          NewPartNumber = PartNumber.Create(Type, SubType);
-         var matchingTypes = User.Parts.Where((p) => p.Reference?.TypeNum == NewPartNumber.TypeNum).ToArray();
+         var matchingTypes = User.Parts.Where((p) => p.Reference?.Category == NewPartNumber.Category).ToArray();
 
          if (matchingTypes != null)
          {
             if (matchingTypes.Length == 0)
             {
-               NewPartNumber.ID = 1;
+               NewPartNumber.PartID = 1;
             }
             else if (matchingTypes.Length > 1)
             {
-               var ordered = matchingTypes.OrderBy((p) => p.Reference?.TypeNum).ToArray();
+               var ordered = matchingTypes.OrderBy((p) => p.Reference?.Category).ToArray();
                for (uint i = 0; i < ordered.Length; i++)
                {
-                  if (ordered[i].Reference?.ID != i + 1)
+                  if (ordered[i].Reference?.PartID != i + 1)
                   {
-                     NewPartNumber.ID = i;
+                     NewPartNumber.PartID = i;
                   }
                }
-               NewPartNumber.ID = ordered[^1].Reference!.ID + 1;
+               NewPartNumber.PartID = ordered[^1].Reference!.PartID + 1;
             }
             else
             {
-               NewPartNumber.ID = matchingTypes[0].Reference!.ID + 1;
+               NewPartNumber.PartID = matchingTypes[0].Reference!.PartID + 1;
             }
          }
       }

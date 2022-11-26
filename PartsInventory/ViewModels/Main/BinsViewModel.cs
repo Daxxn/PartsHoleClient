@@ -1,9 +1,9 @@
 ﻿using MVVMLibrary;
 
-using PartsHoleRestLibrary.Enums;
 
 using PartsInventory.Models.API;
 using PartsInventory.Models.Inventory.Main;
+using PartsInventory.Models.Inventory.Enums;
 
 using System;
 using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PartsHoleRestLibrary.Enums;
+using PartsHoleLib.Enums;
 
 namespace PartsInventory.Resources.Settings
 {

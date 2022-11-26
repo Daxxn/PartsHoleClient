@@ -1,4 +1,7 @@
-﻿using MVVMLibrary;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+using MVVMLibrary;
 using PartsInventory.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -25,8 +28,9 @@ namespace PartsInventory.Models.Inventory.Main
          { PartNumberType.ElectroMechanical, new PartNumberSubTypes[] { PartNumberSubTypes.Relay, PartNumberSubTypes.Contactor, PartNumberSubTypes.Mic, PartNumberSubTypes.Speaker, PartNumberSubTypes.Buzzer, PartNumberSubTypes.Motor } },
          { PartNumberType.Switch_Input, new PartNumberSubTypes[] { PartNumberSubTypes.Tactile, PartNumberSubTypes.Toggle, PartNumberSubTypes.DIP, PartNumberSubTypes.Limit, PartNumberSubTypes.Rotary, PartNumberSubTypes.Slide, PartNumberSubTypes.Rocker, PartNumberSubTypes.RotaryEncoder, PartNumberSubTypes.Potentiometer, PartNumberSubTypes.Keypad, PartNumberSubTypes.Keylock, PartNumberSubTypes.Navigation } }
       };
-      private uint _typeNum = 0;
-      private uint _id = 0;
+      private uint _category = 0;
+      private uint _subCategory = 0;
+      private uint _partId = 0;
       #endregion
 
       #region Constructors
@@ -35,17 +39,17 @@ namespace PartsInventory.Models.Inventory.Main
       {
          Parse(input);
       }
-      public PartNumber(uint type, uint id)
+      public PartNumber(uint type, uint partId)
       {
-         TypeNum = type;
-         ID = id;
+         Category = type;
+         PartID = partId;
       }
       #endregion
 
       #region Methods
       public override string ToString()
       {
-         return $"{TypeNum:D4}-{ID:D4}";
+         return $"{Category:D4}-{PartID:D4}";
       }
 
       public void Parse(string input)
@@ -59,11 +63,11 @@ namespace PartsInventory.Models.Inventory.Main
          {
             if (uint.TryParse(spl[0], out uint typeNum))
             {
-               TypeNum = typeNum;
+               Category = typeNum;
             }
-            if (uint.TryParse(spl[1], out uint id))
+            if (uint.TryParse(spl[1], out uint partId))
             {
-               ID = id;
+               PartID = partId;
             }
          }
       }
@@ -84,7 +88,7 @@ namespace PartsInventory.Models.Inventory.Main
       {
          if (pn is null)
             return false;
-         return pn.TypeNum == TypeNum && pn.ID == ID;
+         return pn.Category == Category && pn.PartID == PartID;
       }
 
       public int CompareTo(PartNumber? other)
@@ -93,9 +97,9 @@ namespace PartsInventory.Models.Inventory.Main
             return 1;
          if (other == this)
             return 0;
-         if (other.TypeNum > TypeNum)
+         if (other.Category > Category)
             return -1;
-         return other.ID.CompareTo(ID);
+         return other.PartID.CompareTo(PartID);
       }
 
       public override int GetHashCode()
@@ -140,25 +144,85 @@ namespace PartsInventory.Models.Inventory.Main
       #endregion
 
       #region Full Props
-      public uint TypeNum
+      /// <summary>
+      /// The first 2 numbers of the part number.
+      /// <list type="table">
+      ///   <listheader>
+      ///      <term>(Category</term>
+      ///      <term>Sub Category)</term>
+      ///      <description>Part ID</description>
+      ///   </listheader>
+      ///   <item>
+      ///      <term>(##</term>
+      ///      <term>##)</term>
+      ///      <description>####</description>
+      ///   </item>
+      /// </list>
+      /// </summary>
+      public uint Category
       {
-         get => _typeNum;
+         get => _category;
          set
          {
-            _typeNum = value;
+            _category = value;
             OnPropertyChanged();
          }
       }
 
-      public uint ID
+      /// <summary>
+      /// Second 2 numbers of the part number.
+      /// <list type="table">
+      ///   <listheader>
+      ///      <term>(Category</term>
+      ///      <term>Sub Category)</term>
+      ///      <description>Part ID</description>
+      ///   </listheader>
+      ///   <item>
+      ///      <term>(##</term>
+      ///      <term>##)</term>
+      ///      <description>####</description>
+      ///   </item>
+      /// </list>
+      /// </summary>
+      public uint SubCategory
       {
-         get => _id;
+         get => _subCategory;
          set
          {
-            _id = value;
+            _subCategory = value;
             OnPropertyChanged();
          }
       }
+
+      /// <summary>
+      /// Unique ID for a <see cref="PartModel"/>
+      /// <para/>
+      /// NOT the same as the Models <see cref="ObjectId"/>.
+      /// </summary>
+      public uint PartID
+      {
+         get => _partId;
+         set
+         {
+            _partId = value;
+            OnPropertyChanged();
+         }
+      }
+
+      /// <summary>
+      /// Combined categories. The first 4 numbers of the part number.
+      /// <list type="table">
+      ///   <listheader>
+      ///      <term>Full Category</term>
+      ///      <description>Part ID</description>
+      ///   </listheader>
+      ///   <item>
+      ///      <term>####</term>
+      ///      <description>####</description>
+      ///   </item>
+      /// </list>
+      /// </summary>
+      public uint FullCategory => (uint)(Category * Math.Pow(10, 2)) + SubCategory;
       #endregion
    }
 }

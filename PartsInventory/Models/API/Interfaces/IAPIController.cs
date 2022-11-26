@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 using PartsInventory.Models.API.Models;
 using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Enums;
 using PartsInventory.Models.Inventory.Main;
 
 using MongoDB.Bson;
-using PartsHoleRestLibrary.Enums;
 
 namespace PartsInventory.Models.API
 {
@@ -217,7 +217,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="filePath">Path to the invoice file.</param>
       /// <returns>New <see cref="InvoiceModel"/> created by the API.</returns>
-      Task<InvoiceModel> ParseInvoiceFile(string filePath);
+      Task<InvoiceModel?> ParseInvoiceFile(string filePath);
       #endregion
       #region Bins
       /// <summary>

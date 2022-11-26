@@ -37,10 +37,10 @@ namespace PartsInventory.Models.API.Models
          return new()
          {
             _id = bin.Id,
-            Name= bin.Name,
-            Horizontal= bin.Horizontal,
-            Vertical= bin.Vertical,
-            IsBook= bin.IsBook,
+            Name = bin.Name,
+            Horizontal = bin.Horizontal,
+            Vertical = bin.Vertical,
+            IsBook = bin.IsBook,
          };
       }
       #endregion

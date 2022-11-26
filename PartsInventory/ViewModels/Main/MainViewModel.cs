@@ -1,4 +1,6 @@
-﻿using JsonReaderLibrary;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
 
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
@@ -7,20 +9,11 @@ using MongoDB.Bson;
 
 using MVVMLibrary;
 
-using PartsHoleRestLibrary.Enums;
-
 using PartsInventory.Models.API;
 using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Enums;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -229,6 +222,7 @@ namespace PartsInventory.ViewModels.Main
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
          User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
          User.Bins = data.Bins != null ? new(data.ToBins()!) : new();
+         User.PartNumbers = data.PartNumbers != null ? new(data.PartNumbers!) : new();
          return true;
       }
 

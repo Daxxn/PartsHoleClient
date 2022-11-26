@@ -17,6 +17,7 @@ public class UserData : IUserData
    public IEnumerable<PartApiModel>? Parts { get; set; } = null!;
    public IEnumerable<InvoiceApiModel>? Invoices { get; set; } = null!;
    public IEnumerable<BinApiModel>? Bins { get; set; } = null!;
+   public IEnumerable<PartNumber>? PartNumbers { get; set; } = null!;
    #endregion
 
    #region Constructors

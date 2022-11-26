@@ -6,11 +6,11 @@ using System.Windows;
 
 using Microsoft.Extensions.Options;
 
-using PartsHoleRestLibrary.Enums;
 using PartsHoleRestLibrary.Requests;
 
 using PartsInventory.Models.API.Models;
 using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Enums;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 
@@ -74,6 +74,39 @@ namespace PartsInventory.Models.API
          }
          return apiSettings.Value.BaseUrl;
       }
+
+      private T? ParseApiResponse<T>(APIResponse<T>? response)
+      {
+         if (response is null)
+         {
+            MessageBox.Show("No response from API.");
+            return default(T?);
+         }
+         if (response.Body is null)
+         {
+            MessageBox.Show($"API {response.Method} Issue: {response.Message}");
+            return default(T?);
+         }
+         return response.Body;
+      }
+
+      private IEnumerable<T>? ParseSuccessList<T>(APIResponse<IEnumerable<bool>>? response, IEnumerable<T> models)
+      {
+         var body = ParseApiResponse(response);
+         if (body?.Any(x => x == false) == true)
+         {
+            var modelList = models.ToList();
+            var failedModels = new List<T>();
+            var data = body.ToList();
+            for (int i = 0; i < data?.Count; i++)
+            {
+               if (data[i])
+                  failedModels.Add(modelList[i]);
+            }
+            return failedModels;
+         }
+         return null;
+      }
       #endregion
 
       #region User
@@ -82,7 +115,8 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/{user.Id}", Method.Get);
-            return (await Client.GetAsync<UserApiModel>(request))?.ToModel();
+            var response = await Client.GetAsync<APIResponse<UserApiModel>>(request);
+            return ParseApiResponse(response)?.ToModel();
          }
          catch (Exception e)
          {
@@ -93,17 +127,20 @@ namespace PartsInventory.Models.API
 
       public async Task<IUserData?> GetUserData(IUserModel user)
       {
-         var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/data", Method.Post)
-            .AddJsonBody(UserApiModel.FromModel(user));
-         //var response = await Client.PostJsonAsync<UserApiModel, APIResponse<UserData>>($"{_apiSettings.Value.UserEndpoint}/data", UserApiModel.FromModel(user));
-         var response = await Client.PostAsync<APIResponse<UserData>>(request);
-         if (response is null) return null;
-         if (response.Body is null)
+         try
          {
-            MessageBox.Show(response.Message);
+            var modelData = UserApiModel.FromModel(user);
+            var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/data", Method.Post)
+            .AddJsonBody(modelData);
+            //var response = await Client.PostJsonAsync<UserApiModel, APIResponse<UserData>>($"{_apiSettings.Value.UserEndpoint}/data", UserApiModel.FromModel(user));
+            var response = await Client.PostAsync<APIResponse<UserData>>(request);
+            return ParseApiResponse(response);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST Error");
             return null;
          }
-         return response.Body;
       }
 
       public async Task<bool> AddModelToUser(string userId, string modelId, ModelIDSelector selector)
@@ -112,14 +149,7 @@ namespace PartsInventory.Models.API
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/add-model", Method.Post)
             .AddJsonBody(data);
          var response = await Client.PostAsync<APIResponse<bool>>(request);
-         if (response == null)
-            return false;
-         if (response.Body == false)
-         {
-            MessageBox.Show(response.Message);
-            return false;
-         }
-         return true;
+         return ParseApiResponse(response);
       }
 
       public async Task<bool> RemoveModelFromUser(string userId, string modelId, ModelIDSelector selector)
@@ -128,14 +158,7 @@ namespace PartsInventory.Models.API
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}/remove-model", Method.Delete)
             .AddJsonBody(data);
          var response = await Client.DeleteAsync<APIResponse<bool>>(request);
-         if (response == null)
-            return false;
-         if (response.Body == false)
-         {
-            MessageBox.Show(response.Message);
-            return false;
-         }
-         return true;
+         return ParseApiResponse(response);
       }
 
       public async Task<bool> UpdateUser(IUserModel user)
@@ -144,14 +167,7 @@ namespace PartsInventory.Models.API
          var request = new RestRequest($"{_apiSettings.Value.UserEndpoint}", Method.Put)
             .AddJsonBody(UserApiModel.FromModel(user));
          var response = await Client.PutAsync<APIResponse<bool>>(request);
-         if (response == null)
-            return false;
-         if (response.Body == false)
-         {
-            MessageBox.Show(response.Message);
-            return false;
-         }
-         return true;
+         return ParseApiResponse(response);
       }
       #endregion
 
@@ -161,7 +177,8 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/{id}");
-            return await Client.GetAsync<PartModel>(request);
+            var response = await Client.GetAsync<APIResponse<PartModel>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -177,8 +194,8 @@ namespace PartsInventory.Models.API
             var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many")
                .AddJsonBody(idList);
-            var data = await Client.PostAsync<IEnumerable<PartApiModel>>(request);
-            return data?.Select(x => x.ToModel());
+            var response = await Client.PostAsync<APIResponse<IEnumerable<PartApiModel>>>(request);
+            return ParseApiResponse(response)?.Select(x => x.ToModel());
          }
          catch (Exception e)
          {
@@ -194,14 +211,7 @@ namespace PartsInventory.Models.API
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Post)
                .AddJsonBody(PartApiModel.FromModel(part));
             var response = await Client.PostAsync<APIResponse<bool>>(request);
-            if (response == null)
-               return false;
-            if (response.Body == false)
-            {
-               MessageBox.Show(response.Message);
-               return false;
-            }
-            return true;
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -217,19 +227,7 @@ namespace PartsInventory.Models.API
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many", Method.Post)
                .AddJsonBody(parts.Select(x => PartApiModel.FromModel(x)));
             var response = await Client.PostAsync<APIResponse<IEnumerable<bool>>>(request);
-            if (response?.Body?.Any(x => x == false) == true)
-            {
-               var partData = parts.ToList();
-               var failedParts = new List<PartModel>();
-               var data = response?.Body.ToList();
-               for (int i = 0; i < data?.Count; i++)
-               {
-                  if (data[i])
-                     failedParts.Add(partData[i]);
-               }
-               return failedParts;
-            }
-            return null;
+            return ParseSuccessList(response, parts);
          }
          catch (Exception e)
          {
@@ -245,14 +243,7 @@ namespace PartsInventory.Models.API
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Put)
                .AddJsonBody(PartApiModel.FromModel(part));
             var response = await Client.PutAsync<APIResponse<bool>>(request);
-            if (response == null)
-               return false;
-            if (response.Body == false)
-            {
-               MessageBox.Show(response.Message);
-               return false;
-            }
-            return true;
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -268,9 +259,7 @@ namespace PartsInventory.Models.API
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many", Method.Put)
                .AddJsonBody(parts.Select(x => PartApiModel.FromModel(x)));
             var response = await Client.PutAsync<APIResponse<IEnumerable<bool>>>(request);
-            if (response is null) return null;
-            if (response.Body is null) return null;
-            return response.Body;
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -285,14 +274,7 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/{id}", Method.Delete);
             var response = await Client.DeleteAsync<APIResponse<bool>>(request);
-            if (response == null)
-               return false;
-            if (response.Body == false)
-            {
-               MessageBox.Show(response.Message);
-               return false;
-            }
-            return true;
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -309,14 +291,7 @@ namespace PartsInventory.Models.API
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}", Method.Delete)
                .AddJsonBody(idList);
             var response = await Client.DeleteAsync<APIResponse<int>>(request);
-            if (response == null)
-               return 0;
-            if (response.Body == 0)
-            {
-               MessageBox.Show(response.Message);
-               return 0;
-            }
-            return response.Body;
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -332,7 +307,8 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{id}");
-            return (await Client.GetAsync<InvoiceApiModel>(request))?.ToModel();
+            var response = await Client.GetAsync<APIResponse<InvoiceApiModel>>(request);
+            return ParseApiResponse(response)?.ToModel();
          }
          catch (Exception e)
          {
@@ -348,8 +324,8 @@ namespace PartsInventory.Models.API
             var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/many")
                .AddJsonBody(idList);
-            var data = await Client.PostAsync<APIResponse<IEnumerable<InvoiceApiModel>>>(request);
-            return data?.Body?.Select((d) => d.ToModel());
+            var response = await Client.PostAsync<APIResponse<IEnumerable<InvoiceApiModel>>>(request);
+            return ParseApiResponse(response)?.Select(x => x.ToModel());
          }
          catch (Exception e)
          {
@@ -364,7 +340,8 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Post)
                .AddJsonBody(invoice);
-            return (await Client.PostAsync<APIResponse<bool>>(request))?.Body == true;
+            var response = await Client.PostAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -379,20 +356,8 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Post)
                .AddJsonBody(invoices.Select(x => InvoiceApiModel.FromModel(x)));
-            var response = await Client.PostAsync<IEnumerable<bool>>(request);
-            if (response?.Any(x => x == false) == true)
-            {
-               var partData = invoices.ToList();
-               var failedParts = new List<InvoiceModel>();
-               var data = response.ToList();
-               for (int i = 0; i < data.Count; i++)
-               {
-                  if (data[i])
-                     failedParts.Add(partData[i]);
-               }
-               return failedParts;
-            }
-            return null;
+            var response = await Client.PostAsync<APIResponse<IEnumerable<bool>>>(request);
+            return ParseSuccessList(response, invoices);
          }
          catch (Exception e)
          {
@@ -407,7 +372,8 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{invoice.Id}", Method.Put)
                .AddJsonBody(InvoiceApiModel.FromModel(invoice));
-            return (await Client.PutAsync<APIResponse<bool>>(request))?.Body == true;
+            var response = await Client.PutAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -421,7 +387,8 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{id}", Method.Delete);
-            return (await Client.DeleteAsync<APIResponse<bool>>(request))?.Body == true;
+            var response = await Client.DeleteAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -437,7 +404,8 @@ namespace PartsInventory.Models.API
             var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Delete)
                .AddJsonBody(idList);
-            return (await Client.DeleteAsync<APIResponse<int>>(request))?.Body ?? 0;
+            var response = await Client.DeleteAsync<APIResponse<int>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -446,14 +414,14 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<InvoiceModel> ParseInvoiceFile(string path)
+      public async Task<InvoiceModel?> ParseInvoiceFile(string path)
       {
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/files/single", Method.Post)
             .AddFile("file", path, "text/csv");
-            var newInvoice = (await Client.PostAsync<InvoiceApiModel>(request))?.ToModel();
-            return newInvoice ?? throw new Exception("Response from API did not contain an invoice.");
+            var response = await Client.PostAsync<APIResponse<InvoiceApiModel>>(request);
+            return ParseApiResponse(response)?.ToModel();
          }
          catch (Exception e)
          {
@@ -469,7 +437,8 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/{id}");
-            return await Client.GetAsync<BinModel>(request);
+            var response = await Client.GetAsync<APIResponse<BinModel>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -485,8 +454,8 @@ namespace PartsInventory.Models.API
             var data = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/many", Method.Post)
                .AddJsonBody(data);
-            return await Client.PostAsync<IEnumerable<BinModel>>(request);
-            //return data?.Select(x => x.ToModel());
+            var response = await Client.PostAsync<APIResponse<IEnumerable<BinModel>>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -501,7 +470,8 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Post)
                .AddJsonBody(bin);
-            return (await Client.PostAsync<APIResponse<bool>>(request))?.Body == true;
+            var response = await Client.PostAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -518,20 +488,8 @@ namespace PartsInventory.Models.API
                return null;
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Post)
                .AddJsonBody(bins);
-            var response = await Client.PostAsync<IEnumerable<bool>>(request);
-            if (response?.Any(x => x == false) == true)
-            {
-               var partData = bins.ToList();
-               var failedParts = new List<BinModel>();
-               var data = response.ToList();
-               for (int i = 0; i < data.Count; i++)
-               {
-                  if (data[i])
-                     failedParts.Add(partData[i]);
-               }
-               return failedParts;
-            }
-            return null;
+            var response = await Client.PostAsync<APIResponse<IEnumerable<bool>>>(request);
+            return ParseSuccessList(response, bins);
          }
          catch (Exception e)
          {
@@ -546,7 +504,8 @@ namespace PartsInventory.Models.API
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Put)
                .AddJsonBody(bin);
-            return (await Client.PutAsync<APIResponse<bool>>(request))?.Body == true;
+            var response = await Client.PutAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -560,7 +519,8 @@ namespace PartsInventory.Models.API
          try
          {
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}/{id}", Method.Delete);
-            return (await Client.DeleteAsync<APIResponse<bool>>(request))?.Body == true;
+            var response = await Client.DeleteAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
@@ -576,7 +536,8 @@ namespace PartsInventory.Models.API
             var idList = new IdListRequestModel(ids);
             var request = new RestRequest($"{_apiSettings.Value.BinsEndpoint}", Method.Delete)
                .AddJsonBody(idList);
-            return (await Client.DeleteAsync<APIResponse<int>>(request))?.Body ?? 0;
+            var response = await Client.DeleteAsync<APIResponse<int>>(request);
+            return ParseApiResponse(response);
          }
          catch (Exception e)
          {
