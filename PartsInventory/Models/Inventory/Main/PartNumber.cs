@@ -2,7 +2,9 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 using MVVMLibrary;
+
 using PartsInventory.Models.Enums;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +16,20 @@ namespace PartsInventory.Models.Inventory.Main
    public class PartNumber : BaseModel, IComparable<PartNumber>
    {
       #region Local Props
-      public static Dictionary<PartNumberType, PartNumberSubTypes[]> SubTypeDisplay = new()
+      public static Dictionary<PartNumberCategory, PartNumberSubCategory[]> SubTypeDisplay = new()
       {
-         { PartNumberType.Passives, new PartNumberSubTypes[] { PartNumberSubTypes.Resistor, PartNumberSubTypes.capacitor, PartNumberSubTypes.Inductor, PartNumberSubTypes.Ferrites, PartNumberSubTypes.Crystal, PartNumberSubTypes.Resonator } },
-         { PartNumberType.Protection, new PartNumberSubTypes[] { PartNumberSubTypes.Fuse, PartNumberSubTypes.CircuitBreaker, PartNumberSubTypes.Varistor, PartNumberSubTypes.PTCFuse } },
-         { PartNumberType.Mechanical, new PartNumberSubTypes[] { PartNumberSubTypes.Screw, PartNumberSubTypes.Nut, PartNumberSubTypes.Standoff } },
-         { PartNumberType.Connector, new PartNumberSubTypes[] { PartNumberSubTypes.PinHeader, PartNumberSubTypes.PinSocket, PartNumberSubTypes.TerminalBlock, PartNumberSubTypes.DSub, PartNumberSubTypes.Circular, PartNumberSubTypes.FlatFlex, PartNumberSubTypes.Audio, PartNumberSubTypes.USB, PartNumberSubTypes.BarrelJack, PartNumberSubTypes.MOLEX, PartNumberSubTypes.Programming, PartNumberSubTypes.PCIe } },
-         { PartNumberType.Lighting, new PartNumberSubTypes[] { PartNumberSubTypes.LED, PartNumberSubTypes.Fillament, PartNumberSubTypes.Fluorescent } },
-         { PartNumberType.Diode, new PartNumberSubTypes[] { PartNumberSubTypes.GeneralPurpose, PartNumberSubTypes.Schottky, PartNumberSubTypes.Zener, PartNumberSubTypes.TVS } },
-         { PartNumberType.Transistor, new PartNumberSubTypes[] { PartNumberSubTypes.NPN, PartNumberSubTypes.PNP, PartNumberSubTypes.Nch, PartNumberSubTypes.Pch } },
-         { PartNumberType.IC, new PartNumberSubTypes[] {PartNumberSubTypes.MicroController, PartNumberSubTypes.Logic, PartNumberSubTypes.OPAMP, PartNumberSubTypes.LinearReg, PartNumberSubTypes.SwitchingReg, PartNumberSubTypes.Interface, PartNumberSubTypes.AnalogLogic, PartNumberSubTypes.USB, PartNumberSubTypes.ADC, PartNumberSubTypes.DAC, PartNumberSubTypes.ROM, PartNumberSubTypes.EEPROM, PartNumberSubTypes.Memory, PartNumberSubTypes.Processor, PartNumberSubTypes.Sensing, PartNumberSubTypes.CurrentSense } },
-         { PartNumberType.Display, new PartNumberSubTypes[] {PartNumberSubTypes.LCDCharacter, PartNumberSubTypes.LCDPanel, PartNumberSubTypes.SevenSegment, PartNumberSubTypes.BarGraph, PartNumberSubTypes.OLED} },
-         { PartNumberType.ElectroMechanical, new PartNumberSubTypes[] { PartNumberSubTypes.Relay, PartNumberSubTypes.Contactor, PartNumberSubTypes.Mic, PartNumberSubTypes.Speaker, PartNumberSubTypes.Buzzer, PartNumberSubTypes.Motor } },
-         { PartNumberType.Switch_Input, new PartNumberSubTypes[] { PartNumberSubTypes.Tactile, PartNumberSubTypes.Toggle, PartNumberSubTypes.DIP, PartNumberSubTypes.Limit, PartNumberSubTypes.Rotary, PartNumberSubTypes.Slide, PartNumberSubTypes.Rocker, PartNumberSubTypes.RotaryEncoder, PartNumberSubTypes.Potentiometer, PartNumberSubTypes.Keypad, PartNumberSubTypes.Keylock, PartNumberSubTypes.Navigation } }
+         { PartNumberCategory.Other, new PartNumberSubCategory[] { PartNumberSubCategory.Other } },
+         { PartNumberCategory.Passives, new PartNumberSubCategory[] { PartNumberSubCategory.Resistor, PartNumberSubCategory.capacitor, PartNumberSubCategory.Inductor, PartNumberSubCategory.Ferrites, PartNumberSubCategory.Crystal, PartNumberSubCategory.Resonator } },
+         { PartNumberCategory.Protection, new PartNumberSubCategory[] { PartNumberSubCategory.Fuse, PartNumberSubCategory.CircuitBreaker, PartNumberSubCategory.Varistor, PartNumberSubCategory.PTCFuse } },
+         { PartNumberCategory.Mechanical, new PartNumberSubCategory[] { PartNumberSubCategory.Screw, PartNumberSubCategory.Nut, PartNumberSubCategory.Standoff } },
+         { PartNumberCategory.Connector, new PartNumberSubCategory[] { PartNumberSubCategory.PinHeader, PartNumberSubCategory.PinSocket, PartNumberSubCategory.TerminalBlock, PartNumberSubCategory.DSub, PartNumberSubCategory.Circular, PartNumberSubCategory.FlatFlex, PartNumberSubCategory.Audio, PartNumberSubCategory.CONN_USB, PartNumberSubCategory.BarrelJack, PartNumberSubCategory.MOLEX, PartNumberSubCategory.Programming, PartNumberSubCategory.PCIe } },
+         { PartNumberCategory.Lighting, new PartNumberSubCategory[] { PartNumberSubCategory.LED, PartNumberSubCategory.Fillament, PartNumberSubCategory.Fluorescent } },
+         { PartNumberCategory.Diode, new PartNumberSubCategory[] { PartNumberSubCategory.GeneralPurpose, PartNumberSubCategory.Schottky, PartNumberSubCategory.Zener, PartNumberSubCategory.TVS } },
+         { PartNumberCategory.Transistor, new PartNumberSubCategory[] { PartNumberSubCategory.NPN, PartNumberSubCategory.PNP, PartNumberSubCategory.Nch, PartNumberSubCategory.Pch } },
+         { PartNumberCategory.IC, new PartNumberSubCategory[] {PartNumberSubCategory.MicroController, PartNumberSubCategory.Logic, PartNumberSubCategory.OPAMP, PartNumberSubCategory.LinearReg, PartNumberSubCategory.SwitchingReg, PartNumberSubCategory.Interface, PartNumberSubCategory.AnalogLogic, PartNumberSubCategory.IC_USB, PartNumberSubCategory.ADC, PartNumberSubCategory.DAC, PartNumberSubCategory.ROM, PartNumberSubCategory.EEPROM, PartNumberSubCategory.Memory, PartNumberSubCategory.Processor, PartNumberSubCategory.Sensing, PartNumberSubCategory.CurrentSense } },
+         { PartNumberCategory.Display, new PartNumberSubCategory[] {PartNumberSubCategory.LCDCharacter, PartNumberSubCategory.LCDPanel, PartNumberSubCategory.SevenSegment, PartNumberSubCategory.BarGraph, PartNumberSubCategory.OLED} },
+         { PartNumberCategory.ElectroMechanical, new PartNumberSubCategory[] { PartNumberSubCategory.Relay, PartNumberSubCategory.Contactor, PartNumberSubCategory.Mic, PartNumberSubCategory.Speaker, PartNumberSubCategory.Buzzer, PartNumberSubCategory.Motor } },
+         { PartNumberCategory.Switch_Input, new PartNumberSubCategory[] { PartNumberSubCategory.Tactile, PartNumberSubCategory.Toggle, PartNumberSubCategory.DIP, PartNumberSubCategory.Limit, PartNumberSubCategory.Rotary, PartNumberSubCategory.Slide, PartNumberSubCategory.Rocker, PartNumberSubCategory.RotaryEncoder, PartNumberSubCategory.Potentiometer, PartNumberSubCategory.Keypad, PartNumberSubCategory.Keylock, PartNumberSubCategory.Navigation } }
       };
       private uint _category = 0;
       private uint _subCategory = 0;
@@ -39,9 +42,15 @@ namespace PartsInventory.Models.Inventory.Main
       {
          Parse(input);
       }
-      public PartNumber(uint type, uint partId)
+      private PartNumber(uint category, uint partId)
       {
-         Category = type;
+         FullCategory = category;
+         PartID = partId;
+      }
+      public PartNumber(uint category, uint subCategory, uint partId)
+      {
+         Category = category;
+         SubCategory = subCategory;
          PartID = partId;
       }
       #endregion
@@ -49,7 +58,7 @@ namespace PartsInventory.Models.Inventory.Main
       #region Methods
       public override string ToString()
       {
-         return $"{Category:D4}-{PartID:D4}";
+         return $"{Category:D2}{SubCategory:D2}-{PartID:D4}";
       }
 
       public void Parse(string input)
@@ -63,7 +72,7 @@ namespace PartsInventory.Models.Inventory.Main
          {
             if (uint.TryParse(spl[0], out uint typeNum))
             {
-               Category = typeNum;
+               FullCategory = typeNum;
             }
             if (uint.TryParse(spl[1], out uint partId))
             {
@@ -72,9 +81,9 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
-      public static PartNumber Create(PartNumberType type, PartNumberSubTypes subType)
+      public static PartNumber Create(PartNumberSubCategory subCategory)
       {
-         return new((uint)subType, 0);
+         return new((uint)subCategory, 0);
       }
 
       public override bool Equals(object? obj)
@@ -222,7 +231,24 @@ namespace PartsInventory.Models.Inventory.Main
       ///   </item>
       /// </list>
       /// </summary>
-      public uint FullCategory => (uint)(Category * Math.Pow(10, 2)) + SubCategory;
+      public uint FullCategory
+      {
+         get => (uint)(Category * Math.Pow(10, 2)) + SubCategory;
+         set
+         {
+            var str = $"{value:D4}";
+            if (uint.TryParse(str.Substring(0, 2), out uint category))
+            {
+               _category = category;
+            }
+            if (uint.TryParse(str.Substring(2, 2), out uint subCategory))
+            {
+               _subCategory = subCategory;
+            }
+            OnPropertyChanged(nameof(Category));
+            OnPropertyChanged(nameof(SubCategory));
+         }
+      }
       #endregion
    }
 }

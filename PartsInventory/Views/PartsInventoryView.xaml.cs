@@ -123,4 +123,14 @@ public partial class PartsInventoryView : UserControl
    {
       VM.UpdateBinSearch();
    }
+
+   private void AddPartNumber_Click(object sender, RoutedEventArgs e)
+   {
+      VM.AddPartNumberToPart();
+   }
+
+   private void PartNumberSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+   {
+      VM.UpdatePartNumberSearch();
+   }
 }

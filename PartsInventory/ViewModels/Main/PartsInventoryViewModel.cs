@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Media;
 
 using MVVMLibrary;
 
@@ -25,6 +26,9 @@ namespace PartsInventory.ViewModels.Main
       private BinModel? _selectedBin = null;
       private string? _binSearchText = null;
       private string? _selectedBinName = null;
+      private ObservableCollection<PartNumber>? _pnSearchresults = null;
+      private PartNumber? _selectedPartNumber = null;
+      private string? _partNumberSearchText = null;
 
       #region commands
       public Command RemovePartCmd { get; init; }
@@ -83,6 +87,19 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
+      public async void AddPartNumberToPart()
+      {
+         if (SelectedParts is null) return;
+         if (SelectedParts.Count == 0) return;
+         if (SelectedPartNumber is null) return;
+
+         SelectedParts[0].PartNumber = SelectedPartNumber.ToString();
+         if (await _apiController.UpdatePart(SelectedParts[0]))
+         {
+            PartNumberSearchText = null;
+         }
+      }
+
       public void UpdateBinSearch()
       {
          if (string.IsNullOrEmpty(BinSearchText))
@@ -91,6 +108,23 @@ namespace PartsInventory.ViewModels.Main
             return;
          }
          BinSearchResults = new(MainVM.User.Bins.Where(bin => bin.ToString().Contains(BinSearchText)));
+      }
+
+      public void UpdatePartNumberSearch()
+      {
+         if (string.IsNullOrEmpty(PartNumberSearchText))
+         {
+            PartNumberSearchResults = null;
+            return;
+         }
+         PartNumberSearchResults = new(MainVM.User.PartNumbers.Where(pn =>
+         {
+            if (!MainVM.User.Parts.Any(part => part?.Reference == pn))
+            {
+               return pn.ToString().Contains(PartNumberSearchText);
+            }
+            return false;
+         }));
       }
       #endregion
 
@@ -157,6 +191,36 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             _binSearchresults = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string? PartNumberSearchText
+      {
+         get => _partNumberSearchText;
+         set
+         {
+            _partNumberSearchText = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<PartNumber>? PartNumberSearchResults
+      {
+         get => _pnSearchresults;
+         set
+         {
+            _pnSearchresults = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PartNumber? SelectedPartNumber
+      {
+         get => _selectedPartNumber;
+         set
+         {
+            _selectedPartNumber = value;
             OnPropertyChanged();
          }
       }

@@ -1,16 +1,10 @@
-﻿using MVVMLibrary;
+﻿using System.Collections.ObjectModel;
 
+using MVVMLibrary;
 
 using PartsInventory.Models.API;
+using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory.Main;
-using PartsInventory.Models.Inventory.Enums;
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PartsInventory.ViewModels.Main
 {

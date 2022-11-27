@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using PartsInventory.Models.API.Models;
-using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Enums;
-using PartsInventory.Models.Inventory.Main;
-
 using MongoDB.Bson;
+
+using PartsInventory.Models.API.Models;
+using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.Models.API
 {
@@ -298,6 +298,13 @@ namespace PartsInventory.Models.API
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="BinModel"/>s deleted.</returns>
       Task<int> DeleteBins(IEnumerable<string> ids);
+      #endregion
+
+      #region PartNumbers
+      Task<PartNumber?> NewPartNumber(string userId, uint fullCategory);
+      Task<PartNumber?> GetPartNumber(string id);
+      Task<bool> UpdatePartNumber(PartNumber partNumber);
+      Task<bool> DeletePartNumber(string id);
       #endregion
 
       #region Testing

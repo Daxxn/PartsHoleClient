@@ -9,109 +9,138 @@
              xmlns:enums="clr-namespace:PartsInventory.Models.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-    </UserControl.Resources>
-    <Grid>
+  <UserControl.Resources>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0" Padding="2" Margin="1" BorderBrush="LightGray" BorderThickness="1">
+      <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Padding="2" Margin="1" BorderBrush="LightGray" BorderThickness="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="2">Current Part</TextBlock>
+        <TextBlock Grid.Row="1">MF PN</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.PartNumber}"/>
+        <TextBlock Grid.Row="2">Sup PN</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.SupplierPartNumber}"/>
+        <TextBlock Grid.Row="3">Current Ref</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.Reference}"/>
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="2">Desc</TextBlock>
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" MaxWidth="250" LineHeight="4" TextWrapping="Wrap" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedPart.Description}"/>
 
-                <TextBlock Grid.ColumnSpan="2">Current Part</TextBlock>
-                <TextBlock Grid.Row="1">MF PN</TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].PartNumber}"/>
-                <TextBlock Grid.Row="2">Sup PN</TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].SupplierPartNumber}"/>
-                <TextBlock Grid.Row="3">Current Ref</TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].Reference}"/>
-                <TextBlock Grid.Row="4" Grid.ColumnSpan="2">Desc</TextBlock>
-                <TextBlock Grid.Row="5" Grid.ColumnSpan="2" MaxWidth="250" TextWrapping="Wrap" Style="{StaticResource ValueDisplayBlock}" Text="{Binding Path=SelectedParts[0].Description}"/>
-            </Grid>
-        </Border>
+        <ListView
+          Grid.Row="6" Grid.ColumnSpan="2"
+          ItemsSource="{Binding Path=SelectedParts}"
+          SelectedItem="{Binding Path=SelectedPart}"
+          Grid.IsSharedSizeScope="True"
+        >
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Expander Header="{Binding Path=PartNumber}" Margin="2">
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition SharedSizeGroup="a"/>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition SharedSizeGroup="b"/>
+                      <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Margin="0,0,4,0">Quantity</TextBlock>
+                    <TextBlock Style="{StaticResource ValueDisplayBlock}" Grid.Column="1" Text="{Binding Path=Quantity}"/>
+                    <TextBlock Grid.Column="2" Margin="2,0,4,0">Ref</TextBlock>
+                    <TextBlock Style="{StaticResource ValueDisplayBlock}" Grid.Column="3" Text="{Binding Path=Reference}"/>
+                  </Grid>
+                </Border>
+              </Expander>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </Grid>
+    </Border>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" FontSize="15">Full Number</TextBlock>
-                <Button Grid.Column="1" Click="OpenTemplateView_Click">Open Template</Button>
-            </Grid>
+    <Grid Grid.Column="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0">Type Prefix</TextBlock>
-                <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Path=NewPartNumber.TypeNum, UpdateSourceTrigger=PropertyChanged, StringFormat=D4}"/>
-                <TextBlock Grid.RowSpan="2" Grid.Column="1">-</TextBlock>
-                <TextBlock Grid.Column="2" Grid.Row="0">Part ID</TextBlock>
-                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=NewPartNumber.ID, UpdateSourceTrigger=PropertyChanged, StringFormat=D4}"/>
-            </Grid>
+      <Button Grid.Row="0" Grid.Column="1" Click="OpenTemplateView_Click" Padding="4">Open Template</Button>
+      <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource ControlTitle}">New Part Number</TextBlock>
+      <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="2" FontSize="15">Find New Number</TextBlock>
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0">Category</TextBlock>
+        <ComboBox
+          Grid.Column="1"
+          MinWidth="50"
+          MaxWidth="200"
+          ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:PartNumberCategory}}}"
+          SelectedItem="{Binding Path=Category}"
+        />
 
-                <TextBlock Grid.Column="0">Type</TextBlock>
-                <ComboBox
-                    Grid.Column="1"
-                    MinWidth="50"
-                    ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:PartNumberType}}}"
-                    SelectedItem="{Binding Path=Type}"
-                />
+        <TextBlock Grid.Column="2">Sub Category</TextBlock>
+        <ComboBox
+          Grid.Column="3"
+          MinWidth="50"
+          MaxWidth="200"
+          ItemsSource="{Binding Path=SelectedSubCategories}"
+          SelectedItem="{Binding Path=SubCategory}"
+        />
 
-                <TextBlock Grid.Column="2">Sub Type</TextBlock>
-                <ComboBox
-                    Grid.Column="3"
-                    MinWidth="50"
-                    ItemsSource="{Binding Path=SelectedSubTypes}"
-                    SelectedItem="{Binding Path=SubType}"
-                />
-                <TextBlock Grid.Column="4">Part ID</TextBlock>
-                <TextBox Grid.Column="5" MinWidth="50" Text="{Binding Path=NewPartNumber.ID}"/>
-            </Grid>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding Path=NewPartNumber}"/>
+      </Grid>
 
-            <Button Grid.Row="4" Command="{Binding Path=NewCmd}">Create</Button>
-            <Button Grid.Row="5" Command="{Binding Path=AssignToSelectedCmd}">Asign to Selected Part</Button>
+      <Button Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,10" Padding="4" Command="{Binding Path=NewCmd}">Create</Button>
+      <Button Grid.Row="3" Grid.ColumnSpan="2" Padding="4" Command="{Binding Path=AssignToSelectedCmd}">Asign to Selected Part</Button>
+
+      <Border Grid.ColumnSpan="2" Grid.Row="4">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <TextBlock Style="{StaticResource ControlTitle}" Grid.Row="0">All Part Numbers</TextBlock>
+          <ListView Grid.Row="1" ItemsSource="{Binding Path=MainVM.User.PartNumbers}" SelectedItem="{Binding Path=SelectedPartNumber}">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding}"/>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
         </Grid>
+      </Border>
     </Grid>
+  </Grid>
 </UserControl>

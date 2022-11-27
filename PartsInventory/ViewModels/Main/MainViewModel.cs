@@ -10,8 +10,8 @@ using MongoDB.Bson;
 using MVVMLibrary;
 
 using PartsInventory.Models.API;
+using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Enums;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 
@@ -20,7 +20,6 @@ namespace PartsInventory.ViewModels.Main
    public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
-      private readonly IPartNumberGeneratorViewModel _partNumGenVM;
       private readonly IPartNumberTemplateViewModel _partNumTempVM;
       private readonly IPassivesViewModel _passivesVM;
       private readonly IPassiveBookViewModel _bookVM;
@@ -44,7 +43,6 @@ namespace PartsInventory.ViewModels.Main
 
       #region Constructors
       public MainViewModel(
-         IPartNumberGeneratorViewModel partNumGenVM,
          IPartNumberTemplateViewModel partNumTempVM,
          IPassivesViewModel passivesVM,
          IPassiveBookViewModel bookVM,
@@ -54,7 +52,6 @@ namespace PartsInventory.ViewModels.Main
          IUserModel user
          )
       {
-         _partNumGenVM = partNumGenVM;
          _partNumTempVM = partNumTempVM;
          _passivesVM = passivesVM;
          _bookVM = bookVM;
@@ -71,7 +68,6 @@ namespace PartsInventory.ViewModels.Main
          AddBinTestCmd = new(AddBinTest);
          GetBinTestCmd = new(GetBinTest);
 
-         _partNumTempVM.CreatePartNumber += _partNumGenVM.PartNumberCreated_PNTemp;
          _passivesVM.NewBookEvent += _bookVM.NewBook_Psv;
          _bookVM.AddNewBookEvent += _passivesVM.AddNewBook_Book;
       }

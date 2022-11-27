@@ -49,6 +49,9 @@ namespace PartsInventory.Models.Inventory
       /// <param name="parts">updated parts</param>
       void AddUpdatedParts(IEnumerable<PartModel> parts);
 
+      /// <summary>
+      /// Syncs all <see cref="ObjectId"/>s from the different models to the user id lists.
+      /// </summary>
       void SyncIDs();
    }
 }

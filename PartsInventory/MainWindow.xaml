@@ -11,55 +11,55 @@
 		Loaded="Window_Loaded"
         Icon="./Resources/FlippedDieIcon.png"
         Title="Parts Hole" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
 
-        <Menu>
-            <MenuItem Header="File">
-                <MenuItem Header="Open" Command="{Binding Path=OpenCmd}"/>
-                <MenuItem Header="Save" Command="{Binding Path=SaveCmd}"/>
-            </MenuItem>
-            <MenuItem Header="Tools">
-                <MenuItem Header="Electrical Calcs" Click="ElectricalCalc_Click"/>
-                <MenuItem Header="Saturn PCB Toolkit" Click="Saturn_Click"/>
-            </MenuItem>
-			<MenuItem Header="Settings">
-				<MenuItem Header="Monitor">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<TextBlock Grid.Row="0" Grid.Column="0">Monitor Size</TextBlock>
-						<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MonitorSize}"/>
-						<TextBlock Grid.Row="1" Grid.Column="0">Aspect Ratio</TextBlock>
-						<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=AspectRatio}"/>
-					</Grid>
-				</MenuItem>
-			</MenuItem>
-			<MenuItem Header="API Testing">
-				<MenuItem Header="Get User" Command="{Binding Path=GetUserTestAsyncCmd}"/>
-				<MenuItem Header="Send File Test" Command="{Binding Path=SendFileTestCmd}"/>
-				<MenuItem Header="Add BIN Test" Command="{Binding Path=AddBinTestCmd}"/>
-				<MenuItem Header="Get BIN Test" Command="{Binding Path=GetBinTestCmd}"/>
-			</MenuItem>
-        </Menu>
+    <Menu>
+      <MenuItem Header="File">
+        <MenuItem Header="Open" Command="{Binding Path=OpenCmd}"/>
+        <MenuItem Header="Save" Command="{Binding Path=SaveCmd}"/>
+      </MenuItem>
+      <MenuItem Header="Tools">
+        <MenuItem Header="Electrical Calcs" Click="ElectricalCalc_Click"/>
+        <MenuItem Header="Saturn PCB Toolkit" Click="Saturn_Click"/>
+      </MenuItem>
+      <MenuItem Header="Settings">
+        <MenuItem Header="Monitor">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0">Monitor Size</TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MonitorSize}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0">Aspect Ratio</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=AspectRatio}"/>
+          </Grid>
+        </MenuItem>
+      </MenuItem>
+      <MenuItem Header="API Testing">
+        <MenuItem Header="Get User" Command="{Binding Path=GetUserTestAsyncCmd}"/>
+        <MenuItem Header="Send File Test" Command="{Binding Path=SendFileTestCmd}"/>
+        <MenuItem Header="Add BIN Test" Command="{Binding Path=AddBinTestCmd}"/>
+        <MenuItem Header="Get BIN Test" Command="{Binding Path=GetBinTestCmd}"/>
+      </MenuItem>
+    </Menu>
 
-        <TabControl Grid.Row="1">
-			<TabItem Header="Inventory" x:Name="PartsViewTab"/>
-			<TabItem Header="Invoices" x:Name="InvoiceViewTab"/>
-			<TabItem Header="Project BOM" x:Name="BomViewTab"/>
-			<TabItem Header="PN Creation" x:Name="PartNumViewTab"/>
-			<TabItem Header="Passives" x:Name="PassivesViewTab"/>
-			<TabItem Header="Packages" x:Name="PackagesViewTab"/>
-			<TabItem Header="BINs" x:Name="BinsViewTab"/>
-		</TabControl>
-    </Grid>
+    <TabControl Grid.Row="1">
+      <TabItem Header="Inventory" x:Name="PartsViewTab"/>
+      <TabItem Header="Invoices" x:Name="InvoiceViewTab"/>
+      <TabItem Header="Project BOM" x:Name="BomViewTab"/>
+      <TabItem Header="PN Creation" x:Name="PartNumViewTab"/>
+      <TabItem Header="Passives" x:Name="PassivesViewTab"/>
+      <TabItem Header="Packages" x:Name="PackagesViewTab"/>
+      <TabItem Header="BINs" x:Name="BinsViewTab"/>
+    </TabControl>
+  </Grid>
 </Window>

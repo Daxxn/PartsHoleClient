@@ -1,23 +1,20 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.Win32;
-using MVVMLibrary;
-
-using PartsInventory.Models.API;
-using PartsInventory.Models.Events;
-using PartsInventory.Models.Extensions;
-using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Enums;
-using PartsInventory.Models.Inventory.Main;
-using PartsInventory.Resources.Settings;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+
+using Microsoft.Extensions.Options;
+using Microsoft.Win32;
+
+using MVVMLibrary;
+
+using PartsInventory.Models.API;
+using PartsInventory.Models.Enums;
+using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory.Main;
+using PartsInventory.Resources.Settings;
 
 namespace PartsInventory.ViewModels.Main
 {

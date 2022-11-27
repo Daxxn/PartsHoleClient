@@ -85,6 +85,7 @@ namespace PartsInventory.Models.Inventory.Main
          PartIDs = Parts.Select(x => x.Id).ToList();
          InvoiceIDs = Invoices.Select(x => x.Id).ToList();
          BinIDs = Bins.Select(x => x.Id).ToList();
+         PartNumberIDs = PartNumbers.Select(x => x.Id).ToList();
       }
       #endregion
 

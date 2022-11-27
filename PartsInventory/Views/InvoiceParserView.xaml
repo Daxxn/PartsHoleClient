@@ -6,106 +6,106 @@
              xmlns:local="clr-namespace:PartsInventory.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+    <Border Grid.Column="0">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                <Border Grid.Row="0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="50"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+        <Border Grid.Row="0">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="50"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-						<Button Grid.Row="0" Command="{Binding Path=OpenInvoicesCmd}">Open Invoices</Button>
-						<Button Grid.Row="1" Command="{Binding Path=OpenAllInvoicesCmd}">Open All Invoices</Button>
-						<Button Grid.Row="2" Command="{Binding Path=ParseTestCmd}">Invoice Test</Button>
-                        <Button Grid.Row="4" Command="{Binding Path=ClearInvoicesCmd}">Clear Invoices</Button>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Row="3">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Button Command="{Binding Path=AddToPartsCmd}">Add To Parts</Button>
-                    </Grid>
-                </Border>
-            </Grid>
+            <Button Grid.Row="0" Command="{Binding Path=OpenInvoicesCmd}">Open Invoices</Button>
+            <Button Grid.Row="1" Command="{Binding Path=OpenAllInvoicesCmd}">Open All Invoices</Button>
+            <Button Grid.Row="2" Command="{Binding Path=ParseTestCmd}">Invoice Test</Button>
+            <Button Grid.Row="4" Command="{Binding Path=ClearInvoicesCmd}">Clear Invoices</Button>
+          </Grid>
         </Border>
 
-        <ListView
-            Grid.Column="1"
-            Grid.IsSharedSizeScope="True"
-            ItemsSource="{Binding Path=MainVM.User.Invoices}"
-			SelectionChanged="InvoiceView_SelectionChanged"
-			SelectionMode="Multiple"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-        >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="b"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Padding="0,0,10,0">Order ID</TextBlock>
-							<TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=OrderNumber, Mode=OneWay}"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1">Supplier</TextBlock>
-							<TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=SupplierType, Mode=OneWay}"/>
-                            <Expander Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Header="Parts">
-                                <DataGrid
-                                    ItemsSource="{Binding Path=Parts}"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch"
-                                    CanUserAddRows="False"
-                                    CanUserDeleteRows="False"
-                                    AutoGenerateColumns="False"
-                                >
-									<DataGrid.Columns>
-										<DataGridTextColumn Header="Qty" MinWidth="30" FontSize="16" Binding="{Binding Path=Quantity, Mode=OneWay}"/>
-										<DataGridTextColumn Header="MFG Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
-										<DataGridTextColumn Header="My Part #" MinWidth="120" Binding="{Binding Path=Reference, Mode=OneWay}"/>
-                                        <DataGridTextColumn Header="Supplier Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
-                                        <DataGridTextColumn Header="Description" MinWidth="250" Width="Auto" Binding="{Binding Path=Description, Mode=OneWay}"/>
-                                        <DataGridTextColumn Header="Unit Price" MinWidth="50" Binding="{Binding Path=UnitPrice, Mode=OneWay}"/>
-                                        <DataGridTextColumn Header="Extended Price" MinWidth="50" Binding="{Binding Path=ExtendedPrice, Mode=OneWay}"/>
-                                        <DataGridTextColumn Header="Backorder" MinWidth="35" Binding="{Binding Path=Backorder, Mode=OneWay}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Expander>
-                            <TextBlock Grid.Column="0" Grid.Row="3">SubTotal</TextBlock>
-                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=SubTotal}"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+        <Border Grid.Row="3">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Button Command="{Binding Path=AddToPartsCmd}">Add To Parts</Button>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>
+
+    <ListView
+      Grid.Column="1"
+      Grid.IsSharedSizeScope="True"
+      ItemsSource="{Binding Path=MainVM.User.Invoices}"
+		  SelectionChanged="InvoiceView_SelectionChanged"
+		  SelectionMode="Multiple"
+      HorizontalAlignment="Stretch"
+      HorizontalContentAlignment="Stretch"
+    >
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <Border>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="b"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Grid.Row="0" Padding="0,0,10,0">Order ID</TextBlock>
+              <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=OrderNumber, Mode=OneWay}"/>
+              <TextBlock Grid.Column="0" Grid.Row="1">Supplier</TextBlock>
+              <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=SupplierType, Mode=OneWay}"/>
+              <Expander Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Header="Parts">
+                <DataGrid
+                  ItemsSource="{Binding Path=Parts}"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Stretch"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  AutoGenerateColumns="False"
+                >
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Qty" MinWidth="30" FontSize="16" Binding="{Binding Path=Quantity, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="MFG Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="My Part #" MinWidth="120" Binding="{Binding Path=Reference, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Supplier Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Description" MinWidth="250" Width="Auto" Binding="{Binding Path=Description, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Unit Price" MinWidth="50" Binding="{Binding Path=UnitPrice, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Extended Price" MinWidth="50" Binding="{Binding Path=ExtendedPrice, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Backorder" MinWidth="35" Binding="{Binding Path=Backorder, Mode=OneWay}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Expander>
+              <TextBlock Grid.Column="0" Grid.Row="3">SubTotal</TextBlock>
+              <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=SubTotal}"/>
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
 </UserControl>

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using PartsHoleLib.Enums;
+using PartsInventory.Models.Enums;
 
 namespace PartsInventory.Resources.Settings
 {
@@ -16,12 +12,14 @@ namespace PartsInventory.Resources.Settings
       public string PartsEndpoint { get; set; } = null!;
       public string InvoicesEndpoint { get; set; } = null!;
       public string BinsEndpoint { get; set; } = null!;
+      public string PartNumberEndpoint { get; set; } = null!;
 
       public string GetModelSelectorEndpoint(ModelIDSelector selector, bool isAdd) => selector switch
       {
          ModelIDSelector.PARTS => $"{UserEndpoint}/{(isAdd ? "add" : "remove")}-part",
          ModelIDSelector.INVOICES => $"{UserEndpoint}/{(isAdd ? "add" : "remove")}-invoice",
          ModelIDSelector.BINS => $"{UserEndpoint}/{(isAdd ? "add" : "remove")}-bin",
+         ModelIDSelector.PARTNUMBERS => $"{UserEndpoint}/{(isAdd ? "add" : "remove")}-partnum",
          ModelIDSelector.NONE => throw new ArgumentOutOfRangeException(nameof(selector), "NONE is not a valid endpoint."),
          _ => throw new ArgumentOutOfRangeException(nameof(selector), "Selector is not recognized."),
       };

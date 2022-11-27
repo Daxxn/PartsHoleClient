@@ -9,8 +9,8 @@ using Microsoft.Extensions.Options;
 using PartsHoleRestLibrary.Requests;
 
 using PartsInventory.Models.API.Models;
+using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Enums;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 
@@ -543,6 +543,75 @@ namespace PartsInventory.Models.API
          {
             MessageBox.Show(e.Message, "DELETE Error");
             return 0;
+         }
+      }
+      #endregion
+
+      #region PartNumbers
+      public async Task<PartNumber?> NewPartNumber(string userId, uint fullCategory)
+      {
+         try
+         {
+            var pnRequest = new PartNumberRequestModel
+            {
+               UserId = userId,
+               FullCategory = fullCategory,
+            };
+            var request = new RestRequest($"{_apiSettings.Value.PartNumberEndpoint}/gen")
+               .AddJsonBody(pnRequest);
+            var response = await Client.PostAsync<APIResponse<PartNumber>>(request);
+            return ParseApiResponse(response);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "POST api/partnum/gen Error");
+            return null;
+         }
+      }
+
+      public async Task<PartNumber?> GetPartNumber(string id)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartNumberEndpoint}/{id}");
+            var response = await Client.GetAsync<APIResponse<PartNumber>>(request);
+            return ParseApiResponse(response);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "GET api/partnum/{id} Error");
+            return null;
+         }
+      }
+
+      public async Task<bool> UpdatePartNumber(PartNumber updatedPartNumber)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartNumberEndpoint}/{updatedPartNumber.Id}")
+               .AddJsonBody(updatedPartNumber);
+            var response = await Client.PutAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "PUT api/partnum/{id} Error");
+            return false;
+         }
+      }
+
+      public async Task<bool> DeletePartNumber(string id)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.PartNumberEndpoint}/{id}");
+            var response = await Client.DeleteAsync<APIResponse<bool>>(request);
+            return ParseApiResponse(response);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "DELETE api/partnum/{id} Error");
+            return false;
          }
       }
       #endregion
