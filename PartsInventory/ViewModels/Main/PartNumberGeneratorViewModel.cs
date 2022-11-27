@@ -6,6 +6,7 @@ using MVVMLibrary;
 
 using PartsInventory.Models.API;
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels.Main
@@ -30,6 +31,7 @@ namespace PartsInventory.ViewModels.Main
       public Command NewCmd { get; init; }
       public Command ClearCmd { get; init; }
       public Command AssignToSelectedCmd { get; init; }
+      public Command RemoveCmd { get; init; }
       #endregion
       #endregion
 
@@ -43,6 +45,7 @@ namespace PartsInventory.ViewModels.Main
          NewCmd = new(New);
          ClearCmd = new(() => NewPartNumber = null);
          AssignToSelectedCmd = new(AssignToSelectedPart);
+         RemoveCmd = new(Remove);
       }
       #endregion
 
@@ -79,6 +82,25 @@ namespace PartsInventory.ViewModels.Main
          if (await _apiController.UpdatePart(SelectedPart))
          {
             NewPartNumber = new PartNumber();
+         }
+      }
+
+      private async void Remove()
+      {
+         if (SelectedPartNumber is null) return;
+         if (await _apiController.DeletePartNumber(SelectedPartNumber.Id))
+         {
+            MainVM.User.PartNumbers.Remove(SelectedPartNumber);
+            MainVM.User.PartNumberIDs.Remove(SelectedPartNumber.Id);
+            MainVM.User.Parts.ForEach(part =>
+            {
+               if (part.Reference?.Equals(SelectedPartNumber) == true)
+               {
+                  part.Reference = null;
+               }
+            });
+            //MainVM.User.Parts.Where(x => x.Reference?.Equals(SelectedPartNumber) == true).ToList().ForEach(part => part.Reference = null);
+            SelectedPartNumber= null;
          }
       }
 

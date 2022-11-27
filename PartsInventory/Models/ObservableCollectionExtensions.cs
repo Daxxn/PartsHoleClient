@@ -62,4 +62,12 @@ public static class ObservableCollectionExtensions
          }
       }
    }
+
+   public static void ForEach<T>(this ObservableCollection<T> list, Action<T> action)
+   {
+      foreach (var item in list)
+      {
+         action(item);
+      }
+   }
 }
