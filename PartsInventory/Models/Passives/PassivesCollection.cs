@@ -1,4 +1,8 @@
 ﻿using MVVMLibrary;
+
+using PartsInventory.Models.Enums;
+using PartsInventory.Models.Passives.Book;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +19,8 @@ namespace PartsInventory.Models.Passives
       private ObservableCollection<Resistor> _resistors = new();
       private ObservableCollection<Capacitor> _capacitors = new();
       private ObservableCollection<Inductor> _inductors = new();
+
+      private ObservableCollection<PassiveBookModel> _books = new();
       #endregion
 
       #region Constructors
@@ -48,6 +54,49 @@ namespace PartsInventory.Models.Passives
             Inductors.Add(ind);
          }
       }
+
+      public void Add(IPassive model, PassiveType type)
+      {
+         switch (type)
+         {
+            case PassiveType.Resistor:
+                  Add((Resistor)model);
+               break;
+            case PassiveType.Capacitor:
+               Add((Capacitor)model);
+               break;
+            case PassiveType.Inductor:
+               Add((Inductor)model);
+               break;
+            default:
+               break;
+         }
+      }
+
+      public void AddRange<T>(IEnumerable<T> data) where T : IPassive
+      {
+         if (data is IEnumerable<Resistor> resistors)
+         {
+            foreach (Resistor res in resistors)
+            {
+               Add(res);
+            }
+         }
+         else if (data is IEnumerable<Capacitor> capacitors)
+         {
+            foreach (var cap in capacitors)
+            {
+               Add(cap);
+            }
+         }
+         else if (data is IEnumerable<Inductor> inductors)
+         {
+            foreach (var ind in inductors)
+            {
+               Add(ind);
+            }
+         }
+      }
       #endregion
 
       #region Full Props
@@ -77,6 +126,16 @@ namespace PartsInventory.Models.Passives
          set
          {
             _inductors = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<PassiveBookModel> Books
+      {
+         get => _books;
+         set
+         {
+            _books = value;
             OnPropertyChanged();
          }
       }

@@ -5,18 +5,19 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\PartsInventoryLogo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\FlippedDieIcon.ico</ApplicationIcon>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>PartInventoryLogo.png</PackageIcon>
+    <StartupObject>PartsInventory.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\FlippedDieIcon.ico" />
+    <None Remove="Resources\FlippedDieIcon.png" />
     <None Remove="Resources\PartNumberTemplateREV1.png" />
     <None Remove="Resources\PartNumberTemplateREV1.svg" />
     <None Remove="Resources\PartNumberTemplates.svg" />
-    <None Remove="Resources\PartsInventoryLogo.ico" />
-    <None Remove="Resources\PartsInventoryLogo.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,44 +33,59 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSVParserLibrary" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="MongoDB.Bson" Version="2.18.0" />
+    <PackageReference Include="MVVMLibrary" Version="1.0.1" />
+    <PackageReference Include="RestSharp" Version="108.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="PathSettings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>PathSettings.settings</DependentUpon>
     </Compile>
+    <Compile Update="Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="PathSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>PathSettings.Designer.cs</LastGenOutput>
     </None>
-    <None Update="Resources\PartInventoryLogo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
+    <None Update="APIEndpoints.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\CSVParserLibrary\CSVParserLibrary\CSVParserLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\JsonReaderLibrary\JsonReaderLibrary\JsonReaderLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\MVVMLibrary\MVVMLibrary\MVVMLibrary.csproj" />
+    <ProjectReference Include="..\..\PartsHoleAPI\PartsHoleRestLibrary\PartsHoleRestLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\PartInventoryLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Resource Include="Resources\FlippedDieIcon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\FlippedDieIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\PartNumberTemplateREV1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\PartNumberTemplateREV1.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\PartsInventoryLogo.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\PartsInventoryLogo.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

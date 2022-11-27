@@ -1,5 +1,8 @@
-﻿using PartsInventory.Models;
+﻿using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.ViewModels;
+using PartsInventory.ViewModels.Main;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,37 +18,49 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
-{
-   /// <summary>
-   /// Interaction logic for PassivesView.xaml
-   /// </summary>
-   public partial class PassivesView : UserControl
-   {
-      public PassivesViewModel VM { get; set; }
-      public PassivesView()
-      {
-         VM = MainViewModel.Instance.PassivesVM;
-         DataContext = VM;
-         InitializeComponent();
-      }
+namespace PartsInventory.Views;
 
-      private void AddPartsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+public partial class PassivesView : UserControl
+{
+   private readonly IPassivesViewModel VM;
+   private readonly IPassiveBookViewModel _bookVM;
+   public PassivesView(IPassivesViewModel vm, IPassiveBookViewModel bookVM)
+   {
+      VM = vm;
+      DataContext = vm;
+      InitializeComponent();
+
+      VM.NewBookEvent += NewBook_VM;
+      _bookVM = bookVM;
+   }
+
+   private void AddPartsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   {
+      if (sender is ListView lv)
       {
-         if (sender is ListView lv)
+         VM.SelectedAddParts = new();
+         if (lv.SelectedItems.Count > 0)
          {
-            VM.SelectedAddParts = new();
-            if (lv.SelectedItems.Count > 0)
+            foreach (var item in lv.SelectedItems)
             {
-               foreach (var item in lv.SelectedItems)
+               if (item is PartModel part)
                {
-                  if (item is PartModel part)
-                  {
-                     VM.SelectedAddParts.Add(part);
-                  }
+                  VM.SelectedAddParts.Add(part);
                }
             }
          }
       }
+   }
+
+   private void NewBook_VM(object sender, EventArgs e)
+   {
+      var bookDialog = new PassiveBookDialog(_bookVM);
+
+      bookDialog.Show();
+   }
+
+   private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   {
+
    }
 }

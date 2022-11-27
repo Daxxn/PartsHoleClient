@@ -1,0 +1,177 @@
+﻿<Window x:Class="PartsInventory.Views.PassiveBookDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:enums="clr-namespace:PartsInventory.Models.Enums"
+        xmlns:utils="clr-namespace:PartsInventory.Utils"
+		    xmlns:conv="clr-namespace:PartsInventory.Utils.Converters"
+		    xmlns:models="clr-namespace:PartsInventory.Models"
+		    xmlns:passives="clr-namespace:PartsInventory.Resources.Packages.Passives"
+        mc:Ignorable="d"
+        Title="Passives Book Generator" Height="500" Width="350">
+  <Window.Resources>
+    <conv:PassiveValueConverter x:Key="PassiveValueConverter"/>
+  </Window.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <TextBlock Grid.ColumnSpan="2" Style="{StaticResource ControlTitle}">
+            Book Properties
+          </TextBlock>
+          <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="2,0,0,0">Name</TextBlock>
+          <TextBox
+            Grid.Row="2" Grid.ColumnSpan="2"
+						TabIndex="0"
+            Text="{Binding Path=Book.Name, UpdateSourceTrigger=PropertyChanged}"
+          >
+            <TextBox.InputBindings>
+              <KeyBinding Key="Return" Command="{Binding Path=GenerateCmd}"/>
+            </TextBox.InputBindings>
+          </TextBox>
+
+          <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="2,0,4,0">Qty</TextBlock>
+            <TextBox
+              Grid.Column="1"
+						  TabIndex="1"
+              Text="{Binding Path=Book.Quantity, UpdateSourceTrigger=PropertyChanged}"
+            >
+              <TextBox.InputBindings>
+                <KeyBinding Key="Return" Command="{Binding Path=GenerateCmd}"/>
+              </TextBox.InputBindings>
+            </TextBox>
+          </Grid>
+
+          <CheckBox Grid.Row="4" IsChecked="{Binding Path=AddZero}" ToolTip="Adds a jumper value to the start of the book.">Add 0</CheckBox>
+
+          <ComboBox
+            Grid.Row="5" Grid.Column="0"
+            ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:EIAStandard}}}"
+            SelectedItem="{Binding Path=Book.BaseStandard}"
+					  TabIndex="2"
+          >
+            <ComboBox.InputBindings>
+              <KeyBinding Key="Return" Command="{Binding Path=GenerateCmd}"/>
+            </ComboBox.InputBindings>
+          </ComboBox>
+          <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5">
+            <TextBlock Text="{Binding Path=Book.Tolerance}"/>
+            <TextBlock>%</TextBlock>
+          </StackPanel>
+
+          <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox
+							Grid.Column="0"
+							ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:PackageType}}}"
+						/>
+            <TextBox
+							Grid.Column="1"
+							Text="{Binding Path=Book.PackageSize, UpdateSourceTrigger=PropertyChanged}"
+						>
+              <TextBox.ContextMenu>
+                <ContextMenu>
+                  <ListView
+										x:Name="PackageSizeList"
+										ItemsSource="{Binding Path=StandardPackageSizes}"
+										SelectedItem="{Binding Path=Book.PackageSize}"
+									>
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="50"/>
+                          </Grid.ColumnDefinitions>
+                          <passives:SmdDisplay
+														Grid.Column="1"
+														PackageString="{Binding}"
+													/>
+                          <TextBlock Grid.Column="0" Text="{Binding}"/>
+                        </Grid>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                  </ListView>
+                </ContextMenu>
+              </TextBox.ContextMenu>
+            </TextBox>
+          </Grid>
+        </Grid>
+
+        <Button
+          Grid.Row="2"
+          Margin="2"
+          Grid.ColumnSpan="2"
+          Command="{Binding Path=GenerateCmd}"
+        >
+          Generate
+        </Button>
+      </Grid>
+    </Border>
+
+    <ListView
+      Grid.Column="1"
+      ItemsSource="{Binding Path=Book.Values}"
+      SelectionChanged="ValueList_SelectionChanged"
+      HorizontalContentAlignment="Stretch"
+		  TabIndex="3"
+    >
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" MinWidth="30" Text="{Binding Path=Index}"/>
+            <TextBox
+              Grid.Column="1" TabIndex="4" MinWidth="70"
+              Text="{Binding Path=Value, Converter={StaticResource PassiveValueConverter}}"
+            />
+            <Button Grid.Column="2" IsTabStop="False" Click="Remove_Click">X</Button>
+            <Button Grid.Column="3" IsTabStop="False" Click="AddAbove_Click">+UP</Button>
+            <Button Grid.Column="4" IsTabStop="False" Click="AddBelow_Click">+DN</Button>
+          </Grid>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
+</Window>

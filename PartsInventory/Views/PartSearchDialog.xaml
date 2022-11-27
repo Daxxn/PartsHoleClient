@@ -6,53 +6,53 @@
         xmlns:local="clr-namespace:PartsInventory.Views"
         mc:Ignorable="d"
         Title="Part Search" Height="600" Width="400">
-    <Grid>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Border Grid.Row="0">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <TextBox Text="{Binding Path=SearchText}"/>
+        <Button Grid.Column="1" Command="{Binding Path=SearchCmd}">Search</Button>
+        <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding Path=MatchCase}">Aa</CheckBox>
+      </Grid>
 
-        <Border Grid.Row="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBox Text="{Binding Path=SearchText}"/>
-                <Button Grid.Column="1" Command="{Binding Path=SearchCmd}">Search</Button>
-                <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding Path=MatchCase}">Aa</CheckBox>
-            </Grid>
-            
-        </Border>
+    </Border>
 
-        <Border Grid.Row="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock HorizontalAlignment="Center" Padding="0,4" FontSize="14">Search Results</TextBlock>
-                <DataGrid
-                    Grid.Row="1"
-                    ItemsSource="{Binding Path=SearchParts}"
-                    SelectionChanged="DataGrid_SelectionChanged"
-                    SelectionMode="Extended"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="PN" Binding="{Binding Path=PartNumber}"/>
-                        <DataGridTextColumn Header="Sup PN" Binding="{Binding Path=SupplierPartNumber}"/>
-                        <DataGridTextColumn Header="MY PN" Binding="{Binding Path=Reference}"/>
-                        <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Path=Description}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </Border>
-    </Grid>
+    <Border Grid.Row="1">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Center" Padding="0,4" FontSize="14">Search Results</TextBlock>
+        <DataGrid
+          Grid.Row="1"
+          ItemsSource="{Binding Path=SearchParts}"
+          SelectionChanged="DataGrid_SelectionChanged"
+          SelectionMode="Extended"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          CanUserDeleteRows="False"
+        >
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="PN" Binding="{Binding Path=PartNumber}"/>
+            <DataGridTextColumn Header="Sup PN" Binding="{Binding Path=SupplierPartNumber}"/>
+            <DataGridTextColumn Header="MY PN" Binding="{Binding Path=Reference}"/>
+            <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Path=Description}"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+    </Border>
+  </Grid>
 </Window>

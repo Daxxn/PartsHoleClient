@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:PartsInventory.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        
-    </Grid>
+  <StackPanel>
+    <TextBlock Text="{Binding Path=MainVM.User.UserName}"/>
+    <Button Command="{Binding Path=TestCmd}">Test</Button>
+  </StackPanel>
 </UserControl>

@@ -4,246 +4,278 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PartsInventory.Views"
-             xmlns:models="clr-namespace:PartsInventory.Models"
+             xmlns:models="clr-namespace:PartsInventory.Models.Inventory.Main"
              xmlns:conv="clr-namespace:PartsInventory.Utils.Converters"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+			 x:Name="partsView"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <ObjectDataProvider
-            x:Key="BinDictProvider"
-            ObjectType="{x:Type models:BinModel}"
-            MethodName="GetBins"
-        />
+  <UserControl.Resources>
+    <ObjectDataProvider
+      x:Key="BinDictProvider"
+      ObjectType="{x:Type models:BinModel}"
+      MethodName="GetBins"
+    />
+    <conv:PartNumberConverter x:Key="PartNumberConverter"/>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
 
-        <conv:PartNumberConverter x:Key="PartNumberConverter"/>
-    </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+    <Border Grid.Column="0">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Border Grid.Column="0">
-            <Grid>
+        <Border Grid.Row="0">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="30"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Click="AddPart_Click">ADD</Button>
+            <Button Grid.Row="2" Command="{Binding Path=RemovePartCmd}">DEL</Button>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>
+
+    <DataGrid
+      Grid.Column="1"
+      ItemsSource="{Binding Path=MainVM.User.Parts}"
+      SelectionChanged="PartsList_SelectionChanged"
+      Style="{StaticResource PartsDataGrid}"
+    >
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Qty" FontWeight="DemiBold" Binding="{Binding Path=Quantity}">
+          <DataGridTextColumn.CellStyle>
+            <Style TargetType="DataGridCell">
+              <Setter Property="ToolTip" Value="Total purchased from supplier."/>
+            </Style>
+          </DataGridTextColumn.CellStyle>
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="Alloc" FontWeight="DemiBold" Binding="{Binding Path=AllocatedQty}">
+          <DataGridTextColumn.CellStyle>
+            <Style TargetType="DataGridCell">
+              <Setter Property="ToolTip" Value="Parts actively used in a project."/>
+            </Style>
+          </DataGridTextColumn.CellStyle>
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="Slpg" FontWeight="DemiBold" Binding="{Binding Path=Slippage}">
+          <DataGridTextColumn.CellStyle>
+            <Style TargetType="DataGridCell">
+              <Setter Property="ToolTip" Value="Lost or damaged parts."/>
+            </Style>
+          </DataGridTextColumn.CellStyle>
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="MF #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
+        <!--<DataGridTextColumn Header="Part #" Binding="{Binding Path=Reference, Converter={StaticResource PartNumberConverter}}"/>-->
+        <DataGridTemplateColumn Header="PartNumber">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Path=Reference}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*" MaxHeight="200"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Button Grid.Row="0" Command="{Binding Path=AddPartCmd}">Add Part</Button>
-                        <Button Grid.Row="2" Command="{Binding Path=RemovePartCmd}">Remove Part</Button>
-                    </Grid>
-                </Border>
-            </Grid>
-        </Border>
-
-        <DataGrid
-            Grid.Column="1"
-            ItemsSource="{Binding Path=PartsCollection.Parts}"
-            SelectionChanged="PartsList_SelectionChanged"
-            Style="{StaticResource PartsDataGrid}"
-        >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Qty" FontWeight="DemiBold" Binding="{Binding Path=Quantity}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="Total purchased from supplier."/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Alloc" FontWeight="DemiBold" Binding="{Binding Path=AllocatedQty}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="Parts actively used in a project."/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Slpg" FontWeight="DemiBold" Binding="{Binding Path=Slippage}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="Lost or damaged parts."/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="MF Part #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Part #" Binding="{Binding Path=Reference, Converter={StaticResource PartNumberConverter}}"/>
-                <DataGridTextColumn Header="Supplier Part #" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Unit Price" Binding="{Binding Path=UnitPrice}"/>
-                <DataGridTextColumn Header="Extended Price" Binding="{Binding Path=ExtendedPrice}"/>
-                <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
-                <DataGridTextColumn Header="B" MinWidth="30" Binding="{Binding Path=Backorder}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="Qty on Backorder"/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTemplateColumn Header="BIN">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=BinLocation}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Style="{StaticResource BinEditBlock}">N: </TextBlock>
-                                <TextBox
-                                    Grid.Column="1"
-                                    MinWidth="50"
-                                    Text="{Binding
-                                        Path=BinLocation.Name,
-                                        UpdateSourceTrigger=PropertyChanged
-                                    }"
-                                    Style="{StaticResource BinEditBox}"
-                                />
-                                <TextBlock Grid.Column="2" Style="{StaticResource BinEditBlock}"> - H:</TextBlock>
-                                <TextBox
-                                    Grid.Column="3"
-                                    Text="{Binding
-                                        Path=BinLocation.Horizontal,
-                                        UpdateSourceTrigger=PropertyChanged
-                                    }"
-                                    Style="{StaticResource BinEditBox}"
-                                />
-                                <TextBlock Grid.Column="4" Style="{StaticResource BinEditBlock}"> - V:</TextBlock>
-                                <TextBox
-                                    Grid.Column="5"
-                                    Text="{Binding
-                                        Path=BinLocation.Vertical,
-                                        UpdateSourceTrigger=PropertyChanged
-                                    }"
-                                    Style="{StaticResource BinEditBox}"
-                                />
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Datasheet" MinWidth="150">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Margin="10,0" Click="Datasheet_Click">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=Datasheet.IsGoodPath}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                Open
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="10" Orientation="Horizontal">
-                                <TextBox
-                                    MinWidth="70"
-                                    MaxWidth="100"
-                                    TextWrapping="WrapWithOverflow"
-                                    MaxLines="30"
-                                    TextAlignment="Right"
-                                    Text="{Binding Path=Datasheet.Path, UpdateSourceTrigger=PropertyChanged}"
-                                />
-                                <Button Click="BrowseDatasheet_Click">Browse</Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Expander Grid.Column="0" Header="Invoice" ExpandDirection="Left">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock>All Invoices</TextBlock>
-                            <ListView Grid.Row="1" ItemsSource="{Binding Path=PartsCollection.Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Path=OrderNumber}"/>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Grid>
-                    </Border>
-
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Border Grid.Row="0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Padding="0,0,10,0">Order #</TextBlock>
-                                <TextBlock Grid.Row="1" Grid.Column="0" Padding="0,0,10,0">Parts</TextBlock>
-
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=SelectedInvoice.OrderNumber}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=SelectedInvoice.Parts.Count}"/>
-                            </Grid>
-                        </Border>
-
-                        <DataGrid
-                            Grid.Row="1"
-                            ItemsSource="{Binding Path=SelectedInvoice.Parts}"
-                            CanUserAddRows="False"
-                            CanUserDeleteRows="False"
-                            AlternatingRowBackground="AliceBlue"
-                        />
-                    </Grid>
+                <Grid Grid.Row="0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBox
+										MinWidth="150"
+										Text="{Binding ElementName=partsView, Path=DataContext.PartNumberSearchText, UpdateSourceTrigger=PropertyChanged}"
+										TextChanged="PartNumberSearchTextBox_TextChanged"
+										Grid.Column="0"
+									/>
+                  <Button Click="AddPartNumber_Click" Grid.Column="1">+</Button>
                 </Grid>
-            </Expander>
+
+                <ListView
+									Grid.Row="1"
+									ItemsSource="{Binding ElementName=partsView, Path=DataContext.PartNumberSearchResults, UpdateSourceTrigger=PropertyChanged}"
+									SelectedItem="{Binding ElementName=partsView, Path=DataContext.SelectedPartNumber}"
+									SelectionMode="Single"
+									MinHeight="26"
+							  />
+              </Grid>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTextColumn Header="Supplier #" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
+        <DataGridTextColumn Header="Unit $" Binding="{Binding Path=UnitPrice, StringFormat=C2}"/>
+        <DataGridTextColumn Header="Total $" Binding="{Binding Path=ExtendedPrice, StringFormat=C2}"/>
+        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
+        <DataGridTextColumn Header="B" MinWidth="30" Binding="{Binding Path=Backorder}">
+          <DataGridTextColumn.CellStyle>
+            <Style TargetType="DataGridCell">
+              <Setter Property="ToolTip" Value="Qty on Backorder"/>
+            </Style>
+          </DataGridTextColumn.CellStyle>
+        </DataGridTextColumn>
+        <DataGridTemplateColumn Header="BIN" Width="150">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=BinLocation}"/>
+              </StackPanel>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*" MaxHeight="200"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBox
+										MinWidth="150"
+										Text="{Binding ElementName=partsView, Path=DataContext.BinSearchText, UpdateSourceTrigger=PropertyChanged}"
+										TextChanged="BinSearchTextBox_TextChanged"
+										Grid.Column="0"
+									/>
+                  <Button Click="AddBins_Click" Grid.Column="1">+</Button>
+                </Grid>
+
+                <ListView
+									Grid.Row="1"
+									ItemsSource="{Binding ElementName=partsView, Path=DataContext.BinSearchResults, UpdateSourceTrigger=PropertyChanged}"
+									SelectedItem="{Binding ElementName=partsView, Path=DataContext.SelectedBin}"
+									SelectionMode="Single"
+									MinHeight="26"
+							  />
+              </Grid>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn Header="Datasheet" MinWidth="150">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <Button Margin="10,0" Click="Datasheet_Click">
+                <Button.Style>
+                  <Style TargetType="Button">
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding Path=Datasheet.IsGoodPath}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Button.Style>
+                Open
+              </Button>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <StackPanel Margin="10" Orientation="Horizontal">
+                <TextBox
+                  MinWidth="70"
+                  MaxWidth="100"
+                  TextWrapping="WrapWithOverflow"
+                  MaxLines="30"
+                  TextAlignment="Right"
+                  Text="{Binding Path=Datasheet.Path, UpdateSourceTrigger=PropertyChanged}"
+                />
+                <Button Click="BrowseDatasheet_Click">Browse</Button>
+              </StackPanel>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Grid Grid.Column="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Expander Grid.Column="0" Header="Invoice" ExpandDirection="Left">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="1">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <TextBlock>All Invoices</TextBlock>
+              <ListView
+                Grid.Row="1"
+                ItemsSource="{Binding Path=MainVM.User.Invoices}"
+                SelectedItem="{Binding Path=SelectedInvoice}"
+              >
+                <ListView.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Path=OrderNumber}"/>
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+            </Grid>
+          </Border>
+
+          <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Padding="0,0,10,0">Order #</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Padding="0,0,10,0">Parts</TextBlock>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=SelectedInvoice.OrderNumber}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=SelectedInvoice.Parts.Count}"/>
+              </Grid>
+            </Border>
+
+            <DataGrid
+              Grid.Row="1"
+              ItemsSource="{Binding Path=SelectedInvoice.Parts}"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              AlternatingRowBackground="AliceBlue"
+            />
+          </Grid>
         </Grid>
+      </Expander>
     </Grid>
+  </Grid>
 </UserControl>

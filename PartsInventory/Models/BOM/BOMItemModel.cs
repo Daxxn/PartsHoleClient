@@ -1,4 +1,10 @@
-﻿using MVVMLibrary;
+﻿using CSVParserLibrary.Models;
+
+using MVVMLibrary;
+
+using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.Packages;
 using System;
 using System.Collections.Generic;
@@ -8,60 +14,7 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.BOM
 {
-   public enum PartType
-   {
-      Unknown = 0,
-
-      Resistor,
-      Capacitor,
-      Inductor,
-      IC,
-      Arduino,
-      Battery,
-      CapacitorNetwork,
-      ResistorNetwork,
-      Diode,
-      DiodeNetwork,
-      Display,
-      Fuse,
-      FerriteBead,
-      Fiducial,
-      Filter,
-      InfraredDiode,
-      Connector,
-      Jumper,
-      Relay,
-      Speaker,
-      Motor,
-      Microphone,
-      OptoIsolator,
-      PowerSupply,
-      Transistor,
-      Thermistor,
-      Varistor,
-      Switch,
-      Transformer,
-      Thermocouple,
-      TestPoint,
-      Tuner,
-      VacuumTube,
-      VoltageRegulator,
-      Potentiometer,
-      Crystal,
-      Oscillator,
-      BridgeRectifier,
-      Attenuator,
-      DelayLine,
-      Hardware,
-      DirectionalCoupler,
-      Socket,
-
-      USBConnector,
-      SenseResistor,
-      RotaryEncoder,
-   }
-
-   public class BOMItemModel : PartModel
+    public class BOMItemModel : PartModel
    {
       #region Local Props
       private static readonly Dictionary<string, PartType> PartTypeDecoder = new()
@@ -188,19 +141,33 @@ namespace PartsInventory.Models.BOM
          }
          return b.ToString();
       }
+
+      public override string ToString()
+      {
+         return $"{ReferenceDesignator} {Reference} {Value} {Library}";
+      }
       #endregion
 
       #region Full Props
+      [CSVProperty("Ref")]
       public string ReferenceDesignator
       {
          get => _refDes;
          set
          {
             _refDes = value;
+            if (value.Length <= 0)
+               return;
+            var refDes = GetRefDesType(value);
+            if (PartTypeDecoder.ContainsKey(refDes))
+            {
+               Type = PartTypeDecoder[refDes];
+            }
             OnPropertyChanged();
          }
       }
 
+      [CSVProperty("Value")]
       public ValueModel Value
       {
          get => _value;
@@ -211,6 +178,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
+      [CSVProperty("Footprint")]
       public PackageModel? Package
       {
          get => _package;
@@ -221,6 +189,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
+      [CSVProperty("Library")]
       public string Library
       {
          get => _library;
@@ -241,6 +210,7 @@ namespace PartsInventory.Models.BOM
          }
       }
 
+      [CSVProperty("Symbol")]
       public string? Symbol
       {
          get => _symbol;

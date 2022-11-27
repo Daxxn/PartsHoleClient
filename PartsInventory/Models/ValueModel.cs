@@ -42,6 +42,11 @@ namespace PartsInventory.Models
 
       #region Constructors
       public ValueModel() { }
+      public ValueModel(string data)
+      {
+         _raw = data;
+         ParseValue(data);
+      }
       #endregion
 
       #region Methods

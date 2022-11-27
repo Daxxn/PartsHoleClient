@@ -1,4 +1,6 @@
-﻿using PartsInventory.ViewModels;
+﻿using PartsInventory.Models.Inventory.Main;
+using PartsInventory.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +16,33 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
+namespace PartsInventory.Views;
+
+public partial class InvoiceParserView : UserControl
 {
-   /// <summary>
-   /// Interaction logic for InvoiceParserView.xaml
-   /// </summary>
-   public partial class InvoiceParserView : UserControl
+   private readonly IInvoiceParserViewModel VM;
+   public InvoiceParserView(IInvoiceParserViewModel vm)
    {
-      private InvoiceParserViewModel VM { get; init; }
-      public InvoiceParserView()
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
+   }
+
+   private void InvoiceView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+   {
+      if (sender is ListView lv)
       {
-         VM = MainViewModel.Instance.InvoiceParserVM;
-         DataContext = VM;
-         InitializeComponent();
+         if (lv.SelectedItems.Count > 0)
+         {
+            VM.SelectedInvoices = new();
+            foreach (var item in lv.SelectedItems)
+            {
+               if (item is InvoiceModel invoice)
+               {
+                  VM.SelectedInvoices.Add(invoice);
+               }
+            }
+         }
       }
    }
 }

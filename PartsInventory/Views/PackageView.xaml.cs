@@ -1,4 +1,5 @@
 ﻿using PartsInventory.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +15,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PartsInventory.Views
+namespace PartsInventory.Views;
+
+public partial class PackageView : UserControl
 {
-   /// <summary>
-   /// Interaction logic for PackageView.xaml
-   /// </summary>
-   public partial class PackageView : UserControl
+   private readonly IPackageViewModel VM;
+   public PackageView(IPackageViewModel vm)
    {
-      private PackageViewModel VM { get; init; }
-      public PackageView()
-      {
-         VM = MainViewModel.Instance.PackageVM;
-         DataContext = VM;
-         InitializeComponent();
-      }
+      VM = vm;
+      DataContext = VM;
+      InitializeComponent();
    }
 }

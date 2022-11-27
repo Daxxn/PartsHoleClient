@@ -1,5 +1,6 @@
 ﻿using MVVMLibrary;
 using PartsInventory.Models.Enums;
+using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Models.Packages;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Passives
 {
-   public abstract class Passive : Model, IPassive
+    public abstract class Passive : Model, IPassive
    {
       #region Local Props
       protected readonly string[] PTHIndicators = new string[]
@@ -233,6 +234,11 @@ namespace PartsInventory.Models.Passives
 
       public char UnitLetter => '\0';
       public char TypeLetter => '\0';
+
+      public string[] StandardPackageSizes
+      {
+         get => Models.Constants.StandardSMDPackages;
+      }
       #endregion
    }
 }

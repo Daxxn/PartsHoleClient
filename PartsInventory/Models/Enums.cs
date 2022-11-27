@@ -1,16 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Enums
 {
+   #region API
+   public enum ModelIDSelector
+   {
+      PARTS = 1,
+      INVOICES = 2,
+      BINS = 3,
+      PARTNUMBERS = 4,
+      NONE = 0
+   }
+
+   public enum APIMethod
+   {
+      GET,
+      POST,
+      PUT,
+      DELETE,
+   }
+
+   public enum APISubHeader
+   {
+      none,
+      many,
+      login,
+      logout,
+
+   }
+   #endregion
+   public enum EIAStandard
+   {
+      E6 = 20,
+      E12 = 10,
+      E24 = 5,
+      E48 = 2,
+      E96 = 1,
+      E192 = 0,
+   };
 
    public enum SupplierType
    {
       DigiKey,
       Mouser,
+      NA,
    };
 
    #region Passives
@@ -25,12 +63,19 @@ namespace PartsInventory.Models.Enums
    {
       SMD,
       PTH,
-      UNK
+      UNK,
+   };
+
+   public enum PassiveType
+   {
+      Resistor = 0,
+      Capacitor = -12,
+      Inductor = -3,
    };
    #endregion
 
    #region Part Number
-   public enum PartNumberType
+   public enum PartNumberCategory
    {
       Other,
 
@@ -47,7 +92,7 @@ namespace PartsInventory.Models.Enums
       Switch_Input,
    };
 
-   public enum PartNumberSubTypes
+   public enum PartNumberSubCategory
    {
       Other = 0,
       Resistor = 0101,
@@ -70,7 +115,8 @@ namespace PartsInventory.Models.Enums
       Circular = 0405,
       FlatFlex = 0406,
       Audio = 0407,
-      USB = 08,
+      [Display(Name="USB")]
+      CONN_USB = 0408,
       BarrelJack = 0409,
       MOLEX = 0410,
       Programming = 0411,
@@ -93,6 +139,8 @@ namespace PartsInventory.Models.Enums
       SwitchingReg = 0805,
       Interface = 0806,
       AnalogLogic = 0807,
+      [Display(Name="USB")]
+      IC_USB = 0808,
       ADC = 0809,
       DAC = 0810,
       ROM = 0811,
@@ -125,5 +173,58 @@ namespace PartsInventory.Models.Enums
       Keylock = 1111,
       Navigation = 1112,
    };
+
+   public enum PartType
+   {
+      Unknown = 0,
+
+      Resistor,
+      Capacitor,
+      Inductor,
+      IC,
+      Arduino,
+      Battery,
+      CapacitorNetwork,
+      ResistorNetwork,
+      Diode,
+      DiodeNetwork,
+      Display,
+      Fuse,
+      FerriteBead,
+      Fiducial,
+      Filter,
+      InfraredDiode,
+      Connector,
+      Jumper,
+      Relay,
+      Speaker,
+      Motor,
+      Microphone,
+      OptoIsolator,
+      PowerSupply,
+      Transistor,
+      Thermistor,
+      Varistor,
+      Switch,
+      Transformer,
+      Thermocouple,
+      TestPoint,
+      Tuner,
+      VacuumTube,
+      VoltageRegulator,
+      Potentiometer,
+      Crystal,
+      Oscillator,
+      BridgeRectifier,
+      Attenuator,
+      DelayLine,
+      Hardware,
+      DirectionalCoupler,
+      Socket,
+
+      USBConnector,
+      SenseResistor,
+      RotaryEncoder,
+   }
    #endregion
 }

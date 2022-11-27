@@ -7,710 +7,720 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Title="PartNumberTemplateDialog" Height="880" Width="1616">
-    <Window.Resources>
-        <Style TargetType="Button" x:Key="CanvasButton">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Width" Value="85"/>
-            <Setter Property="Height" Value="40"/>
-        </Style>
-    </Window.Resources>
-    <Grid>
+  <Window.Resources>
+    <Style TargetType="Button" x:Key="CanvasButton">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Width" Value="85"/>
+      <Setter Property="Height" Value="40"/>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Canvas Grid.Row="0" x:Name="TemplateCanvas">
+      <Image
+        Canvas.Left="0" Canvas.Top="0"
+        Width="1600"
+        Source="/Resources/PartNumberTemplateREV1.png"
+      />
+
+      <!--#region Type Prefix Col-->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0100"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0200"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="183"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0300"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="244.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0400"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0500"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="366.75"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0600"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="428"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0700"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="489.25"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0800"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0900"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="604"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1000"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1100"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="7.5"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 1 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0101"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0201"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="183"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0301"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="244.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0401"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0501"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="366.75"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0601"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="428"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0701"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="489.25"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0801"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0901"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="604"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1001"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1101"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="130"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 2 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0102"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0202"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="183"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0302"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="244.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0402"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0502"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="366.75"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0602"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="428"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0702"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="489.25"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0802"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0902"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="604"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1002"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1102"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="222"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 3 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0103"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0203"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="183"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0303"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="244.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0403"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0503"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="366.75"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0603"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="428"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0703"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="489.25"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0803"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0903"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="604"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1003"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1103"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="313.75"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 4 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0104"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0204"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="183"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0404"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0604"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="428"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0704"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="489.25"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0804"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0904"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="604"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1004"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1104"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="405.5"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 5 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0105"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0405"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0705"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="489.25"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0805"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0905"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="604"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1005"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1105"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="497.25"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 6 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0106"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="589"
+        Canvas.Top="122"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0406"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="589"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0806"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="589"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1006"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="589"
+        Canvas.Top="657.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1106"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="589"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 7 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0407"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="681"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0807"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="681"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1107"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="681"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 8 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0408"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="772.5"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0808"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="772.5"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1108"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="772.5"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 9 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0409"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="864.5"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0809"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="864.5"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1109"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="864.5"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 10 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0410"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="956.5"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0810"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="956.5"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1110"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="956.5"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 11 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0411"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1048.25"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0811"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1048.25"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1111"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1048.25"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 12 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0412"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1140"
+        Canvas.Top="305.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0812"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1140"
+        Canvas.Top="550.5"
+      />
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="1112"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1140"
+        Canvas.Top="711"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 13 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0813"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1232"
+        Canvas.Top="550.5"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 14 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0814"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1323.75"
+        Canvas.Top="550.5"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 15 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0815"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1415.5"
+        Canvas.Top="550.5"
+      />
+      <!--#endregion-->
+
+      <!--#region Col 16 -->
+      <Button
+        Command="{Binding Path=SelectTypeNumCmd}"
+        CommandParameter="0816"
+        Style="{StaticResource CanvasButton}"
+        Canvas.Left="1507.25"
+        Canvas.Top="550.5"
+      />
+      <!--#endregion-->
+    </Canvas>
+
+    <Border Grid.Row="1">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Canvas Grid.Row="0" x:Name="TemplateCanvas">
-            <Image Canvas.Left="0" Canvas.Top="0" Width="1600" Source="/Resources/PartNumberTemplateREV1.png"/>
 
-            <!--#region Type Prefix Col-->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0100"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="122"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0200"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="183"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0300"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="244.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0400"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0500"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="366.75"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0600"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="428"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0700"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="489.25"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0800"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0900"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="604"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1000"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1100"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="7.5"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
+        <TextBlock FontSize="15" Grid.ColumnSpan="4">Create Part Number</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Padding="10,0,4,0">Prefix</TextBlock>
+        <TextBox
+          Grid.Row="1" Grid.Column="1"
+          Text="{Binding Path=PartNumber.TypeNum, UpdateSourceTrigger=PropertyChanged, StringFormat=D4}"
+        />
+        <TextBlock Grid.Row="1" Grid.Column="2" Padding="10,0,4,0">ID</TextBlock>
+        <TextBox
+          Grid.Row="1" Grid.Column="3"
+          Text="{Binding Path=PartNumber.ID, UpdateSourceTrigger=PropertyChanged, StringFormat=D4}"
+        />
 
-            <!--#region Col 1 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0101"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="122"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0201"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="183"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0301"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="244.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0401"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0501"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="366.75"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0601"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="428"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0701"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="489.25"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0801"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0901"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="604"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1001"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1101"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="130"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 2 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0102"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="122"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0202"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="183"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0302"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="244.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0402"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0502"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="366.75"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0602"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="428"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0702"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="489.25"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0802"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0902"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="604"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1002"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1102"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="222"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 3 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0103"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="122"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0203"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="183"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0303"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="244.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0403"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0503"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="366.75"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0603"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="428"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0703"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="489.25"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0803"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0903"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="604"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1003"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1103"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="313.75"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 4 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0104"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="122"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0204"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="183"
-            />
-            
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0404"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="305.5"
-            />
-            
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0604"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="428"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0704"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="489.25"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0804"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0904"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="604"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1004"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1104"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="405.5"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 5 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0105"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="122"
-            />
-            
-
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0405"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="305.5"
-            />
-
-            
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0705"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="489.25"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0805"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0905"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="604"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1005"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1105"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="497.25"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 6 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0106"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="589"
-                Canvas.Top="122"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0406"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="589"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0806"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="589"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1006"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="589"
-                Canvas.Top="657.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1106"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="589"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 7 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0407"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="681"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0807"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="681"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1107"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="681"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 8 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0408"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="772.5"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0808"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="772.5"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1108"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="772.5"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 9 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0409"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="864.5"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0809"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="864.5"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1109"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="864.5"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 10 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0410"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="956.5"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0810"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="956.5"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1110"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="956.5"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 11 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0411"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1048.25"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0811"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1048.25"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1111"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1048.25"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 12 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0412"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1140"
-                Canvas.Top="305.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0812"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1140"
-                Canvas.Top="550.5"
-            />
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="1112"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1140"
-                Canvas.Top="711"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 13 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0813"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1232"
-                Canvas.Top="550.5"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 14 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0814"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1323.75"
-                Canvas.Top="550.5"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 15 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0815"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1415.5"
-                Canvas.Top="550.5"
-            />
-            <!--#endregion-->
-
-            <!--#region Col 16 -->
-            <Button
-                Command="{Binding Path=SelectTypeNumCmd}"
-                CommandParameter="0816"
-                Style="{StaticResource CanvasButton}"
-                Canvas.Left="1507.25"
-                Canvas.Top="550.5"
-            />
-            <!--#endregion-->
-        </Canvas>
-
-        <Border Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock FontSize="15" Grid.ColumnSpan="4">Create Part Number</TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="0" Padding="10,0,4,0">Prefix</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=PartNumber.TypeNum, UpdateSourceTrigger=PropertyChanged, StringFormat=D4}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Padding="10,0,4,0">ID</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Path=PartNumber.ID, UpdateSourceTrigger=PropertyChanged, StringFormat=D4}"/>
-
-                <Button Grid.ColumnSpan="4" Grid.Row="2" Command="{Binding Path=CreatePartNumCmd}" Margin="4,6" Padding="6">Create</Button>
-            </Grid>
-        </Border>
-    </Grid>
+        <Button
+          Grid.ColumnSpan="4" Grid.Row="2"
+          Margin="4,6" Padding="6"
+          Command="{Binding Path=CreatePartNumCmd}"
+        >
+          Create
+        </Button>
+      </Grid>
+    </Border>
+  </Grid>
 </Window>

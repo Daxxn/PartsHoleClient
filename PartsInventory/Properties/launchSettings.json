@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "PartsInventory": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "IMPL": "MAIN"
+      },
+      "remoteDebugEnabled": false
+    },
+    "PartsInventoryAPI": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "IMPL": "MAIN",
+        "API": "TRUE"
+      },
+      "remoteDebugEnabled": false
+    }
+  }
+}
