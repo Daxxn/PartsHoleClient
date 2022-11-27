@@ -33,9 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSVParserLibrary" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="MongoDB.Bson" Version="2.18.0" />
+    <PackageReference Include="MVVMLibrary" Version="1.0.1" />
     <PackageReference Include="RestSharp" Version="108.0.2" />
   </ItemGroup>
 
@@ -70,9 +72,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\CSVParserLibrary\CSVParserLibrary\CSVParserLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\JsonReaderLibrary\JsonReaderLibrary\JsonReaderLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\MVVMLibrary\MVVMLibrary\MVVMLibrary.csproj" />
     <ProjectReference Include="..\..\PartsHoleAPI\PartsHoleRestLibrary\PartsHoleRestLibrary.csproj" />
   </ItemGroup>
 

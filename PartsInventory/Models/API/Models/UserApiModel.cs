@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
-using MVVMLibrary;
 
 namespace PartsInventory.Models.API.Models
 {
