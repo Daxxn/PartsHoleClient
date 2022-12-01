@@ -1,6 +1,8 @@
 # Parts Hole
 
-Where parts go to **stop** dissapearing! 
+Where parts go to **stop** dissapearing!
+
+note: this is the client. See the [API Here](https://github.com/Daxxn/PartsHoleAPI)
 
 ## The Problem
 
