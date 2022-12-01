@@ -1,20 +1,13 @@
-﻿using CSVParserLibrary.Models;
+﻿using System;
+
+using CSVParserLibrary.Models;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-using MVVMLibrary;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartModel : BaseModel
+   public class PartModel : BaseModel, IModel
    {
       #region Local Props
       public const string BlankPartNumber = "BLANK_PART";

@@ -1,19 +1,13 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using System.Collections.Generic;
 
-using MVVMLibrary;
+using MongoDB.Bson;
 
 using PartsInventory.Models.Enums;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartNumber : BaseModel, IComparable<PartNumber>
+   public class PartNumber : BaseModel, IComparable<PartNumber>, IModel
    {
       #region Local Props
       public static Dictionary<PartNumberCategory, PartNumberSubCategory[]> SubTypeDisplay = new()

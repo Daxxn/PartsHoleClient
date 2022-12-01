@@ -25,7 +25,11 @@ namespace PartsInventory
    /// </summary>
    public partial class App : Application
    {
+      #region Props
       public static IHost? AppHost { get; private set; }
+      #endregion
+
+      #region Constructors
       public App()
       {
          AppHost = Host.CreateDefaultBuilder()
@@ -53,9 +57,15 @@ namespace PartsInventory
             })
             .Build();
       }
+      #endregion
+
+      #region Methods
       protected override async void OnStartup(StartupEventArgs e)
       {
          await AppHost!.StartAsync();
+
+         Settings.Default.ApiUpdateInterval = 1000;
+         Settings.Default.Save();
 
          var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
          mainWindow.Show();
@@ -115,5 +125,11 @@ namespace PartsInventory
          services.AddAbstractFactory<ICSVParser, CSVParser>();
          services.AddSingleton<ICSVParserOptions, CSVParserOptions>();
       }
+
+      //private static void ConnectUtilServices(IServiceCollection services)
+      //{
+      //   //services.AddAbstractFactory<ITimerWrapper<string>, TimerWrapper<string>>();
+      //}
+      #endregion
    }
 }

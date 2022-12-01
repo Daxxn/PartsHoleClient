@@ -25,13 +25,12 @@ namespace PartsInventory.Models.Enums
       DELETE,
    }
 
-   public enum APISubHeader
+   public enum BufferType
    {
-      none,
-      many,
-      login,
-      logout,
-
+      PARTS,
+      PARTNUMBERS,
+      INVOICES,
+      BINS
    }
    #endregion
    public enum EIAStandard

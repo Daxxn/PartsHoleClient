@@ -1,19 +1,13 @@
-﻿using CSVParserLibrary.Models;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 using MongoDB.Bson;
 
-using MVVMLibrary;
 using PartsInventory.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class InvoiceModel : BaseModel
+   public class InvoiceModel : BaseModel, IModel
    {
       #region Local Props
       private uint _orderNumber = 0;

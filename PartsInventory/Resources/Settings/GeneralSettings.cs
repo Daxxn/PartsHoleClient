@@ -12,6 +12,8 @@ public class GeneralSettings
    public string AspectRatio { get; set; } = "16/9";
    public int CurrentMainTab { get; set; }
    public int CurrentPassivesTab { get; set; }
+   public double APIUpdateInterval { get; set; } = 1 * 60;
+   public double APIUpdateIntervalms { get => APIUpdateInterval * 1000; }
    public TabSettings TabIndecies { get; set; } = null!;
 }
 

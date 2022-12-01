@@ -1,18 +1,8 @@
 ﻿//using JsonReaderLibrary;
-using MVVMLibrary;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Windows.Markup;
 
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class BinModel : BaseModel
+   public class BinModel : BaseModel, IModel
    {
       #region Local Props
       private int _horz = 0;
