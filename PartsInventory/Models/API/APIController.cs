@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -426,6 +427,28 @@ namespace PartsInventory.Models.API
          catch (Exception e)
          {
             MessageBox.Show(e.Message, "File Parse Error");
+            throw;
+         }
+      }
+
+      // BROKEN
+      public async Task<IEnumerable<InvoiceModel>?> ParseInvoiceFiles(string[] paths)
+      {
+         try
+         {
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/files/many");
+            request.AlwaysMultipartFormData= true;
+            foreach (var path in paths)
+            {
+               request = request.AddFile($"files[{Path.GetFileName(path)}]", path);
+               request.AddParameter("key", "value", ParameterType.GetOrPost);
+            }
+            var response = await Client.PostAsync<APIResponse<IEnumerable<InvoiceApiModel>>>(request);
+            return ParseApiResponse(response)?.Select(inv =>  inv.ToModel());
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show($"Unknown file parse error.\n{e.Message}", "Error");
             throw;
          }
       }

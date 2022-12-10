@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 
 using CSVParserLibrary;
 
@@ -12,6 +14,7 @@ using MVVMLibrary;
 using PartsInventory.Models;
 using PartsInventory.Models.BOM;
 using PartsInventory.Models.Inventory;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -21,6 +24,7 @@ namespace PartsInventory.ViewModels.Main
       private readonly IMainViewModel _mainViewModel;
       private readonly IAbstractFactory<ICSVParser> _parserFactory;
       private ProjectModel? _project = null;
+      private BOMModel? _bom = null;
       private int _currentTab = 0;
       private ICSVParserOptions _parserOptions;
 
@@ -42,37 +46,37 @@ namespace PartsInventory.ViewModels.Main
          _parserOptions = new CSVParserOptions()
          {
             ExclusionFunctions = new()
+            {
+               { "end-of-parts", (line) => line.Length == 1 && line[0] == "end" },
+               { "source-line", (line) =>
+               {
+               if (line.Length > 1)
+               {
+                  if (line[0] == "Source")
                   {
-                     { "end-of-parts", (line) => line.Length == 1 && line[0] == "end" },
-                     { "source-line", (line) =>
+                     BOM!.Source = line[1];
+                     return true;
+                  }
+               }
+               return false;
+               } },
+               { "date-line", (line) =>
+               {
+                  if (line.Length > 1)
+                  {
+                     if (line[0] == "Date")
                      {
-                        if (line.Length > 1)
+                        if (DateTime.TryParse(line[1], out DateTime date))
                         {
-                           if (line[0] == "Source")
-                           {
-                              Project!.Source = line[1];
-                              return true;
-                           }
+                           BOM!.Date = date;
                         }
-                        return false;
-                     } },
-                     { "date-line", (line) =>
-                     {
-                        if (line.Length > 1)
-                        {
-                           if (line[0] == "Date")
-                           {
-                              if (DateTime.TryParse(line[1], out DateTime date))
-                              {
-                                 Project!.Date = date;
-                              }
-                              return true;
-                           }
-                        }
-                        return false;
-                     } },
-                     { "part-count-line", (line) => line.Length == 2 || line[0] == "PartCount" },
-                  },
+                        return true;
+                     }
+                  }
+                  return false;
+               } },
+               { "part-count-line", (line) => line.Length == 2 || line[0] == "PartCount" },
+            },
             IgnoreCase = false,
             IgnoreLineParseErrors = true,
          };
@@ -95,18 +99,35 @@ namespace PartsInventory.ViewModels.Main
          {
             try
             {
-
-               Project = new(dialog.FileName);
+               BOM = new(dialog.FileName);
                var parser = _parserFactory.Create();
                var result = parser.ParseFile<BOMItemModel>(dialog.FileName, _parserOptions);
-               Project.BOM = new()
-               {
-                  Parts = new(result.Values),
-               };
+               BOM.Parts = new(result.Values);
             }
             catch (Exception e)
             {
                MessageBox.Show(e.Message);
+            }
+         }
+      }
+
+      private void FindParts()
+      {
+         if (MainVM.User.Parts.Count == 0)
+            return;
+         if (BOM is null)
+            return;
+         var foundParts = new List<PartModel>();
+
+         foreach (var bomPart in BOM.Parts)
+         {
+            if (MainVM.User.Parts.FirstOrDefault(p => p.Reference == bomPart.Reference) is PartModel part)
+            {
+               foundParts.Add(part);
+            }
+            if (bomPart.ReferenceDesignator == "R" || bomPart.ReferenceDesignator == "C" || bomPart.ReferenceDesignator == "L")
+            {
+               //if (foundParts.FirstOrDefault(fp => fp.))
             }
          }
       }
@@ -167,11 +188,6 @@ namespace PartsInventory.ViewModels.Main
             }
          });
       }
-
-      //public void PartsChanged_Main(object sender, UserModel e)
-      //{
-      //   User = e;
-      //}
       #endregion
 
       #region Full Props
@@ -186,6 +202,16 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             _project = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public BOMModel? BOM
+      {
+         get => _bom;
+         set
+         {
+            _bom = value;
             OnPropertyChanged();
          }
       }

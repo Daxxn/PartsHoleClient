@@ -56,7 +56,7 @@
                   Grid.Column="0"
                   FontSize="18"
                   Padding="50,0,0,0"
-                  Text="{Binding Path=Project.Name}"
+                  Text="{Binding Path=BOM.Name}"
                 />
 
                 <TextBlock
@@ -64,14 +64,14 @@
                   HorizontalAlignment="Right"
                   Padding="0,0,50,0"
                   FontSize="18"
-                  Text="{Binding Path=Project.REV}"
+                  Text="{Binding Path=BOM.REV}"
                 />
               </Grid>
             </Border>
 
             <DataGrid
               Grid.Row="1"
-              ItemsSource="{Binding Path=Project.BOM.Parts}"
+              ItemsSource="{Binding Path=BOM.Parts}"
               AutoGenerateColumns="False"
               CanUserAddRows="False"
               CanUserDeleteRows="False"

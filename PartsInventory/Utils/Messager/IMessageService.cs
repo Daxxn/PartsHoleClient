@@ -9,6 +9,6 @@ namespace PartsInventory.Utils.Messager
       string? Message { get; set; }
       SolidColorBrush SeverityColor { get; set; }
 
-      void AddMessage(string message, Severity severity);
+      void AddMessage(string message, Severity severity = Severity.Info);
    }
 }

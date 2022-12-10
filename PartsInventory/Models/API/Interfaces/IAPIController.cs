@@ -218,6 +218,15 @@ namespace PartsInventory.Models.API
       /// <param name="filePath">Path to the invoice file.</param>
       /// <returns>New <see cref="InvoiceModel"/> created by the API.</returns>
       Task<InvoiceModel?> ParseInvoiceFile(string filePath);
+
+      /// <summary>
+      /// BROKEN - RestSharp isnt sending the files correctly. theres probably an un-documented magic spell needed.
+      /// <para/>
+      /// Sends DigiKey invoice files to the API to have a new invoice created.
+      /// </summary>
+      /// <param name="paths">Path to the invoice files.</param>
+      /// <returns>New <see cref="InvoiceModel"/>s created by the API.</returns>
+      Task<IEnumerable<InvoiceModel>?> ParseInvoiceFiles(string[] paths);
       #endregion
       #region Bins
       /// <summary>

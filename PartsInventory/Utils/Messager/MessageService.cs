@@ -63,7 +63,7 @@ public class MessageService : Model, IMessageService
       }
    }
 
-   public void AddMessage(string msg, Severity severity)
+   public void AddMessage(string msg, Severity severity = Severity.Info)
    {
       if (Message is null)
       {

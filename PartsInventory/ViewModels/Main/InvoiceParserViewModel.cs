@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
 
@@ -15,6 +16,7 @@ using PartsInventory.Models.Enums;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
+using PartsInventory.Utils.Messager;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -25,6 +27,8 @@ namespace PartsInventory.ViewModels.Main
       private readonly IOptions<DirSettings> _dirSettings;
       private readonly IOptions<APISettings> _apiSettings;
       private readonly IAPIController _apiController;
+      private readonly ILogger<InvoiceParserViewModel> _logger;
+      private readonly IMessageService _messageService;
 
       public event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent = (s, e) => { };
       //private InvoiceModel? _selectedInvoice = null;
@@ -47,21 +51,20 @@ namespace PartsInventory.ViewModels.Main
          IMainViewModel mainVM,
          IOptions<DirSettings> dirSettings,
          IOptions<APISettings> apiSettings,
-         IAPIController apiController)
+         IAPIController apiController,
+         ILogger<InvoiceParserViewModel> logger,
+         IMessageService messageService)
       {
          _mainVM = mainVM;
          _dirSettings = dirSettings;
          _apiSettings = apiSettings;
          _apiController = apiController;
+         _logger = logger;
+         _messageService = messageService;
 
          ParseTestCmd = new(ParseTest);
          OpenInvoicesCmd = new(OpenInvoices);
          OpenAllInvoicesCmd = new(OpenAllInvoices);
-         //ClearInvoicesCmd = new(() =>
-         //{
-         //   Invoices.Clear();
-         //   SelectedInvoice = null;
-         //});
          ClearInvoicesCmd = new();
          AddToPartsCmd = new(AddToParts);
          AddToPartsEvent += This_AddToPartsEvent;
@@ -69,7 +72,7 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Methods
-      private void OpenInvoices()
+      private async void OpenInvoices()
       {
          OpenFileDialog dialog = new()
          {
@@ -81,28 +84,34 @@ namespace PartsInventory.ViewModels.Main
 
          if (dialog.ShowDialog() == true)
          {
-            ParseInvoices(dialog.FileNames);
+            if (dialog.FileNames.Length == 0)
+            {
+               _messageService.AddMessage("No invoice files selected.", Severity.Warning);
+               return;
+            }
+            _messageService.AddMessage($"Sending {dialog.FileNames.Length} invoice files to API.");
+            await ParseInvoices(dialog.FileNames);
          }
       }
 
-      private void OpenAllInvoices()
+      private async void OpenAllInvoices()
       {
-         List<string> paths = new(
-            Directory.GetFiles(
-               Path.Combine(_dirSettings.Value.PartInvoiceDir, _dirSettings.Value.DigiKeyDir)
-               ));
+         var filePaths = Directory.GetFiles(
+               Path.Combine(_dirSettings.Value.PartInvoiceDir, _dirSettings.Value.DigiKeyDir));
+         await ParseInvoices(filePaths);
          //paths.AddRange(Directory.GetDirectories(PathSettings.Default.MouserDir));
 
-         ParseInvoices(paths.ToArray());
+         //ParseInvoicesOLD(paths.ToArray());
 
-         if (MainVM.User.Invoices.Count > 0 && SelectedInvoices is null)
-         {
-            SelectedInvoices = new()
-            {
-               MainVM.User.Invoices[0]
-            };
-         }
+         //if (MainVM.User.Invoices.Count > 0 && SelectedInvoices is null)
+         //{
+         //   SelectedInvoices = new()
+         //   {
+         //      MainVM.User.Invoices[0]
+         //   };
+         //}
       }
+
       private async void ParseTest()
       {
          OpenFileDialog dialog = new()
@@ -115,6 +124,7 @@ namespace PartsInventory.ViewModels.Main
          };
          if (dialog.ShowDialog() == true)
          {
+            _messageService.AddMessage($"Starting File Parse : {Path.GetFileName(dialog.FileName)}");
             var invoice = _apiController.ParseFileTest(dialog.FileName);
             if (invoice is null)
                return;
@@ -126,7 +136,7 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      private void ParseInvoices(string[] paths)
+      private void ParseInvoicesOLD(string[] paths)
       {
          foreach (var path in paths)
          {
@@ -153,6 +163,87 @@ namespace PartsInventory.ViewModels.Main
                   }
                }
             }
+         }
+      }
+
+      private async Task ParseInvoicesBroke(string[] paths)
+      {
+         try
+         {
+            var filteredPaths = paths.ToList().FindAll(path =>
+               int.TryParse(Path.GetFileNameWithoutExtension(path), out int orderNum)
+               && !MainVM.User.Invoices.Any(inv => inv.OrderNumber == orderNum)
+            );
+            if (!filteredPaths.Any())
+            {
+               _messageService.AddMessage("All files are either already parsed or unable to be parsed.", Severity.Warning);
+               return;
+            }
+            var newInvoices = await _apiController.ParseInvoiceFiles(filteredPaths.ToArray());
+            if (newInvoices is null)
+            {
+               _messageService.AddMessage("Unable to parse files..", Severity.Warning);
+               return;
+            }
+            if (!newInvoices.Any())
+            {
+               _messageService.AddMessage("No files to parse.", Severity.Warning);
+               return;
+            }
+            foreach (var invoice in newInvoices)
+            {
+               if (await _apiController.AddModelToUser(MainVM.User.Id, invoice.Id, ModelIDSelector.INVOICES))
+               {
+                  MainVM.User.Invoices.Add(invoice);
+                  MainVM.User.InvoiceIDs.Add(invoice.Id);
+               }
+               else
+               {
+                  _messageService.AddMessage($"Unable to add invoice {invoice.OrderNumber} to user.", Severity.Error);
+               }
+            }
+         }
+         catch (Exception e)
+         {
+            _messageService.AddMessage($"ERROR - {e.Message}", Severity.Error);
+         }
+      }
+
+      private async Task ParseInvoices(string[] paths)
+      {
+         try
+         {
+            var filteredPaths = paths.ToList().FindAll(path =>
+               int.TryParse(Path.GetFileNameWithoutExtension(path), out int orderNum)
+               && !MainVM.User.Invoices.Any(inv => inv.OrderNumber == orderNum)
+            );
+            if (!filteredPaths.Any())
+            {
+               _messageService.AddMessage("All files are either already parsed or unable to be parsed.", Severity.Warning);
+               return;
+            }
+            foreach (var path in filteredPaths)
+            {
+               var invoice = await _apiController.ParseInvoiceFile(path);
+               if (invoice is null)
+               {
+                  _messageService.AddMessage("Unable to parse files..", Severity.Warning);
+                  continue;
+               }
+               if (await _apiController.AddModelToUser(MainVM.User.Id, invoice.Id, ModelIDSelector.INVOICES))
+               {
+                  MainVM.User.Invoices.Add(invoice);
+                  MainVM.User.InvoiceIDs.Add(invoice.Id);
+               }
+               else
+               {
+                  _messageService.AddMessage($"Unable to add invoice {invoice.OrderNumber} to profile.", Severity.Error);
+               }
+            }
+         }
+         catch (Exception e)
+         {
+            _messageService.AddMessage($"ERROR - {e.Message}", Severity.Error);
          }
       }
 
@@ -187,7 +278,8 @@ namespace PartsInventory.ViewModels.Main
       public async Task<bool> GetAllInvoicesAsync()
       {
          var invoices = await _apiController.GetInvoices(_mainVM.User.InvoiceIDs);
-         if (invoices is null) return false;
+         if (invoices is null)
+            return false;
          _mainVM.User.Invoices = new(invoices);
          return true;
       }
