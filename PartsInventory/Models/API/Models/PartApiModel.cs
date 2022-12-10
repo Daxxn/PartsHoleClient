@@ -29,7 +29,7 @@ namespace PartsInventory.Models.API.Models
 
       public string? Datasheet { get; set; }
       public string[]? Tags { get; set; }
-      public string? BinLocation { get; set; }
+      public string? BinLocationId { get; set; }
       #endregion
 
       #region Constructors
@@ -55,6 +55,7 @@ namespace PartsInventory.Models.API.Models
             Slippage = Slippage,
             SupplierPartNumber = SupplierPartNumber,
             Tags = Tags,
+            BinLocationId = BinLocationId
          };
       }
 
@@ -73,7 +74,8 @@ namespace PartsInventory.Models.API.Models
             Reference = model.Reference?.ToString(),
             Slippage = model.Slippage,
             SupplierPartNumber = model.SupplierPartNumber,
-            Tags = model.Tags
+            Tags = model.Tags,
+            BinLocationId = model.BinLocation.Id,
          };
       }
       #endregion

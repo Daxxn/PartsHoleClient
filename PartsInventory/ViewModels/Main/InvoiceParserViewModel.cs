@@ -1,21 +1,20 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.Win32;
-using MVVMLibrary;
-
-using PartsInventory.Models.API;
-using PartsInventory.Models.Events;
-using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Main;
-using PartsInventory.Resources.Settings;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+
+using Microsoft.Extensions.Options;
+using Microsoft.Win32;
+
+using MVVMLibrary;
+
+using PartsInventory.Models.API;
+using PartsInventory.Models.Enums;
+using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory.Main;
+using PartsInventory.Resources.Settings;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -30,6 +29,7 @@ namespace PartsInventory.ViewModels.Main
       public event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent = (s, e) => { };
       //private InvoiceModel? _selectedInvoice = null;
       private ObservableCollection<InvoiceModel>? _selectedInvoices = null;
+      private ObservableCollection<DigiKeyPartModel>? _selectedParts = null;
 
       private bool _invoicesAdded = false;
 
@@ -118,7 +118,7 @@ namespace PartsInventory.ViewModels.Main
             var invoice = _apiController.ParseFileTest(dialog.FileName);
             if (invoice is null)
                return;
-            if (await _apiController.AddInvoiceToUser(MainVM.User.Id, invoice.Id))
+            if (await _apiController.AddModelToUser(MainVM.User.Id, invoice.Id, ModelIDSelector.INVOICES))
             {
                MainVM.User.Invoices.Add(invoice);
                MainVM.User.InvoiceIDs.Add(invoice.Id);
@@ -179,22 +179,6 @@ namespace PartsInventory.ViewModels.Main
          //}
       }
 
-      private async Task<bool> AddInvoice(InvoiceModel invoice)
-      {
-         throw new NotImplementedException("Part of old busted calls to the API.");
-         //invoice.IsAddedToParts = true;
-         //if (await _apiController.UpdateInvoice(invoice))
-         //{
-         //   var updatedParts = await _apiController.UpdateParts(invoice.Parts);
-         //   if (updatedParts?.All(x => x == true) == true)
-         //   {
-         //      invoice.IsAddedToParts = true;
-         //      return true;
-         //   }
-         //}
-         //return false;
-      }
-
       private void This_AddToPartsEvent(object? sender, AddInvoiceToPartsEventArgs e)
       {
          InvoicesAdded = true;
@@ -227,6 +211,16 @@ namespace PartsInventory.ViewModels.Main
          set
          {
             _invoicesAdded = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<DigiKeyPartModel>? SelectedParts
+      {
+         get => _selectedParts;
+         set
+         {
+            _selectedParts = value;
             OnPropertyChanged();
          }
       }

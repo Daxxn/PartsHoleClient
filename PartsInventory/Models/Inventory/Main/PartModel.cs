@@ -1,19 +1,13 @@
-﻿using CSVParserLibrary.Models;
+﻿using System;
+
+using CSVParserLibrary.Models;
 
 using MongoDB.Bson;
-
-using MVVMLibrary;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartModel : BaseModel
+   public class PartModel : BaseModel, IModel
    {
       #region Local Props
       public const string BlankPartNumber = "BLANK_PART";
@@ -25,11 +19,13 @@ namespace PartsInventory.Models.Inventory.Main
       private uint _alloc = 0;
       private uint _slip = 0;
       private decimal _unitPrice = 0;
-      //private decimal _extPrice = 0;
       private uint _backorder = 0;
 
       private Datasheet? _datasheet = null;
       private string[]? _tags = null;
+
+      [BsonRepresentation(BsonType.ObjectId)]
+      public string? BinLocationId { get; set; }
       private BinModel _binLocation = new();
       #endregion
 
@@ -47,22 +43,25 @@ namespace PartsInventory.Models.Inventory.Main
          };
       }
 
+      /// <summary>
+      /// Parses the <paramref name="lines"/> from the NewPartView.
+      /// </summary>
+      /// <param name="lines"><see cref="Array"/> of <see langword="string"/>s to parse.</param>
       public void ParseRawProps(string[] lines)
       {
          for (int i = 0; i < lines.Length; i++)
          {
-            if (string.IsNullOrEmpty(lines[i])) continue;
+            if (string.IsNullOrEmpty(lines[i]))
+               continue;
             if (lines[i][0] == '{')
             {
-               if (lines[i] == "{NA}") continue;
+               if (lines[i] == "{NA}")
+                  continue;
             }
             switch (i)
             {
                case 0:
-                  if (uint.TryParse(lines[i], out uint qty))
-                  {
-                     Quantity = qty;
-                  }
+                  Quantity = ParseUint(lines[i]);
                   break;
                case 1:
                   PartNumber = lines[i].Trim();
@@ -77,17 +76,14 @@ namespace PartsInventory.Models.Inventory.Main
                   Description = lines[i].Trim();
                   break;
                case 5:
-                  if (decimal.TryParse(lines[i], out decimal price))
-                  {
-                     UnitPrice = price;
-                  }
+                  UnitPrice = ParseDec(lines[i]);
                   break;
                case 6:
                   Datasheet = new(lines[i].Trim());
                   break;
                case 7:
-                  // TODO - Add tags later
-                  // The tag system isnt even started yet. GAWD!! theres too much to do...
+               // TODO - Add tags later
+               // The tag system isnt even started yet. GAWD!! theres too much to do...
                default:
                   break;
             }
@@ -103,42 +99,6 @@ namespace PartsInventory.Models.Inventory.Main
          return !string.IsNullOrEmpty(SupplierPartNumber)
             && !string.IsNullOrEmpty(PartNumber)
             && Quantity != 0;
-      }
-
-      /// <summary>
-      /// parses the <paramref name="value"/> and sets it to <paramref name="prop"/>.
-      /// </summary>
-      /// <param name="prop">Property name</param>
-      /// <param name="value">Property value to parse</param>
-      public void ParseProp(string prop, string value)
-      {
-         switch (prop.ToLower())
-         {
-            case "quantity":
-               Quantity = ParseUint(value);
-               break;
-            case "part number":
-               SupplierPartNumber = value;
-               break;
-            case "manufacturer part number":
-               PartNumber = value;
-               break;
-            case "description":
-               Description = value;
-               break;
-            case "customer reference":
-               Reference = new(value);
-               break;
-            case "unit price":
-               UnitPrice = ParseDec(value);
-               break;
-            case "backorder":
-               Backorder = ParseUint(value);
-               break;
-
-            default:
-               break;
-         }
       }
 
       /// <summary>
@@ -207,16 +167,6 @@ namespace PartsInventory.Models.Inventory.Main
       private static string? ConvertCase(string? input, bool matchCase)
       {
          return matchCase && input is not null ? input.ToLower() : input;
-      }
-
-      private static int? ParseInt(string input)
-      {
-         var success = int.TryParse(input, out int val);
-         if (success)
-         {
-            return val;
-         }
-         return null;
       }
 
       private static uint ParseUint(string input)
@@ -359,6 +309,7 @@ namespace PartsInventory.Models.Inventory.Main
          set
          {
             _binLocation = value;
+            BinLocationId = value.Id;
             OnPropertyChanged();
          }
       }

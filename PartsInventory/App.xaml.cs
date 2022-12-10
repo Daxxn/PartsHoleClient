@@ -1,6 +1,7 @@
-﻿using CSVParserLibrary;
+﻿using System.Reflection;
+using System.Windows;
 
-using JsonReaderLibrary;
+using CSVParserLibrary;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,41 +10,33 @@ using Microsoft.Extensions.Logging;
 
 using PartsInventory.Models;
 using PartsInventory.Models.API;
+using PartsInventory.Models.API.Buffer;
+using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
+using PartsInventory.Utils.Messager;
 using PartsInventory.ViewModels;
-#if IMPL == MAIN
 using PartsInventory.ViewModels.Main;
-#elif IMPL == TESTING
-using PartsInventory.ViewModels.Testing;
-#elif IMPL == MOCK
-using PartsInventory.ViewModels.Mock;
-#endif
 using PartsInventory.Views;
-
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace PartsInventory
 {
-   /// <summary>
-   /// Interaction logic for App.xaml
-   /// </summary>
    public partial class App : Application
    {
+      #region Props
       public static IHost? AppHost { get; private set; }
+      #endregion
+
+      #region Constructors
       public App()
       {
          AppHost = Host.CreateDefaultBuilder()
+#if DEBUG
+            .UseEnvironment("development")
+#else
+            .UseEnvironment("production")
+#endif
             .ConfigureAppConfiguration((config) =>
             {
                config.AddJsonFile(@".\APIEndpoints.json");
@@ -65,9 +58,13 @@ namespace PartsInventory
                ConnectViewSevices(services);
                ConnectViewModelServices(services);
                ConnectModelServices(services);
+               ConnectUtilServices(services);
             })
             .Build();
       }
+      #endregion
+
+      #region Methods
       protected override async void OnStartup(StartupEventArgs e)
       {
          await AppHost!.StartAsync();
@@ -80,7 +77,6 @@ namespace PartsInventory
       }
       protected override async void OnExit(ExitEventArgs e)
       {
-         Settings.Default.Save();
          PathSettings.Default.Save();
          await AppHost!.StopAsync();
          base.OnExit(e);
@@ -98,6 +94,7 @@ namespace PartsInventory
          services.AddSingleton<PartNumberGeneratorView>();
          services.AddSingleton<PartsInventoryView>();
          services.AddSingleton<ProjectBOMView>();
+         services.AddSingleton<BinsView>();
 
          // Dialog Windows
          services.AddSingleton<PartNumberTemplateDialog>();
@@ -119,6 +116,7 @@ namespace PartsInventory
          services.AddSingleton<IProjectBOMViewModel, ProjectBOMViewModel>();
          services.AddSingleton<IPackageViewModel, PackageViewModel>();
          services.AddSingleton<INewPartViewModel, NewPartViewModel>();
+         services.AddSingleton<IBinsViewModel, BinsViewModel>();
       }
 
       private static void ConnectModelServices(IServiceCollection services)
@@ -127,16 +125,13 @@ namespace PartsInventory
          services.AddSingleton<IUserModel, UserModel>();
          services.AddAbstractFactory<ICSVParser, CSVParser>();
          services.AddSingleton<ICSVParserOptions, CSVParserOptions>();
-
-         // OMG !! this is gonna suck...
-         // It would require replacing everything with factories.
-         // Probably isnt worth it.
-         //services.AddTransient<IPartModel, PartModel>();
-         //services.AddTransient<IPartsCollection, PartsCollection>();
-         //services.AddTransient<IInvoiceModel, InvoiceModel>();
-         //services.AddTransient<IBinModel, BinModel>();
-         //services.AddTransient<IDatasheet, Datasheet>();
-         //services.AddTransient<IPartNumber, PartNumber>();
       }
+
+      private static void ConnectUtilServices(IServiceCollection services)
+      {
+         services.AddSingleton<IAPIBuffer, APIBuffer>();
+         services.AddSingleton<IMessageService, MessageService>();
+      }
+      #endregion
    }
 }

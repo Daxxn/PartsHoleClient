@@ -1,105 +1,115 @@
-﻿using MVVMLibrary;
-using PartsInventory.Models.Enums;
-using PartsInventory.Models.Inventory;
-using PartsInventory.Models.Inventory.Main;
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+
+using MVVMLibrary;
+
+using PartsInventory.Models.API;
+using PartsInventory.Models.Enums;
+using PartsInventory.Models.Extensions;
+using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.ViewModels.Main
 {
    public class PartNumberGeneratorViewModel : ViewModel, IPartNumberGeneratorViewModel
    {
       #region Local Props
-      private readonly IUserModel _user;
+      private readonly IMainViewModel _mainVM;
+      private readonly IAPIController _apiController;
+
+      private PartModel? _selectedPart = null;
       private ObservableCollection<PartModel>? _selectedParts = null;
-      //private UserModel? _allParts = null;
-      private PartNumber? _newPartNum = null;
+      private PartNumber? _newPartNum = new();
+      private PartNumber? _selectedPartNumber = null;
 
-      private PartNumberType _type = PartNumberType.Other;
-      private PartNumberSubTypes _subType = PartNumberSubTypes.Other;
+      private PartNumberCategory _category = PartNumberCategory.Other;
+      private PartNumberSubCategory _subCategory = PartNumberSubCategory.Other;
 
-      private PartNumberSubTypes[]? _selectedSubTypes = null;
+      private PartNumberSubCategory[]? _selectedSubCategories = PartNumber.SubTypeDisplay[PartNumberCategory.Other];
 
       #region Commands
       public Command NewCmd { get; init; }
       public Command ClearCmd { get; init; }
       public Command AssignToSelectedCmd { get; init; }
+      public Command RemoveCmd { get; init; }
       #endregion
       #endregion
 
       #region Constructors
-      public PartNumberGeneratorViewModel(IUserModel user)
+      public PartNumberGeneratorViewModel(IMainViewModel mainVM, IPartsInventoryViewModel partsVM, IAPIController apiController)
       {
-         _user = user;
+         _mainVM = mainVM;
+         _apiController = apiController;
 
+         partsVM.SelectedPartsChanged += SelectedPartsChanged_Inv;
          NewCmd = new(New);
          ClearCmd = new(() => NewPartNumber = null);
          AssignToSelectedCmd = new(AssignToSelectedPart);
+         RemoveCmd = new(Remove);
       }
       #endregion
 
       #region Methods
       /// <summary>
-      /// Replace. Theres an issues with the incremetation. It goes up a few numbers then it starts randomly repeating numbers.
+      /// Requests a new <see cref="PartNumber"/> from the API.
       /// </summary>
-      private void New()
+      private async void New()
       {
-         if (User.Parts is null)
+         if (Category == PartNumberCategory.Other)
             return;
-         NewPartNumber = PartNumber.Create(Type, SubType);
-         var matchingTypes = User.Parts.Where((p) => p.Reference?.TypeNum == NewPartNumber.TypeNum).ToArray();
-
-         if (matchingTypes != null)
+         if (SubCategory == PartNumberSubCategory.Other)
+            return;
+         var newPartNumber = await _apiController.NewPartNumber(_mainVM.User.Id, (uint)SubCategory);
+         if (newPartNumber == null)
          {
-            if (matchingTypes.Length == 0)
-            {
-               NewPartNumber.ID = 1;
-            }
-            else if (matchingTypes.Length > 1)
-            {
-               var ordered = matchingTypes.OrderBy((p) => p.Reference?.TypeNum).ToArray();
-               for (uint i = 0; i < ordered.Length; i++)
-               {
-                  if (ordered[i].Reference?.ID != i + 1)
-                  {
-                     NewPartNumber.ID = i;
-                  }
-               }
-               NewPartNumber.ID = ordered[^1].Reference!.ID + 1;
-            }
-            else
-            {
-               NewPartNumber.ID = matchingTypes[0].Reference!.ID + 1;
-            }
+            MessageBox.Show("Aborting part number generation.", "Warning");
+            return;
          }
+         MainVM.User.PartNumbers.Add(newPartNumber);
+         NewPartNumber = new();
       }
 
       /// <summary>
-      /// Assigns the newly generated part number to the selected part.
+      /// Assigns the newly generated <see cref="PartNumber"/> to the selected <see cref="PartModel"/> and updates the database.
       /// </summary>
-      private void AssignToSelectedPart()
+      private async void AssignToSelectedPart()
       {
-         if (SelectedParts is null)
+         if (SelectedPart is null)
             return;
          if (NewPartNumber is null)
             return;
-         if (SelectedParts.Count != 1)
+         SelectedPart.Reference = NewPartNumber;
+         if (await _apiController.UpdatePart(SelectedPart))
          {
-            MessageBox.Show("Unable to assign part number.\nOnly one part can be selected.", "Warning");
-            return;
+            NewPartNumber = new PartNumber();
          }
-         // TODO - replace with DI interfaces.
-         SelectedParts[0].Reference = NewPartNumber as PartNumber;
-         NewPartNumber = new PartNumber();
+      }
+
+      private async void Remove()
+      {
+         if (SelectedPartNumber is null) return;
+         if (await _apiController.DeletePartNumber(SelectedPartNumber.Id))
+         {
+            MainVM.User.PartNumbers.Remove(SelectedPartNumber);
+            MainVM.User.PartNumberIDs.Remove(SelectedPartNumber.Id);
+            MainVM.User.Parts.ForEach(part =>
+            {
+               if (part.Reference?.Equals(SelectedPartNumber) == true)
+               {
+                  part.Reference = null;
+               }
+            });
+            //MainVM.User.Parts.Where(x => x.Reference?.Equals(SelectedPartNumber) == true).ToList().ForEach(part => part.Reference = null);
+            SelectedPartNumber= null;
+         }
       }
 
       #region Events
+      /// <summary>
+      /// Triggered when the selected parts in the <see cref="IPartsInventoryViewModel"/> change.
+      /// </summary>
+      /// <param name="sender">The <see cref="IPartsInventoryViewModel"/></param>
+      /// <param name="e">The list of selected <see cref="PartModel"/>s.</param>
       public void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e)
       {
          if (e is null)
@@ -110,11 +120,11 @@ namespace PartsInventory.ViewModels.Main
          SelectedParts = new(e);
       }
 
-      //public void PartsChanged_Main(object sender, UserModel e)
-      //{
-      //   User = e;
-      //}
-
+      /// <summary>
+      /// !! OLD !!
+      /// <para/>
+      /// Triggered when a new <see cref="PartNumber"/> is created.
+      /// </summary>
       public void PartNumberCreated_PNTemp(object sender, PartNumber e)
       {
          NewPartNumber = e;
@@ -123,10 +133,11 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
-      public IUserModel User
+      public IMainViewModel MainVM
       {
-         get => _user;
+         get => _mainVM;
       }
+
       public ObservableCollection<PartModel>? SelectedParts
       {
          get => _selectedParts;
@@ -137,15 +148,25 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      //public UserModel? AllParts
-      //{
-      //   get => _allParts;
-      //   set
-      //   {
-      //      _allParts = value;
-      //      OnPropertyChanged();
-      //   }
-      //}
+      public PartModel? SelectedPart
+      {
+         get => _selectedPart;
+         set
+         {
+            _selectedPart = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PartNumber? SelectedPartNumber
+      {
+         get => _selectedPartNumber;
+         set
+         {
+            _selectedPartNumber = value;
+            OnPropertyChanged();
+         }
+      }
 
       public PartNumber? NewPartNumber
       {
@@ -157,35 +178,39 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      public PartNumberType Type
+      public PartNumberCategory Category
       {
-         get => _type;
+         get => _category;
          set
          {
-            _type = value;
+            _category = value;
             // TODO - Separate into its own class.
-            SelectedSubTypes = PartNumber.SubTypeDisplay[value];
+            SelectedSubCategories = PartNumber.SubTypeDisplay[value];
+            SubCategory = SelectedSubCategories[0];
             OnPropertyChanged();
-            OnPropertyChanged(nameof(SelectedSubTypes));
+            OnPropertyChanged(nameof(SelectedSubCategories));
+            OnPropertyChanged(nameof(SubCategory));
          }
       }
 
-      public PartNumberSubTypes SubType
+      public PartNumberSubCategory SubCategory
       {
-         get => _subType;
+         get => _subCategory;
          set
          {
-            _subType = value;
+            _subCategory = value;
+            NewPartNumber = PartNumber.Create(value);
             OnPropertyChanged();
+            OnPropertyChanged(nameof(NewPartNumber));
          }
       }
 
-      public PartNumberSubTypes[]? SelectedSubTypes
+      public PartNumberSubCategory[]? SelectedSubCategories
       {
-         get => _selectedSubTypes;
+         get => _selectedSubCategories;
          set
          {
-            _selectedSubTypes = value;
+            _selectedSubCategories = value;
             OnPropertyChanged();
          }
       }

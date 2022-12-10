@@ -17,13 +17,17 @@ namespace PartsInventory.Models.Inventory
       string UserName { get; set; }
       string? Email { get; set; }
       string AuthID { get; set; }
-      List<string> InvoiceIDs { get; set; }
       List<string> PartIDs { get; set; }
+      List<string> InvoiceIDs { get; set; }
+      List<string> BinIDs { get; set; }
+      List<string> PartNumberIDs { get; set; }
 
       PartModel? this[PartNumber pn] { get; }
 
-      ObservableCollection<InvoiceModel> Invoices { get; set; }
       ObservableCollection<PartModel> Parts { get; set; }
+      ObservableCollection<InvoiceModel> Invoices { get; set; }
+      ObservableCollection<BinModel> Bins { get; set; }
+      ObservableCollection<PartNumber> PartNumbers { get; set; }
       PassivesCollection Passives { get; set; }
 
       /// <summary>
@@ -45,6 +49,9 @@ namespace PartsInventory.Models.Inventory
       /// <param name="parts">updated parts</param>
       void AddUpdatedParts(IEnumerable<PartModel> parts);
 
+      /// <summary>
+      /// Syncs all <see cref="ObjectId"/>s from the different models to the user id lists.
+      /// </summary>
       void SyncIDs();
    }
 }

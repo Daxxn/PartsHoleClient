@@ -33,9 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSVParserLibrary" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="MongoDB.Bson" Version="2.18.0" />
+    <PackageReference Include="MVVMLibrary" Version="1.0.1" />
     <PackageReference Include="RestSharp" Version="108.0.2" />
   </ItemGroup>
 
@@ -44,11 +46,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>PathSettings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -63,16 +60,9 @@
     <None Update="Settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\CSVParserLibrary\CSVParserLibrary\CSVParserLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\JsonReaderLibrary\JsonReaderLibrary\JsonReaderLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\MVVMLibrary\MVVMLibrary\MVVMLibrary.csproj" />
     <ProjectReference Include="..\..\PartsHoleAPI\PartsHoleRestLibrary\PartsHoleRestLibrary.csproj" />
   </ItemGroup>
 
@@ -89,6 +79,10 @@
     <Resource Include="Resources\PartNumberTemplateREV1.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Messages\" />
   </ItemGroup>
 
 </Project>

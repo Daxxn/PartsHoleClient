@@ -1,32 +1,33 @@
-﻿using MVVMLibrary;
-using PartsInventory.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using MongoDB.Bson;
+
+using PartsInventory.Models.Enums;
 
 namespace PartsInventory.Models.Inventory.Main
 {
-   public class PartNumber : BaseModel, IComparable<PartNumber>
+   public class PartNumber : BaseModel, IComparable<PartNumber>, IModel
    {
       #region Local Props
-      public static Dictionary<PartNumberType, PartNumberSubTypes[]> SubTypeDisplay = new()
+      public static Dictionary<PartNumberCategory, PartNumberSubCategory[]> SubTypeDisplay = new()
       {
-         { PartNumberType.Passives, new PartNumberSubTypes[] { PartNumberSubTypes.Resistor, PartNumberSubTypes.capacitor, PartNumberSubTypes.Inductor, PartNumberSubTypes.Ferrites, PartNumberSubTypes.Crystal, PartNumberSubTypes.Resonator } },
-         { PartNumberType.Protection, new PartNumberSubTypes[] { PartNumberSubTypes.Fuse, PartNumberSubTypes.CircuitBreaker, PartNumberSubTypes.Varistor, PartNumberSubTypes.PTCFuse } },
-         { PartNumberType.Mechanical, new PartNumberSubTypes[] { PartNumberSubTypes.Screw, PartNumberSubTypes.Nut, PartNumberSubTypes.Standoff } },
-         { PartNumberType.Connector, new PartNumberSubTypes[] { PartNumberSubTypes.PinHeader, PartNumberSubTypes.PinSocket, PartNumberSubTypes.TerminalBlock, PartNumberSubTypes.DSub, PartNumberSubTypes.Circular, PartNumberSubTypes.FlatFlex, PartNumberSubTypes.Audio, PartNumberSubTypes.USB, PartNumberSubTypes.BarrelJack, PartNumberSubTypes.MOLEX, PartNumberSubTypes.Programming, PartNumberSubTypes.PCIe } },
-         { PartNumberType.Lighting, new PartNumberSubTypes[] { PartNumberSubTypes.LED, PartNumberSubTypes.Fillament, PartNumberSubTypes.Fluorescent } },
-         { PartNumberType.Diode, new PartNumberSubTypes[] { PartNumberSubTypes.GeneralPurpose, PartNumberSubTypes.Schottky, PartNumberSubTypes.Zener, PartNumberSubTypes.TVS } },
-         { PartNumberType.Transistor, new PartNumberSubTypes[] { PartNumberSubTypes.NPN, PartNumberSubTypes.PNP, PartNumberSubTypes.Nch, PartNumberSubTypes.Pch } },
-         { PartNumberType.IC, new PartNumberSubTypes[] {PartNumberSubTypes.MicroController, PartNumberSubTypes.Logic, PartNumberSubTypes.OPAMP, PartNumberSubTypes.LinearReg, PartNumberSubTypes.SwitchingReg, PartNumberSubTypes.Interface, PartNumberSubTypes.AnalogLogic, PartNumberSubTypes.USB, PartNumberSubTypes.ADC, PartNumberSubTypes.DAC, PartNumberSubTypes.ROM, PartNumberSubTypes.EEPROM, PartNumberSubTypes.Memory, PartNumberSubTypes.Processor, PartNumberSubTypes.Sensing, PartNumberSubTypes.CurrentSense } },
-         { PartNumberType.Display, new PartNumberSubTypes[] {PartNumberSubTypes.LCDCharacter, PartNumberSubTypes.LCDPanel, PartNumberSubTypes.SevenSegment, PartNumberSubTypes.BarGraph, PartNumberSubTypes.OLED} },
-         { PartNumberType.ElectroMechanical, new PartNumberSubTypes[] { PartNumberSubTypes.Relay, PartNumberSubTypes.Contactor, PartNumberSubTypes.Mic, PartNumberSubTypes.Speaker, PartNumberSubTypes.Buzzer, PartNumberSubTypes.Motor } },
-         { PartNumberType.Switch_Input, new PartNumberSubTypes[] { PartNumberSubTypes.Tactile, PartNumberSubTypes.Toggle, PartNumberSubTypes.DIP, PartNumberSubTypes.Limit, PartNumberSubTypes.Rotary, PartNumberSubTypes.Slide, PartNumberSubTypes.Rocker, PartNumberSubTypes.RotaryEncoder, PartNumberSubTypes.Potentiometer, PartNumberSubTypes.Keypad, PartNumberSubTypes.Keylock, PartNumberSubTypes.Navigation } }
+         { PartNumberCategory.Other, new PartNumberSubCategory[] { PartNumberSubCategory.Other } },
+         { PartNumberCategory.Passives, new PartNumberSubCategory[] { PartNumberSubCategory.Resistor, PartNumberSubCategory.capacitor, PartNumberSubCategory.Inductor, PartNumberSubCategory.Ferrites, PartNumberSubCategory.Crystal, PartNumberSubCategory.Resonator } },
+         { PartNumberCategory.Protection, new PartNumberSubCategory[] { PartNumberSubCategory.Fuse, PartNumberSubCategory.CircuitBreaker, PartNumberSubCategory.Varistor, PartNumberSubCategory.PTCFuse } },
+         { PartNumberCategory.Mechanical, new PartNumberSubCategory[] { PartNumberSubCategory.Screw, PartNumberSubCategory.Nut, PartNumberSubCategory.Standoff } },
+         { PartNumberCategory.Connector, new PartNumberSubCategory[] { PartNumberSubCategory.PinHeader, PartNumberSubCategory.PinSocket, PartNumberSubCategory.TerminalBlock, PartNumberSubCategory.DSub, PartNumberSubCategory.Circular, PartNumberSubCategory.FlatFlex, PartNumberSubCategory.Audio, PartNumberSubCategory.CONN_USB, PartNumberSubCategory.BarrelJack, PartNumberSubCategory.MOLEX, PartNumberSubCategory.Programming, PartNumberSubCategory.PCIe } },
+         { PartNumberCategory.Lighting, new PartNumberSubCategory[] { PartNumberSubCategory.LED, PartNumberSubCategory.Fillament, PartNumberSubCategory.Fluorescent } },
+         { PartNumberCategory.Diode, new PartNumberSubCategory[] { PartNumberSubCategory.GeneralPurpose, PartNumberSubCategory.Schottky, PartNumberSubCategory.Zener, PartNumberSubCategory.TVS } },
+         { PartNumberCategory.Transistor, new PartNumberSubCategory[] { PartNumberSubCategory.NPN, PartNumberSubCategory.PNP, PartNumberSubCategory.Nch, PartNumberSubCategory.Pch } },
+         { PartNumberCategory.IC, new PartNumberSubCategory[] {PartNumberSubCategory.MicroController, PartNumberSubCategory.Logic, PartNumberSubCategory.OPAMP, PartNumberSubCategory.LinearReg, PartNumberSubCategory.SwitchingReg, PartNumberSubCategory.Interface, PartNumberSubCategory.AnalogLogic, PartNumberSubCategory.IC_USB, PartNumberSubCategory.ADC, PartNumberSubCategory.DAC, PartNumberSubCategory.ROM, PartNumberSubCategory.EEPROM, PartNumberSubCategory.Memory, PartNumberSubCategory.Processor, PartNumberSubCategory.Sensing, PartNumberSubCategory.CurrentSense } },
+         { PartNumberCategory.Display, new PartNumberSubCategory[] {PartNumberSubCategory.LCDCharacter, PartNumberSubCategory.LCDPanel, PartNumberSubCategory.SevenSegment, PartNumberSubCategory.BarGraph, PartNumberSubCategory.OLED} },
+         { PartNumberCategory.ElectroMechanical, new PartNumberSubCategory[] { PartNumberSubCategory.Relay, PartNumberSubCategory.Contactor, PartNumberSubCategory.Mic, PartNumberSubCategory.Speaker, PartNumberSubCategory.Buzzer, PartNumberSubCategory.Motor } },
+         { PartNumberCategory.Switch_Input, new PartNumberSubCategory[] { PartNumberSubCategory.Tactile, PartNumberSubCategory.Toggle, PartNumberSubCategory.DIP, PartNumberSubCategory.Limit, PartNumberSubCategory.Rotary, PartNumberSubCategory.Slide, PartNumberSubCategory.Rocker, PartNumberSubCategory.RotaryEncoder, PartNumberSubCategory.Potentiometer, PartNumberSubCategory.Keypad, PartNumberSubCategory.Keylock, PartNumberSubCategory.Navigation } }
       };
-      private uint _typeNum = 0;
-      private uint _id = 0;
+      private uint _category = 0;
+      private uint _subCategory = 0;
+      private uint _partId = 0;
       #endregion
 
       #region Constructors
@@ -35,17 +36,23 @@ namespace PartsInventory.Models.Inventory.Main
       {
          Parse(input);
       }
-      public PartNumber(uint type, uint id)
+      private PartNumber(uint category, uint partId)
       {
-         TypeNum = type;
-         ID = id;
+         FullCategory = category;
+         PartID = partId;
+      }
+      public PartNumber(uint category, uint subCategory, uint partId)
+      {
+         Category = category;
+         SubCategory = subCategory;
+         PartID = partId;
       }
       #endregion
 
       #region Methods
       public override string ToString()
       {
-         return $"{TypeNum:D4}-{ID:D4}";
+         return $"{Category:D2}{SubCategory:D2}-{PartID:D4}";
       }
 
       public void Parse(string input)
@@ -59,18 +66,18 @@ namespace PartsInventory.Models.Inventory.Main
          {
             if (uint.TryParse(spl[0], out uint typeNum))
             {
-               TypeNum = typeNum;
+               FullCategory = typeNum;
             }
-            if (uint.TryParse(spl[1], out uint id))
+            if (uint.TryParse(spl[1], out uint partId))
             {
-               ID = id;
+               PartID = partId;
             }
          }
       }
 
-      public static PartNumber Create(PartNumberType type, PartNumberSubTypes subType)
+      public static PartNumber Create(PartNumberSubCategory subCategory)
       {
-         return new((uint)subType, 0);
+         return new((uint)subCategory, 0);
       }
 
       public override bool Equals(object? obj)
@@ -84,7 +91,7 @@ namespace PartsInventory.Models.Inventory.Main
       {
          if (pn is null)
             return false;
-         return pn.TypeNum == TypeNum && pn.ID == ID;
+         return pn.Category == Category && pn.PartID == PartID;
       }
 
       public int CompareTo(PartNumber? other)
@@ -93,9 +100,9 @@ namespace PartsInventory.Models.Inventory.Main
             return 1;
          if (other == this)
             return 0;
-         if (other.TypeNum > TypeNum)
+         if (other.Category > Category)
             return -1;
-         return other.ID.CompareTo(ID);
+         return other.PartID.CompareTo(PartID);
       }
 
       public override int GetHashCode()
@@ -140,23 +147,100 @@ namespace PartsInventory.Models.Inventory.Main
       #endregion
 
       #region Full Props
-      public uint TypeNum
+      /// <summary>
+      /// The first 2 numbers of the part number.
+      /// <list type="table">
+      ///   <listheader>
+      ///      <term>(Category</term>
+      ///      <term>Sub Category)</term>
+      ///      <description>Part ID</description>
+      ///   </listheader>
+      ///   <item>
+      ///      <term>(##</term>
+      ///      <term>##)</term>
+      ///      <description>####</description>
+      ///   </item>
+      /// </list>
+      /// </summary>
+      public uint Category
       {
-         get => _typeNum;
+         get => _category;
          set
          {
-            _typeNum = value;
+            _category = value;
             OnPropertyChanged();
          }
       }
 
-      public uint ID
+      /// <summary>
+      /// Second 2 numbers of the part number.
+      /// <list type="table">
+      ///   <listheader>
+      ///      <term>(Category</term>
+      ///      <term>Sub Category)</term>
+      ///      <description>Part ID</description>
+      ///   </listheader>
+      ///   <item>
+      ///      <term>(##</term>
+      ///      <term>##)</term>
+      ///      <description>####</description>
+      ///   </item>
+      /// </list>
+      /// </summary>
+      public uint SubCategory
       {
-         get => _id;
+         get => _subCategory;
          set
          {
-            _id = value;
+            _subCategory = value;
             OnPropertyChanged();
+         }
+      }
+
+      /// <summary>
+      /// Unique ID for a <see cref="PartModel"/>
+      /// <para/>
+      /// NOT the same as the Models <see cref="ObjectId"/>.
+      /// </summary>
+      public uint PartID
+      {
+         get => _partId;
+         set
+         {
+            _partId = value;
+            OnPropertyChanged();
+         }
+      }
+
+      /// <summary>
+      /// Combined categories. The first 4 numbers of the part number.
+      /// <list type="table">
+      ///   <listheader>
+      ///      <term>Full Category</term>
+      ///      <description>Part ID</description>
+      ///   </listheader>
+      ///   <item>
+      ///      <term>####</term>
+      ///      <description>####</description>
+      ///   </item>
+      /// </list>
+      /// </summary>
+      public uint FullCategory
+      {
+         get => (uint)(Category * Math.Pow(10, 2)) + SubCategory;
+         set
+         {
+            var str = $"{value:D4}";
+            if (uint.TryParse(str.Substring(0, 2), out uint category))
+            {
+               _category = category;
+            }
+            if (uint.TryParse(str.Substring(2, 2), out uint subCategory))
+            {
+               _subCategory = subCategory;
+            }
+            OnPropertyChanged(nameof(Category));
+            OnPropertyChanged(nameof(SubCategory));
          }
       }
       #endregion

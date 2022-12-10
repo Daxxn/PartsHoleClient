@@ -2,6 +2,8 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 using MVVMLibrary;
+
+using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Passives;
 using PartsInventory.Models.Passives.Book;
 
@@ -23,11 +25,15 @@ namespace PartsInventory.Models.Inventory.Main
 
       private ObservableCollection<PartModel> _parts = new();
       private ObservableCollection<InvoiceModel> _invoices = new();
+      private ObservableCollection<BinModel> _bins = new();
+      private ObservableCollection<PartNumber> _partNumbers = new();
 
       private PassivesCollection _passives = new();
 
       public List<string> InvoiceIDs { get; set; } = null!;
       public List<string> PartIDs { get; set; } = null!;
+      public List<string> BinIDs { get; set; } = null!;
+      public List<string> PartNumberIDs { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -76,8 +82,10 @@ namespace PartsInventory.Models.Inventory.Main
 
       public void SyncIDs()
       {
-         PartIDs = Parts.Select(p => p.Id).ToList();
-         InvoiceIDs = Invoices.Select(p => p.Id).ToList();
+         PartIDs = Parts.Select(x => x.Id).ToList();
+         InvoiceIDs = Invoices.Select(x => x.Id).ToList();
+         BinIDs = Bins.Select(x => x.Id).ToList();
+         PartNumberIDs = PartNumbers.Select(x => x.Id).ToList();
       }
       #endregion
 
@@ -125,6 +133,26 @@ namespace PartsInventory.Models.Inventory.Main
          set
          {
             _invoices = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<BinModel> Bins
+      {
+         get => _bins;
+         set
+         {
+            _bins = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public ObservableCollection<PartNumber> PartNumbers
+      {
+         get => _partNumbers;
+         set
+         {
+            _partNumbers = value;
             OnPropertyChanged();
          }
       }

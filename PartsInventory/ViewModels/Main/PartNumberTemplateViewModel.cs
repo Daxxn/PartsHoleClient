@@ -44,7 +44,7 @@ namespace PartsInventory.ViewModels.Main
          {
             if (uint.TryParse(str, out uint val))
             {
-               PartNumber.TypeNum = val;
+               PartNumber.Category = val;
             }
          }
       }

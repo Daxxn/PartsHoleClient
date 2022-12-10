@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory;
@@ -24,6 +20,8 @@ namespace PartsInventory.Models.API.Models
       public string? Email { get; set; }
       public List<string> Invoices { get; set; } = null!;
       public List<string> Parts { get; set; } = null!;
+      public List<string> Bins { get; set; } = null!;
+      public List<string> PartNumbers { get; set; } = null!;
       #endregion
 
       #region Constructors
@@ -36,11 +34,13 @@ namespace PartsInventory.Models.API.Models
          return new UserModel()
          {
             Id = _id,
-            InvoiceIDs = Invoices,
-            PartIDs = Parts,
             AuthID = AuthID,
             Email = Email,
             UserName = UserName,
+            InvoiceIDs = Invoices,
+            PartIDs = Parts,
+            BinIDs = Bins,
+            PartNumberIDs = PartNumbers,
          };
       }
 
@@ -54,6 +54,8 @@ namespace PartsInventory.Models.API.Models
             AuthID = model.AuthID,
             Invoices = model.InvoiceIDs,
             Parts = model.PartIDs,
+            Bins = model.BinIDs,
+            PartNumbers = model.PartNumberIDs,
          };
       }
       #endregion

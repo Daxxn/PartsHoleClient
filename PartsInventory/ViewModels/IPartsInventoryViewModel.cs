@@ -14,6 +14,7 @@ namespace PartsInventory.ViewModels
       IMainViewModel MainVM { get; }
       Command RemovePartCmd { get; init; }
       BinModel? SelectedBin { get; set; }
+      PartNumber? SelectedPartNumber { get; set; }
       string? SelectedBinName { get; set; }
       InvoiceModel? SelectedInvoice { get; set; }
       ObservableCollection<PartModel>? SelectedParts { get; set; }
@@ -23,5 +24,9 @@ namespace PartsInventory.ViewModels
 
       void NewPartsEventHandler(object sender, AddInvoiceToPartsEventArgs e);
       void OpenDatasheet(object sender, PartModel part);
+      void AddBinToPart();
+      void UpdateBinSearch();
+      void AddPartNumberToPart();
+      void UpdatePartNumberSearch();
    }
 }

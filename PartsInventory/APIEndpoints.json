@@ -1,10 +1,11 @@
 {
-  "API": {
-    "Port": 7072,
-    "BaseUrl": "https://localhost:{Port}/api/",
-    "UserEndpoint": "user",
-    "PartsEndpoint": "parts",
-    "InvoicesEndpoint": "invoices",
-    "BinsEndpoint": "bin"
-  }
+   "API": {
+      "Port": 7072,
+      "BaseUrl": "https://localhost:{Port}/api/",
+      "UserEndpoint": "user",
+      "PartsEndpoint": "parts",
+      "InvoicesEndpoint": "invoices",
+      "BinsEndpoint": "bin",
+      "PartNumberEndpoint": "partnum"
+   }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using MongoDB.Bson;
+
 using PartsInventory.Models.API.Models;
+using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
-
-using MongoDB.Bson;
 
 namespace PartsInventory.Models.API
 {
@@ -35,9 +36,8 @@ namespace PartsInventory.Models.API
       /// <returns>All <see cref="UserData"/>.</returns>
       Task<IUserData?> GetUserData(IUserModel user);
 
-      Task<bool> AddPartToUser(string userId, string partId);
-
-      Task<bool> AddInvoiceToUser(string userId, string invoiceId);
+      Task<bool> AddModelToUser(string userId, string modelId, ModelIDSelector selector);
+      Task<bool> RemoveModelFromUser(string userId, string modelId, ModelIDSelector selector);
 
       Task<bool> UpdateUser(IUserModel user);
       #endregion
@@ -217,7 +217,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="filePath">Path to the invoice file.</param>
       /// <returns>New <see cref="InvoiceModel"/> created by the API.</returns>
-      Task<InvoiceModel> ParseInvoiceFile(string filePath);
+      Task<InvoiceModel?> ParseInvoiceFile(string filePath);
       #endregion
       #region Bins
       /// <summary>
@@ -298,6 +298,13 @@ namespace PartsInventory.Models.API
       /// <param name="ids"><see cref="List{T}"/> of <see cref="ObjectId"/> strings.</param>
       /// <returns>Number of <see cref="BinModel"/>s deleted.</returns>
       Task<int> DeleteBins(IEnumerable<string> ids);
+      #endregion
+
+      #region PartNumbers
+      Task<PartNumber?> NewPartNumber(string userId, uint fullCategory);
+      Task<PartNumber?> GetPartNumber(string id);
+      Task<bool> UpdatePartNumber(PartNumber partNumber);
+      Task<bool> DeletePartNumber(string id);
       #endregion
 
       #region Testing

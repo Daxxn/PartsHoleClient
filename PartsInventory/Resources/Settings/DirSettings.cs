@@ -8,25 +8,25 @@ namespace PartsInventory.Resources.Settings
 {
    public class DirSettings
    {
-      public string PartInvoiceDir { get; set; }
-      public string DigiKeyDir { get; set; }
-      public string MouserDir { get; set; }
-      public string SettingsPath { get; set; }
-      public string DatasheetsPath { get; set; }
-      public string AppDataPath { get; set; }
-      public string AppDataFileName { get; set; }
-      public string BinLocFileName { get; set; }
-      public string KiCADProjects { get; set; }
-      public string BOMs { get; set; }
-      public string ElectricalCalcExe { get; set; }
-      public string SaturnPCBExe { get; set; }
-      public Tools[] ExtraTools { get; set; }
+      public string PartInvoiceDir { get; set; } = null!;
+      public string DigiKeyDir { get; set; } = null!;
+      public string MouserDir { get; set; } = null!;
+      public string SettingsPath { get; set; } = null!;
+      public string DatasheetsPath { get; set; } = null!;
+      public string AppDataPath { get; set; } = null!;
+      public string AppDataFileName { get; set; } = null!;
+      public string BinLocFileName { get; set; } = null!;
+      public string KiCADProjects { get; set; } = null!;
+      public string BOMs { get; set; } = null!;
+      public string ElectricalCalcExe { get; set; } = null!;
+      public string SaturnPCBExe { get; set; } = null!;
+      public Tools[] ExtraTools { get; set; } = null!;
    }
 
    public class Tools
    {
-      public string Key { get; set; }
-      public string Name { get; set; }
-      public string Path { get; set; }
+      public string Key { get; set; } = null!;
+      public string Name { get; set; } = null!;
+      public string Path { get; set; } = null!;
    }
 }
