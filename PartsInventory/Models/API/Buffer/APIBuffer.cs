@@ -10,12 +10,14 @@ using Microsoft.Extensions.Options;
 using MVVMLibrary;
 
 using PartsInventory.Models.Inventory.Main;
+using PartsInventory.Resources.Settings;
 
 namespace PartsInventory.Models.API.Buffer;
 
 public class APIBuffer : IAPIBuffer
 {
    #region Local Props
+   private int _maxAttemptCount = 0;
    private Timer Timer { get; set; }
 
    private APIBufferCollection Buffer { get; set; } = new();
@@ -23,12 +25,13 @@ public class APIBuffer : IAPIBuffer
    #endregion
 
    #region Constructors
-   public APIBuffer(IOptions<Settings> settings, IAPIController apiController)
+   public APIBuffer(IOptions<GeneralSettings> settings, IAPIController apiController)
    {
       _apiController = apiController;
+      _maxAttemptCount = settings.Value.APIAttemptCount;
       Timer = new()
       {
-         Interval = settings.Value.ApiUpdateInterval,
+         Interval = settings.Value.APIUpdateIntervalms,
          AutoReset = true,
          Enabled = false,
       };
@@ -45,8 +48,7 @@ public class APIBuffer : IAPIBuffer
    #region Methods
    private async void Timer_Elapsed(object? sender, ElapsedEventArgs e)
    {
-      //await RunUpdatesAsync();
-      await RunUpdatesParallel();
+      await RunUpdatesAsync();
    }
 
    /// <summary>
@@ -54,14 +56,21 @@ public class APIBuffer : IAPIBuffer
    /// </summary>
    private async Task RunUpdatesAsync()
    {
+      if (Buffer.Count <= 0)
+         return;
       foreach (var model in Buffer.GetAllModels())
       {
          await UpdatePart(model);
       }
    }
 
+   /// <summary>
+   /// Not fully tested. Need to test further. May be fixed.
+   /// </summary>
    private async Task RunUpdatesParallel()
    {
+      if (Buffer.Count <= 0)
+         return;
       await Parallel.ForEachAsync(Buffer.GetAllModels(), async (model, token) =>
       {
          if (token.IsCancellationRequested)
@@ -70,34 +79,54 @@ public class APIBuffer : IAPIBuffer
       });
    }
 
-   private async Task UpdatePart(KeyValuePair<PriorityKey, BaseModel> model)
+   private async Task UpdatePart(KeyValuePair<PriorityKey, BufferModel> model)
    {
-      if (model.Value is PartModel part)
+      if (!Buffer[model.Key].InProgress && Buffer[model.Key].Model is PartModel part)
       {
-         if (await _apiController.UpdatePart(part))
+         Buffer[model.Key].InProgress = true;
+         if (await _apiController.UpdatePart(part) || Buffer[model.Key].AttemptCount > 12)
          {
             Buffer.RemoveModel(model.Key.ID);
          }
+         else
+         {
+            Buffer[model.Key].AttemptCount++;
+         }
       }
-      else if (model.Value is InvoiceModel invoice)
+      else if (!Buffer[model.Key].InProgress && Buffer[model.Key].Model is InvoiceModel invoice)
       {
+         Buffer[model.Key].InProgress = true;
          if (await _apiController.UpdateInvoice(invoice))
          {
             Buffer.RemoveModel(model.Key.ID);
          }
+         else
+         {
+            Buffer[model.Key].AttemptCount++;
+         }
       }
-      else if (model.Value is BinModel bin)
+      else if (!Buffer[model.Key].InProgress && Buffer[model.Key].Model is BinModel bin)
       {
+         Buffer[model.Key].InProgress = true;
          if (await _apiController.UpdateBin(bin))
          {
             Buffer.RemoveModel(model.Key.ID);
+         }
+         else
+         {
+            Buffer[model.Key].AttemptCount++;
          }
       }
    }
 
    public void ForceUpdateAll()
    {
-      RunUpdatesParallel().Wait();
+      RunUpdatesAsync().Wait();
+   }
+
+   public async Task UpdateAll()
+   {
+      await RunUpdatesAsync();
    }
 
    public void UpdateModel(BaseModel model)

@@ -21,6 +21,13 @@ namespace PartsInventory.ViewModels
       Task<bool> AddPart(PartModel part);
       Task RemovePart(PartModel part);
       void GetUserTestAsync();
+
+      /// <summary>
+      /// Updates the API with any minor changes to a model.
+      /// <para/>
+      /// Minor changes like property updates ONLY
+      /// </summary>
+      /// <param name="model">Model to update.</param>
       void UpdateAPI(BaseModel model);
    }
 }

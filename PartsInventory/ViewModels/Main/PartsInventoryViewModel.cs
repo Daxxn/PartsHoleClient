@@ -65,13 +65,6 @@ namespace PartsInventory.ViewModels.Main
          if (SelectedParts.Count != 1)
             return;
          await MainVM.RemovePart(SelectedParts[0]);
-         //if (MainVM.User is null || SelectedParts is null)
-         //   return;
-
-         //foreach (var part in SelectedParts)
-         //{
-         //   MainVM.User.Parts.Remove(part as PartModel);
-         //}
       }
 
       public async void AddBinToPart()
@@ -126,7 +119,6 @@ namespace PartsInventory.ViewModels.Main
             return false;
          }));
       }
-
       public void UpdateAPI(BaseModel model)
       {
          MainVM.UpdateAPI(model);

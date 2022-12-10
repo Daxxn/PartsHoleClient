@@ -11,7 +11,9 @@ namespace PartsInventory.Models.API.Buffer
    public class APIBufferCollection
    {
       #region Local Props
-      private Dictionary<PriorityKey, BaseModel> Buffer { get; set; } = new();
+      public BufferModel this[string id] { get => Buffer[new(id)]; set => Buffer[new(id)] = value; }
+      public BufferModel this[PriorityKey key] { get => Buffer[key]; set => Buffer[key] = value; }
+      private Dictionary<PriorityKey, BufferModel> Buffer { get; set; } = new();
       #endregion
 
       #region Constructors
@@ -24,21 +26,21 @@ namespace PartsInventory.Models.API.Buffer
          if (Buffer.ContainsKey(new(id)))
          {
             Buffer.Remove(new(id));
-            Buffer.Add(new(id, Buffer.Count - 1), model);
+            Buffer.Add(new(id, Buffer.Count - 1), new(model));
             return;
          }
-         Buffer.Add(new(id), model);
+         Buffer.Add(new(id), new(model));
       }
 
-      public List<KeyValuePair<PriorityKey, BaseModel>> GetAllModels() => Buffer.OrderBy((kv) => kv.Key.Priority).ToList();
+      public List<KeyValuePair<PriorityKey, BufferModel>> GetAllModels() => Buffer.OrderBy((kv) => kv.Key.Priority).ToList();
 
-      public object? GetModel(string id) => Buffer.TryGetValue(new(id), out BaseModel? obj) ? obj : null;
+      public BufferModel? GetModel(string id) => Buffer.TryGetValue(new(id), out BufferModel obj) ? obj : null;
 
       public bool RemoveModel(string id) => Buffer.Remove(new(id));
       #endregion
 
       #region Full Props
-
+      public int Count => Buffer.Count;
       #endregion
    }
 }

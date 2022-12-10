@@ -67,14 +67,6 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellEditingTemplate>
         </DataGridTemplateColumn>
-        <!--<DataGridTextColumn Header="Qty" Binding="{Binding Path=Quantity}">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="ToolTip" Value="Total purchased from supplier."/>
-              <Setter Property="FontWeight" Value="DemiBold"/>
-            </Style>
-          </DataGridTextColumn.CellStyle>
-        </DataGridTextColumn>-->
         <DataGridTextColumn Header="Alloc" FontWeight="DemiBold" Binding="{Binding Path=AllocatedQty}">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
@@ -90,7 +82,6 @@
           </DataGridTextColumn.CellStyle>
         </DataGridTextColumn>
         <DataGridTextColumn Header="MF #" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
-        <!--<DataGridTextColumn Header="Part #" Binding="{Binding Path=Reference, Converter={StaticResource PartNumberConverter}}"/>-->
         <DataGridTemplateColumn Header="PartNumber">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
@@ -112,7 +103,11 @@
                   </Grid.ColumnDefinitions>
                   <TextBox
 										MinWidth="150"
-										Text="{Binding ElementName=partsView, Path=DataContext.PartNumberSearchText, UpdateSourceTrigger=PropertyChanged}"
+										Text="{Binding
+                      ElementName=partsView,
+                      Path=DataContext.PartNumberSearchText,
+                      UpdateSourceTrigger=PropertyChanged
+                    }"
 										TextChanged="PartNumberSearchTextBox_TextChanged"
 										Grid.Column="0"
 									/>
@@ -121,7 +116,11 @@
 
                 <ListView
 									Grid.Row="1"
-									ItemsSource="{Binding ElementName=partsView, Path=DataContext.PartNumberSearchResults, UpdateSourceTrigger=PropertyChanged}"
+									ItemsSource="{Binding
+                    ElementName=partsView,
+                    Path=DataContext.PartNumberSearchResults,
+                    UpdateSourceTrigger=PropertyChanged
+                  }"
 									SelectedItem="{Binding ElementName=partsView, Path=DataContext.SelectedPartNumber}"
 									SelectionMode="Single"
 									MinHeight="26"
@@ -131,9 +130,37 @@
           </DataGridTemplateColumn.CellEditingTemplate>
         </DataGridTemplateColumn>
         <DataGridTextColumn Header="Supplier #" Binding="{Binding Path=SupplierPartNumber, Mode=OneWay}"/>
-        <DataGridTextColumn Header="Unit $" Binding="{Binding Path=UnitPrice, StringFormat=C2}"/>
+        <DataGridTemplateColumn Header="Unit $">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Path=UnitPrice, StringFormat=C2}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <TextBox
+                Text="{Binding Path=UnitPrice, StringFormat=C2}"
+                LostFocus="PartsGrid_LostFocus"
+              />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn Header="Total $" Binding="{Binding Path=ExtendedPrice, StringFormat=C2}"/>
-        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Description}"/>
+        <DataGridTemplateColumn Header="Description">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Path=Description, StringFormat=C2}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <TextBox
+                Text="{Binding Path=Description}"
+                LostFocus="PartsGrid_LostFocus"
+              />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn Header="B" MinWidth="30" Binding="{Binding Path=Backorder}">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
@@ -164,7 +191,11 @@
                   </Grid.ColumnDefinitions>
                   <TextBox
 										MinWidth="150"
-										Text="{Binding ElementName=partsView, Path=DataContext.BinSearchText, UpdateSourceTrigger=PropertyChanged}"
+										Text="{Binding
+                      ElementName=partsView,
+                      Path=DataContext.BinSearchText,
+                      UpdateSourceTrigger=PropertyChanged
+                    }"
 										TextChanged="BinSearchTextBox_TextChanged"
 										Grid.Column="0"
 									/>
@@ -173,7 +204,11 @@
 
                 <ListView
 									Grid.Row="1"
-									ItemsSource="{Binding ElementName=partsView, Path=DataContext.BinSearchResults, UpdateSourceTrigger=PropertyChanged}"
+									ItemsSource="{Binding
+                    ElementName=partsView,
+                    Path=DataContext.BinSearchResults,
+                    UpdateSourceTrigger=PropertyChanged
+                  }"
 									SelectedItem="{Binding ElementName=partsView, Path=DataContext.SelectedBin}"
 									SelectionMode="Single"
 									MinHeight="26"

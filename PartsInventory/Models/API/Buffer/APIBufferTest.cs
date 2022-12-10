@@ -60,10 +60,15 @@ namespace PartsInventory.Models.API.Buffer
          });
       }
 
-      private void UpdatePart(KeyValuePair<PriorityKey, BaseModel> model)
+      private void UpdatePart(KeyValuePair<PriorityKey, BufferModel> model)
       {
          _logger.LogInformation("Sending model {type} to the API - {value}", model.Value.GetType().Name, model.Value);
          Buffer.RemoveModel(model.Key.ID);
+      }
+
+      public async Task UpdateAll()
+      {
+         await RunUpdatesParallel();
       }
 
       public void ForceUpdateAll()

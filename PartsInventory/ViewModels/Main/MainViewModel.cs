@@ -109,16 +109,11 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      public void Save()
+      public async void Save()
       {
          try
          {
-            // Replaced with API
-            //var partsSavePath = Path.Combine(_dirSettings.Value.AppDataPath, _dirSettings.Value.AppDataFileName);
-            //if (_partsInventoryVM.PartsCollection is not null)
-            //{
-            //   JsonReader.SaveJsonFile(partsSavePath, _partsInventoryVM.PartsCollection, true);
-            //}
+            await _apiBuffer.UpdateAll();
          }
          catch (Exception e)
          {
@@ -130,20 +125,6 @@ namespace PartsInventory.ViewModels.Main
       {
          try
          {
-            // Replaced with API
-            //var partsSavePath = Path.Combine(_dirSettings.Value.AppDataPath, _dirSettings.Value.AppDataFileName);
-            //if (File.Exists(partsSavePath))
-            //{
-            //   var parts = JsonReader.OpenJsonFile<PartsCollection>(partsSavePath);
-            //   PartsChangedEvent?.Invoke(this, parts);
-            //}
-
-            // Try to get Auth0 token...
-            // For now, just using the dev user.
-            //var devObjId = "636015e41a792e2787223cfa";
-
-            // Get UserModel from API:
-            //APIController.Get<UserModel>($"{_apiSettings.Value.UserEndpoint}/{devObjId}")
          }
          catch (Exception e)
          {

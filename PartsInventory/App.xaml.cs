@@ -22,9 +22,6 @@ using PartsInventory.Views;
 
 namespace PartsInventory
 {
-   /// <summary>
-   /// Interaction logic for App.xaml
-   /// </summary>
    public partial class App : Application
    {
       #region Props
@@ -34,38 +31,7 @@ namespace PartsInventory
       #region Constructors
       public App()
       {
-         //AppHost = Host.CreateDefaultBuilder()
-         //   .ConfigureAppConfiguration((config) =>
-         //   {
-         //      config.AddJsonFile(@".\APIEndpoints.json");
-         //      config.AddJsonFile(@".\Settings.json");
-         //      config.AddUserSecrets(Assembly.GetExecutingAssembly());
-         //   })
-         //   .ConfigureLogging((hostContext, logBuilder) =>
-         //   {
-         //      if (hostContext.HostingEnvironment.IsDevelopment())
-         //      {
-         //         logBuilder.AddConsole();
-         //      }
-         //   })
-         //   .ConfigureServices((hostContext, services) =>
-         //   {
-         //      services.Configure<DirSettings>(hostContext.Configuration.GetSection("Dirs"));
-         //      services.Configure<GeneralSettings>(hostContext.Configuration.GetSection("Settings"));
-         //      services.Configure<APISettings>(hostContext.Configuration.GetSection("API"));
-         //      ConnectViewSevices(services);
-         //      ConnectViewModelServices(services);
-         //      ConnectModelServices(services);
-         //      ConnectUtilServices(services);
-         //   })
-         //   .Build();
-      }
-      #endregion
-
-      #region Methods
-      protected override async void OnStartup(StartupEventArgs e)
-      {
-         AppHost = Host.CreateDefaultBuilder(e.Args)
+         AppHost = Host.CreateDefaultBuilder()
 #if DEBUG
             .UseEnvironment("development")
 #else
@@ -95,7 +61,12 @@ namespace PartsInventory
                ConnectUtilServices(services);
             })
             .Build();
+      }
+      #endregion
 
+      #region Methods
+      protected override async void OnStartup(StartupEventArgs e)
+      {
          await AppHost!.StartAsync();
 
          Settings.Default.ApiUpdateInterval = 1000;
@@ -164,7 +135,6 @@ namespace PartsInventory
       {
          services.AddSingleton<IAPIBuffer, APIBuffer>();
          services.AddSingleton<IMessageService, MessageService>();
-         //services.AddSingleton<IAPIBuffer, APIBufferTest>();
       }
       #endregion
    }

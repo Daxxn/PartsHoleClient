@@ -21,4 +21,5 @@ public interface IAPIBuffer
    /// This is meant to be used when <see cref="App.OnExit(System.Windows.ExitEventArgs)"/> triggers to make sure all updates are saved.
    /// </summary>
    public void ForceUpdateAll();
+   public Task UpdateAll();
 }
