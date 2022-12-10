@@ -133,4 +133,15 @@ public partial class PartsInventoryView : UserControl
    {
       VM.UpdatePartNumberSearch();
    }
+
+   private void PartsGrid_LostFocus(object sender, RoutedEventArgs e)
+   {
+      if (sender is TextBox tb)
+      {
+         if (tb.DataContext is PartModel part)
+         {
+            VM.MainVM.UpdateAPI(part);
+         }
+      }
+   }
 }

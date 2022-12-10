@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Enums
 {
+   #region Other
+   public enum Severity
+   {
+      Info = 0,
+      Warning,
+      Error,
+   }
+   #endregion
    #region API
    public enum ModelIDSelector
    {

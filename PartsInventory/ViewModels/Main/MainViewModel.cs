@@ -10,10 +10,12 @@ using MongoDB.Bson;
 using MVVMLibrary;
 
 using PartsInventory.Models.API;
+using PartsInventory.Models.API.Buffer;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
+using PartsInventory.Utils.Messager;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -26,7 +28,11 @@ namespace PartsInventory.ViewModels.Main
       private readonly IOptions<DirSettings> _dirSettings;
       private readonly IOptions<APISettings> _apiSettings;
       private readonly IAPIController _apiController;
+      private readonly IAPIBuffer _apiBuffer;
+      private readonly IMessageService _messageService;
       private IUserModel _user;
+
+      private int _msgCount = 0;
 
       #region Events
       #endregion
@@ -38,6 +44,7 @@ namespace PartsInventory.ViewModels.Main
       public Command SendFileTestCmd { get; init; }
       public Command AddBinTestCmd { get; init; }
       public Command GetBinTestCmd { get; init; }
+      public Command AddMsgCmd { get; init; }
       #endregion
       #endregion
 
@@ -49,7 +56,9 @@ namespace PartsInventory.ViewModels.Main
          IOptions<DirSettings> dirSettings,
          IOptions<APISettings> apiSettings,
          IAPIController apiController,
-         IUserModel user
+         IAPIBuffer apiBuffer,
+         IUserModel user,
+         IMessageService messageService
          )
       {
          _partNumTempVM = partNumTempVM;
@@ -58,10 +67,13 @@ namespace PartsInventory.ViewModels.Main
          _dirSettings = dirSettings;
          _apiSettings = apiSettings;
          _apiController = apiController;
+         _apiBuffer = apiBuffer;
          _user = user;
+         _messageService = messageService;
 
          SaveCmd = new(Save);
          OpenCmd = new(Open);
+         AddMsgCmd = new(() => _messageService.AddMessage($"Message Test {_msgCount++}", Severity.Info));
 
          GetUserTestAsyncCmd = new Command(GetUserTestAsync);
          SendFileTestCmd = new(SendFileTest);
@@ -243,6 +255,11 @@ namespace PartsInventory.ViewModels.Main
       {
          var foundBin = await _apiController.GetBin("637a138439776a35867213dc");
       }
+
+      public void UpdateAPI(BaseModel model)
+      {
+         _apiBuffer.UpdateModel(model);
+      }
       #endregion
 
       #region Full Props
@@ -275,6 +292,11 @@ namespace PartsInventory.ViewModels.Main
             _user = value;
             OnPropertyChanged();
          }
+      }
+
+      public IMessageService MessageService
+      {
+         get => _messageService;
       }
       #endregion
    }

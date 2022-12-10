@@ -2,6 +2,7 @@
   "profiles": {
     "PartsInventory": {
       "commandName": "Project",
+      "commandLineArgs": "Development",
       "environmentVariables": {
         "IMPL": "MAIN"
       },
@@ -9,6 +10,7 @@
     },
     "PartsInventoryAPI": {
       "commandName": "Project",
+      "commandLineArgs": "Development",
       "environmentVariables": {
         "IMPL": "MAIN",
         "API": "TRUE"

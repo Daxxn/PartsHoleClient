@@ -126,6 +126,11 @@ namespace PartsInventory.ViewModels.Main
             return false;
          }));
       }
+
+      public void UpdateAPI(BaseModel model)
+      {
+         MainVM.UpdateAPI(model);
+      }
       #endregion
 
       #region Full Props

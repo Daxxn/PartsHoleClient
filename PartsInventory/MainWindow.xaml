@@ -15,9 +15,10 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <Menu>
+    <Menu Grid.Row="0">
       <MenuItem Header="File">
         <MenuItem Header="Open" Command="{Binding Path=OpenCmd}"/>
         <MenuItem Header="Save" Command="{Binding Path=SaveCmd}"/>
@@ -50,6 +51,7 @@
         <MenuItem Header="Add BIN Test" Command="{Binding Path=AddBinTestCmd}"/>
         <MenuItem Header="Get BIN Test" Command="{Binding Path=GetBinTestCmd}"/>
       </MenuItem>
+      <MenuItem Header="Add Msg" Command="{Binding Path=AddMsgCmd}"/>
     </Menu>
 
     <TabControl Grid.Row="1">
@@ -61,5 +63,7 @@
       <TabItem Header="Packages" x:Name="PackagesViewTab"/>
       <TabItem Header="BINs" x:Name="BinsViewTab"/>
     </TabControl>
+
+    <TextBlock Grid.Row="2" Text="{Binding Path=MessageService.Message}" Background="{Binding Path=MessageService.SeverityColor}"/>
   </Grid>
 </Window>

@@ -32,7 +32,8 @@
          "Main": 0,
          "Passives": 0
       },
-      "APIUpdateInterval": 60
+      "APIUpdateInterval": 1,
+      "MessageInterval": 1
    },
    "User": {
       "AuthID": "",

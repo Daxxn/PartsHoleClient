@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PartsInventory.Models.Enums;
-using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 
 namespace PartsInventory.Models.API.Buffer
@@ -13,11 +11,7 @@ namespace PartsInventory.Models.API.Buffer
    public class APIBufferCollection
    {
       #region Local Props
-      private Dictionary<string, PartModel> PartModelBuffer { get; set; }
-      private Dictionary<string, PartNumber> PartNumberBuffer { get; set; }
-      private Dictionary<string, InvoiceModel> InvoiceModelBuffer { get; set; }
-      private Dictionary<string, BinModel> BinModelBuffer { get; set; }
-
+      private Dictionary<PriorityKey, BaseModel> Buffer { get; set; } = new();
       #endregion
 
       #region Constructors
@@ -25,24 +19,22 @@ namespace PartsInventory.Models.API.Buffer
       #endregion
 
       #region Methods
-      public Dictionary<string, PartModel> GetPartModelBuffer()
+      public void AddModel(string id, BaseModel model)
       {
-         return PartModelBuffer;
-      }
-      public Dictionary<string, PartNumber> GetPartNumberBuffer()
-      {
-         return PartNumberBuffer;
-      }
-      public Dictionary<string, InvoiceModel> GetInvoiceModelBuffer()
-      {
-         return InvoiceModelBuffer;
-      }
-      public Dictionary<string, BinModel> GetBinModelBuffer()
-      {
-         return BinModelBuffer;
+         if (Buffer.ContainsKey(new(id)))
+         {
+            Buffer.Remove(new(id));
+            Buffer.Add(new(id, Buffer.Count - 1), model);
+            return;
+         }
+         Buffer.Add(new(id), model);
       }
 
+      public List<KeyValuePair<PriorityKey, BaseModel>> GetAllModels() => Buffer.OrderBy((kv) => kv.Key.Priority).ToList();
 
+      public object? GetModel(string id) => Buffer.TryGetValue(new(id), out BaseModel? obj) ? obj : null;
+
+      public bool RemoveModel(string id) => Buffer.Remove(new(id));
       #endregion
 
       #region Full Props

@@ -10,10 +10,12 @@ using Microsoft.Extensions.Logging;
 
 using PartsInventory.Models;
 using PartsInventory.Models.API;
+using PartsInventory.Models.API.Buffer;
 using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
+using PartsInventory.Utils.Messager;
 using PartsInventory.ViewModels;
 using PartsInventory.ViewModels.Main;
 using PartsInventory.Views;
@@ -32,7 +34,43 @@ namespace PartsInventory
       #region Constructors
       public App()
       {
-         AppHost = Host.CreateDefaultBuilder()
+         //AppHost = Host.CreateDefaultBuilder()
+         //   .ConfigureAppConfiguration((config) =>
+         //   {
+         //      config.AddJsonFile(@".\APIEndpoints.json");
+         //      config.AddJsonFile(@".\Settings.json");
+         //      config.AddUserSecrets(Assembly.GetExecutingAssembly());
+         //   })
+         //   .ConfigureLogging((hostContext, logBuilder) =>
+         //   {
+         //      if (hostContext.HostingEnvironment.IsDevelopment())
+         //      {
+         //         logBuilder.AddConsole();
+         //      }
+         //   })
+         //   .ConfigureServices((hostContext, services) =>
+         //   {
+         //      services.Configure<DirSettings>(hostContext.Configuration.GetSection("Dirs"));
+         //      services.Configure<GeneralSettings>(hostContext.Configuration.GetSection("Settings"));
+         //      services.Configure<APISettings>(hostContext.Configuration.GetSection("API"));
+         //      ConnectViewSevices(services);
+         //      ConnectViewModelServices(services);
+         //      ConnectModelServices(services);
+         //      ConnectUtilServices(services);
+         //   })
+         //   .Build();
+      }
+      #endregion
+
+      #region Methods
+      protected override async void OnStartup(StartupEventArgs e)
+      {
+         AppHost = Host.CreateDefaultBuilder(e.Args)
+#if DEBUG
+            .UseEnvironment("development")
+#else
+            .UseEnvironment("production")
+#endif
             .ConfigureAppConfiguration((config) =>
             {
                config.AddJsonFile(@".\APIEndpoints.json");
@@ -54,14 +92,10 @@ namespace PartsInventory
                ConnectViewSevices(services);
                ConnectViewModelServices(services);
                ConnectModelServices(services);
+               ConnectUtilServices(services);
             })
             .Build();
-      }
-      #endregion
 
-      #region Methods
-      protected override async void OnStartup(StartupEventArgs e)
-      {
          await AppHost!.StartAsync();
 
          Settings.Default.ApiUpdateInterval = 1000;
@@ -126,10 +160,12 @@ namespace PartsInventory
          services.AddSingleton<ICSVParserOptions, CSVParserOptions>();
       }
 
-      //private static void ConnectUtilServices(IServiceCollection services)
-      //{
-      //   //services.AddAbstractFactory<ITimerWrapper<string>, TimerWrapper<string>>();
-      //}
+      private static void ConnectUtilServices(IServiceCollection services)
+      {
+         services.AddSingleton<IAPIBuffer, APIBuffer>();
+         services.AddSingleton<IMessageService, MessageService>();
+         //services.AddSingleton<IAPIBuffer, APIBufferTest>();
+      }
       #endregion
    }
 }

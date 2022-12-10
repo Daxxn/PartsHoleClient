@@ -21,5 +21,6 @@ namespace PartsInventory.ViewModels
       Task<bool> AddPart(PartModel part);
       Task RemovePart(PartModel part);
       void GetUserTestAsync();
+      void UpdateAPI(BaseModel model);
    }
 }
