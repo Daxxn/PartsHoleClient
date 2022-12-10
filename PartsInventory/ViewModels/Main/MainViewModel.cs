@@ -22,11 +22,9 @@ namespace PartsInventory.ViewModels.Main
    public class MainViewModel : ViewModel, IMainViewModel
    {
       #region Local Props
-      private readonly IPartNumberTemplateViewModel _partNumTempVM;
       private readonly IPassivesViewModel _passivesVM;
       private readonly IPassiveBookViewModel _bookVM;
-      private readonly IOptions<DirSettings> _dirSettings;
-      private readonly IOptions<APISettings> _apiSettings;
+      private readonly IOptions<GeneralSettings> _generalSettings;
       private readonly IAPIController _apiController;
       private readonly IAPIBuffer _apiBuffer;
       private readonly IMessageService _messageService;
@@ -50,26 +48,22 @@ namespace PartsInventory.ViewModels.Main
 
       #region Constructors
       public MainViewModel(
-         IPartNumberTemplateViewModel partNumTempVM,
-         IPassivesViewModel passivesVM,
-         IPassiveBookViewModel bookVM,
-         IOptions<DirSettings> dirSettings,
-         IOptions<APISettings> apiSettings,
+         IUserModel user,
+         IOptions<GeneralSettings> generalSettings,
          IAPIController apiController,
          IAPIBuffer apiBuffer,
-         IUserModel user,
+         IPassivesViewModel passivesVM,
+         IPassiveBookViewModel bookVM,
          IMessageService messageService
          )
       {
-         _partNumTempVM = partNumTempVM;
          _passivesVM = passivesVM;
          _bookVM = bookVM;
-         _dirSettings = dirSettings;
-         _apiSettings = apiSettings;
          _apiController = apiController;
          _apiBuffer = apiBuffer;
          _user = user;
          _messageService = messageService;
+         _generalSettings = generalSettings;
 
          SaveCmd = new(Save);
          OpenCmd = new(Open);
@@ -244,23 +238,26 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Full Props
-
+      public IMessageService MessageService
+      {
+         get => _messageService;
+      }
       public double MonitorSize
       {
-         get => Settings.Default.MonitorSize;
+         get => _generalSettings.Value.MonitorSize;
          set
          {
-            Settings.Default.MonitorSize = value;
+            _generalSettings.Value.MonitorSize = value;
             OnPropertyChanged();
          }
       }
 
       public string AspectRatio
       {
-         get => Settings.Default.AspectRatio;
+         get => _generalSettings.Value.AspectRatio;
          set
          {
-            Settings.Default.AspectRatio = value;
+            _generalSettings.Value.AspectRatio = value;
             OnPropertyChanged();
          }
       }
@@ -275,10 +272,6 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
-      public IMessageService MessageService
-      {
-         get => _messageService;
-      }
       #endregion
    }
 }

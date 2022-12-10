@@ -69,9 +69,6 @@ namespace PartsInventory
       {
          await AppHost!.StartAsync();
 
-         Settings.Default.ApiUpdateInterval = 1000;
-         Settings.Default.Save();
-
          var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
          mainWindow.Show();
 
@@ -80,7 +77,6 @@ namespace PartsInventory
       }
       protected override async void OnExit(ExitEventArgs e)
       {
-         Settings.Default.Save();
          PathSettings.Default.Save();
          await AppHost!.StopAsync();
          base.OnExit(e);

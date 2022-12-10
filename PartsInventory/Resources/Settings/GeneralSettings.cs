@@ -10,7 +10,7 @@ namespace PartsInventory.Resources.Settings;
 public class GeneralSettings
 {
    private double _messageInterval = 10;
-   public int MonitorSize { get; set; }
+   public double MonitorSize { get; set; }
    public string AspectRatio { get; set; } = "16/9";
    public int CurrentMainTab { get; set; }
    public int CurrentPassivesTab { get; set; }
