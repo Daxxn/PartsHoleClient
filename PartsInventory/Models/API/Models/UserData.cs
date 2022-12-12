@@ -15,7 +15,7 @@ public class UserData : IUserData
 {
    #region Local Props
    public IEnumerable<PartApiModel>? Parts { get; set; } = null!;
-   public IEnumerable<InvoiceApiModel>? Invoices { get; set; } = null!;
+   public IEnumerable<InvoiceModel>? Invoices { get; set; } = null!;
    public IEnumerable<BinApiModel>? Bins { get; set; } = null!;
    public IEnumerable<PartNumber>? PartNumbers { get; set; } = null!;
    #endregion
@@ -34,7 +34,7 @@ public class UserData : IUserData
             {
                if (part.BinLocationId != null)
                {
-                  part.BinLocation = Bins.FirstOrDefault(x => x._id == part.BinLocationId)?.ToModel() ?? new();
+                  part.BinLocation = Bins.FirstOrDefault(x => x.Id == part.BinLocationId)?.ToModel() ?? new();
                }
             }
          }
@@ -42,10 +42,10 @@ public class UserData : IUserData
       return parts;
    }
 
-   public IEnumerable<InvoiceModel>? ToInvoices()
-   {
-      return Invoices?.Select(x => x.ToModel());
-   }
+   //public IEnumerable<InvoiceModel>? ToInvoices()
+   //{
+   //   return Invoices?.Select(x => x.ToModel());
+   //}
 
    public IEnumerable<BinModel>? ToBins()
    {

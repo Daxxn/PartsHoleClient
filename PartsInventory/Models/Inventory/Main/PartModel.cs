@@ -43,6 +43,25 @@ namespace PartsInventory.Models.Inventory.Main
          };
       }
 
+      public static PartModel ConvertInvoicePart(InvoicePartModel invoicePart)
+      {
+         return new()
+         {
+            Quantity = invoicePart.Quantity,
+            Backorder = invoicePart.Backorder,
+            Description = invoicePart.Description,
+            PartNumber = invoicePart.PartNumber,
+            Reference = new(invoicePart.Reference),
+            SupplierPartNumber = invoicePart.SupplierPartNumber,
+            UnitPrice = invoicePart.UnitPrice,
+         };
+      }
+
+      public static PartModel CopyTo(PartModel part)
+      {
+         return part.MemberwiseClone() is PartModel p ? p : new();
+      }
+
       /// <summary>
       /// Parses the <paramref name="lines"/> from the NewPartView.
       /// </summary>
@@ -226,7 +245,7 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
-      [CSVProperty("PartNumber")]
+      [CSVProperty("SupplierPartNumber")]
       public PartNumber? Reference
       {
          get => _reference;

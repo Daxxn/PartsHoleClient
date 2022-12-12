@@ -17,7 +17,6 @@ public class BaseModel : Model
    #region Local Props
    [BsonId]
    [BsonRepresentation(BsonType.ObjectId)]
-   [JsonPropertyName("_id")]
    public string Id { get; set; }
    #endregion
 

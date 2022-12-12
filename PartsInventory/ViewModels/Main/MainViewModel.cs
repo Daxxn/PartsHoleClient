@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -137,6 +138,28 @@ namespace PartsInventory.ViewModels.Main
          return success;
       }
 
+      public async Task<bool> AddParts(IEnumerable<PartModel> part)
+      {
+         var newParts = await _apiController.CreateParts(part);
+         if (newParts == null)
+            return false;
+         foreach (var npart in newParts)
+         {
+            if (npart != null)
+            {
+               if (await _apiController.AddModelToUser(User.Id, npart.Id, ModelIDSelector.PARTS))
+               {
+                  User.Parts.Add(npart);
+               }
+               else
+               {
+                  return false;
+               }
+            }
+         }
+         return true;
+      }
+
       public async Task RemovePart(PartModel part)
       {
          var success = await _apiController.DeletePart(part.Id);
@@ -165,7 +188,6 @@ namespace PartsInventory.ViewModels.Main
          var tempUser = await _apiController.GetUser(devUser);
          if (tempUser == null)
          {
-            MessageBox.Show("Login Failure.", "Error");
             return;
          }
          User = tempUser;
@@ -189,7 +211,6 @@ namespace PartsInventory.ViewModels.Main
          var tempUser = await _apiController.GetUser(devUser);
          if (tempUser == null)
          {
-            MessageBox.Show("Login Failure.", "Error");
             return;
          }
          User = tempUser;
@@ -203,7 +224,7 @@ namespace PartsInventory.ViewModels.Main
          if (data is null)
             return false;
          User.Parts = data.Parts != null ? new(data.ToParts()!) : new();
-         User.Invoices = data.Invoices != null ? new(data.ToInvoices()!) : new();
+         User.Invoices = data.Invoices != null ? new(data.Invoices) : new();
          User.Bins = data.Bins != null ? new(data.ToBins()!) : new();
          User.PartNumbers = data.PartNumbers != null ? new(data.PartNumbers!) : new();
          return true;

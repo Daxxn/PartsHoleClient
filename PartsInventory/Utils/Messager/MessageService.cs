@@ -23,7 +23,8 @@ public class MessageService : Model, IMessageService
    {
       { Severity.Info, new(Color.FromRgb(100,100,255)) },
       { Severity.Warning, new(Color.FromRgb(255,255,100)) },
-      { Severity.Error, new(Color.FromRgb(255,100,100)) }
+      { Severity.Error, new(Color.FromRgb(255,100,100)) },
+      { Severity.Success, new(Color.FromRgb(50,255,100)) }
    };
    private static readonly SolidColorBrush _transparent = new(Color.FromArgb(0,0,0,0));
    private readonly Timer _timer;

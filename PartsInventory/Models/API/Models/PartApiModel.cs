@@ -16,7 +16,9 @@ namespace PartsInventory.Models.API.Models
    public class PartApiModel : IApiConverter<PartModel>
    {
       #region Local Props
-      public string _id { get; set; } = null!;
+      [BsonId]
+      [BsonRepresentation(BsonType.ObjectId)]
+      public string Id { get; set; } = null!;
       public string SupplierPartNumber { get; set; } = null!;
       public string PartNumber { get; set; } = null!;
       public string? Description { get; set; }
@@ -43,7 +45,7 @@ namespace PartsInventory.Models.API.Models
          var datasheet = new Datasheet(Datasheet);
          return new PartModel()
          {
-            Id = _id,
+            Id = Id,
             AllocatedQty = AllocatedQty,
             Backorder = Backorder,
             UnitPrice = UnitPrice,
@@ -63,7 +65,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new()
          {
-            _id = model.Id,
+            Id = model.Id,
             AllocatedQty = model.AllocatedQty,
             Backorder = model.Backorder,
             UnitPrice = model.UnitPrice,

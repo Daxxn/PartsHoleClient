@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="CSVParserLibrary" Version="1.1.0" />
+    <PackageReference Include="ExcelParserLibrary" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="MongoDB.Bson" Version="2.18.0" />

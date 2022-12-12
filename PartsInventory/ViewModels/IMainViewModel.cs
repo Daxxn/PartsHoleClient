@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using MVVMLibrary;
 
@@ -19,6 +21,7 @@ namespace PartsInventory.ViewModels
       void Save();
 
       Task<bool> AddPart(PartModel part);
+      Task<bool> AddParts(IEnumerable<PartModel> parts);
       Task RemovePart(PartModel part);
       void GetUserTestAsync();
 

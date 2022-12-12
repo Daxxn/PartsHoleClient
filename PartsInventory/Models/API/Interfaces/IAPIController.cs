@@ -45,7 +45,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Gets a <see cref="PartModel"/> by <see cref="ObjectId"/>.
       /// <para>
-      /// GET /api/Parts/{id}
+      /// GET /api/PartModels/{id}
       /// </para>
       /// </summary>
       /// <param name="id"><see cref="ObjectId"/> string</param>
@@ -54,7 +54,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Gets a <see cref="List{T}"/> of <see cref="PartModel"/>s by <see cref="ObjectId"/>.
       /// <para>
-      /// POST /api/Parts/many
+      /// POST /api/PartModels/many
       /// </para>
       /// <para>
       /// Body : <see cref="List{T}"/> <see cref="PartModel"/> <paramref name="ids"/>
@@ -66,7 +66,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Creates a new <see cref="PartModel"/>.
       /// <para>
-      /// POST /api/Parts/
+      /// POST /api/PartModels/
       /// </para>
       /// <para>
       /// Body : <see cref="PartModel"/>
@@ -78,7 +78,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Creates multiple <see cref="PartModel"/>
       /// <para>
-      /// POST /api/Parts/many
+      /// POST /api/PartModels/many
       /// </para>
       /// <para>
       /// Body : <see cref="List{T}"/> <paramref name="parts"/>
@@ -90,7 +90,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Updates a changed <paramref name="part"/>
       /// <para>
-      /// PUT /api/Parts/{id}
+      /// PUT /api/PartModels/{id}
       /// </para>
       /// <para>
       /// Body : <see cref="PartModel"/> <paramref name="part"/>
@@ -102,7 +102,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Updates a <see cref="List{T}"/> of changed <see cref="PartModel"/>
       /// <para>
-      /// PUT /api/Parts/many
+      /// PUT /api/PartModels/many
       /// </para>
       /// <para>
       /// Body : <see cref="PartModel"/> <paramref name="part"/>
@@ -114,7 +114,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Deletes a <see cref="PartModel"/>.
       /// <para>
-      /// DELETE /api/Parts/{id}
+      /// DELETE /api/PartModels/{id}
       /// </para>
       /// </summary>
       /// <param name="id"><see cref="ObjectId"/> string</param>
@@ -123,7 +123,7 @@ namespace PartsInventory.Models.API
       /// <summary>
       /// Deletes multiple <see cref="PartModel"/>s.
       /// <para>
-      /// DELETE /api/Parts
+      /// DELETE /api/PartModels
       /// </para>
       /// <para>
       /// Body : <see cref="List{T}"/> <seealso cref="string"/> <paramref name="ids"/>
@@ -318,6 +318,8 @@ namespace PartsInventory.Models.API
 
       #region Testing
       InvoiceModel? ParseFileTest(string path);
+      Task<InvoiceModel?> PostInvoiceTest(InvoiceModel invoice);
+      Task<InvoiceModel?> PostInvoiceTest2();
       #endregion
       #endregion
    }

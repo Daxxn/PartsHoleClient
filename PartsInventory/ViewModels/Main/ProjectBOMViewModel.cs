@@ -141,18 +141,18 @@ namespace PartsInventory.ViewModels.Main
          //if (User is null)
          //   return;
 
-         //Project.Parts = new();
-         //foreach (var bom in Project.BOM.Parts)
+         //Project.PartModels = new();
+         //foreach (var bom in Project.BOM.PartModels)
          //{
          //   if (bom.Reference == null)
          //      continue;
-         //   var foundParts = User.Parts.Where((p) => p.Reference == bom.Reference).ToArray();
+         //   var foundParts = User.PartModels.Where((p) => p.Reference == bom.Reference).ToArray();
          //   if (foundParts.Length > 0)
          //   {
          //      foreach (var part in foundParts)
          //      {
          //         part.AllocatedQty = bom.Quantity;
-         //         Project.Parts.Parts.Add(part);
+         //         Project.PartModels.PartModels.Add(part);
 
          //      }
          //   }

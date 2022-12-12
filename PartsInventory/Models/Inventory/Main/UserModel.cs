@@ -55,9 +55,9 @@ namespace PartsInventory.Models.Inventory.Main
          //if (!invoice.IsAddedToParts)
          //{
          //   var foundParts = new List<PartModel>();
-         //   foreach (var part in invoice.Parts)
+         //   foreach (var part in invoice.PartModels)
          //   {
-         //      if (Parts.FirstOrDefault(p => p?.EqualsPartNumber(part) == true, null) is PartModel pt)
+         //      if (PartModels.FirstOrDefault(p => p?.EqualsPartNumber(part) == true, null) is PartModel pt)
          //      {
          //         part.Id = pt.Id;
          //         pt.Quantity += part.Quantity;
@@ -66,7 +66,7 @@ namespace PartsInventory.Models.Inventory.Main
          //      else
          //      {
          //         part.Id = ObjectId.GenerateNewId().ToString();
-         //         //Parts.Add(part);
+         //         //PartModels.Add(part);
          //         foundParts.Add(part);
          //      }
          //   }

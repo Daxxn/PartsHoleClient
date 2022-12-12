@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using PartsInventory.Models.API.Interfaces;
 using PartsInventory.Models.Inventory.Main;
@@ -8,7 +9,9 @@ namespace PartsInventory.Models.API.Models
    public class BinApiModel : IApiConverter<BinModel>
    {
       #region Local Props
-      public string _id { get; set; } = null!;
+      [BsonId]
+      [BsonRepresentation(BsonType.ObjectId)]
+      public string Id { get; set; } = null!;
       public string Name { get; set; } = null!;
       public int Horizontal { get; set; }
       public int Vertical { get; set; }
@@ -24,7 +27,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new()
          {
-            Id = _id,
+            Id = Id,
             Name = Name,
             Horizontal = Horizontal,
             Vertical = Vertical,
@@ -36,7 +39,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new()
          {
-            _id = bin.Id,
+            Id = bin.Id,
             Name = bin.Name,
             Horizontal = bin.Horizontal,
             Vertical = bin.Vertical,

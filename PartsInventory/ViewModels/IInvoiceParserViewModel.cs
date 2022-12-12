@@ -11,12 +11,13 @@ namespace PartsInventory.ViewModels
    public interface IInvoiceParserViewModel
    {
       IMainViewModel MainVM { get; }
-      Command AddToPartsCmd { get; init; }
-      Command ClearInvoicesCmd { get; init; }
       bool InvoicesAdded { get; set; }
-      Command OpenAllInvoicesCmd { get; init; }
       Command OpenInvoicesCmd { get; init; }
-      Command ParseTestCmd { get; init; }
+      Command OpenInvoiceCmd { get; init; }
+      Command AddToPartsCmd { get; init; }
+      Command ClearTempInvoiceCmd { get; init; }
+      Command AddTempInvoiceCmd { get; init; }
+      Command DeleteInvoiceCmd { get; init; }
       ObservableCollection<InvoiceModel>? SelectedInvoices { get; set; }
 
       event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent;

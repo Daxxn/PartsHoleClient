@@ -14,7 +14,7 @@ namespace PartsInventory.Models.API.Models
       #region Local Props
       [BsonId]
       [BsonRepresentation(BsonType.ObjectId)]
-      public string _id { get; set; } = null!;
+      public string Id { get; set; } = null!;
       public string UserName { get; set; } = null!;
       public string AuthID { get; set; } = null!;
       public string? Email { get; set; }
@@ -33,7 +33,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new UserModel()
          {
-            Id = _id,
+            Id = Id,
             AuthID = AuthID,
             Email = Email,
             UserName = UserName,
@@ -48,7 +48,7 @@ namespace PartsInventory.Models.API.Models
       {
          return new UserApiModel()
          {
-            _id = model.Id,
+            Id = model.Id,
             UserName = model.UserName,
             Email = model.Email,
             AuthID = model.AuthID,

@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 using PartsInventory.Models.Enums;
 
@@ -13,10 +17,11 @@ namespace PartsInventory.Models.Inventory.Main
       private uint _orderNumber = 0;
       private string _path = "";
       private decimal _subTotal = 0;
-      private ObservableCollection<DigiKeyPartModel> _parts = new();
-      private SupplierType? _supplierType = null;
+      private ObservableCollection<InvoicePartModel> _parts = new();
+      private SupplierType _supplierType = SupplierType.NA;
       private bool _isAddedToParts = false;
-      public IEnumerable<string> PartIDs { get; set; }
+
+      //public List<string> PartIDs => _parts.Select(p => p.Id).ToList();
       #endregion
 
       #region Constructors
@@ -34,18 +39,32 @@ namespace PartsInventory.Models.Inventory.Main
       #endregion
 
       #region Full Props
-
-      public ObservableCollection<DigiKeyPartModel> Parts
+      [BsonIgnore]
+      [JsonIgnore]
+      public ObservableCollection<InvoicePartModel> PartModels
       {
          get => _parts;
          set
          {
             _parts = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(SubTotal));
          }
       }
 
-      public SupplierType? SupplierType
+      public List<InvoicePartModel> Parts
+      {
+         get => _parts.ToList();
+         set
+         {
+            _parts = new(value);
+            OnPropertyChanged(nameof(PartModels));
+         }
+      }
+
+      //[BsonIgnore]
+      //[JsonIgnore]
+      public SupplierType SupplierType
       {
          get => _supplierType;
          set
@@ -54,6 +73,15 @@ namespace PartsInventory.Models.Inventory.Main
             OnPropertyChanged();
          }
       }
+
+      //public int Supplier
+      //{
+      //   get => (int)_supplierType;
+      //   set
+      //   {
+      //      _supplierType = (SupplierType)value;
+      //   }
+      //}
 
       public string Path
       {
@@ -75,13 +103,17 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
+      [BsonIgnore]
+      [JsonIgnore]
       public decimal SubTotal
       {
-         get => _subTotal;
-         set
+         get
          {
-            _subTotal = value;
-            OnPropertyChanged();
+            if (Parts is null)
+               return 0;
+            if (!Parts.Any())
+               return 0;
+            return Parts.Sum(p => p.ExtendedPrice);
          }
       }
 

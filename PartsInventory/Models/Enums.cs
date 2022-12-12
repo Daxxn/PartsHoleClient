@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Enums;
@@ -13,6 +14,7 @@ public enum Severity
    Info = 0,
    Warning,
    Error,
+   Success,
 }
 #endregion
 #region API
@@ -53,9 +55,9 @@ public enum EIAStandard
 
 public enum SupplierType
 {
-   DigiKey,
-   Mouser,
-   NA,
+   DigiKey = 0,
+   Mouser = 1,
+   NA = 2,
 };
 
 #region Passives

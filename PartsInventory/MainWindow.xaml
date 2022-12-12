@@ -64,6 +64,6 @@
       <TabItem Header="BINs" x:Name="BinsViewTab"/>
     </TabControl>
 
-    <TextBlock Grid.Row="2" Text="{Binding Path=MessageService.Message}" Background="{Binding Path=MessageService.SeverityColor}"/>
+    <TextBlock Grid.Row="2" FontSize="14" FontWeight="DemiBold" Padding="4" Text="{Binding Path=MessageService.Message}" Background="{Binding Path=MessageService.SeverityColor}"/>
   </Grid>
 </Window>

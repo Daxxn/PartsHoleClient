@@ -7,34 +7,33 @@ using System.Threading.Tasks;
 using CSVParserLibrary.Models;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.Text.Json.Serialization;
 
 namespace PartsInventory.Models.Inventory.Main;
 
-public class DigiKeyPartModel
+public class InvoicePartModel : BaseModel
 {
    #region Local Props
-   [BsonId]
-   [BsonRepresentation(BsonType.ObjectId)]
-   public string Id { get; set; } = null!;
-   public int Quantity { get; set; }
+   public uint Quantity { get; set; }
+   public string SupplierPartNumber { get; set; } = null!;
    public string PartNumber { get; set; } = null!;
-   public string ManufacturerPartNumber { get; set; } = null!;
    public string Description { get; set; } = null!;
-   public string CustomerReference { get; set; } = null!;
-   public int Backorder { get; set; }
+   public string Reference { get; set; } = null!;
+   public uint Backorder { get; set; }
    public decimal UnitPrice { get; set; }
    #endregion
 
    #region Constructors
-   public DigiKeyPartModel() => Id = ObjectId.GenerateNewId().ToString();
+   public InvoicePartModel() => Id = ObjectId.GenerateNewId().ToString();
    #endregion
 
    #region Methods
    public override string ToString() =>
-      $"{(Id is null ? "" : "'ID'")} {ManufacturerPartNumber} {PartNumber} {CustomerReference} {Quantity} {UnitPrice} {Description}";
+      $"{(Id is null ? "" : "'ID'")} {PartNumber} {SupplierPartNumber} {Reference} {Quantity} {UnitPrice} {Description}";
    #endregion
 
    #region Other Props
+   [JsonIgnore]
    public decimal ExtendedPrice => UnitPrice * Quantity;
    #endregion
 }

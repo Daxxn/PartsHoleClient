@@ -8,7 +8,7 @@ namespace PartsInventory.Models.API.Interfaces
 {
    public interface IApiConverter<T>
    {
-      string _id { get; set; }
+      string Id { get; set; }
 
       T ToModel();
       //object FromModel(T model);

@@ -120,7 +120,7 @@ namespace PartsInventory.Models.BOM
                   Symbol = value;
                }
                break;
-            case "PartNumber":
+            case "SupplierPartNumber":
                Reference = new(value);
                break;
             default:

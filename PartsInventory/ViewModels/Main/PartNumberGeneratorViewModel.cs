@@ -99,7 +99,7 @@ namespace PartsInventory.ViewModels.Main
                   part.Reference = null;
                }
             });
-            //MainVM.User.Parts.Where(x => x.Reference?.Equals(SelectedPartNumber) == true).ToList().ForEach(part => part.Reference = null);
+            //MainVM.User.PartModels.Where(x => x.Reference?.Equals(SelectedPartNumber) == true).ToList().ForEach(part => part.Reference = null);
             SelectedPartNumber= null;
          }
       }
