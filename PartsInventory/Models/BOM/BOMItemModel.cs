@@ -98,8 +98,8 @@ namespace PartsInventory.Models.BOM
             case "Footprint":
                Package = PackageModel.Parse(value);
                break;
-            case "Datasheet":
-               Datasheet = new(value);
+            case "DatasheetUrl":
+               DatasheetUrl = new(value);
                break;
             case "Pins":
                if (uint.TryParse(value, out uint pinCount))

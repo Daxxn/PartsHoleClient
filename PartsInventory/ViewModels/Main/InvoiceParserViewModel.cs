@@ -12,6 +12,7 @@ using Microsoft.Win32;
 using MVVMLibrary;
 
 using PartsInventory.Models.API;
+using PartsInventory.Models.API.Buffer;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Events;
 using PartsInventory.Models.Inventory.Main;
@@ -29,6 +30,7 @@ namespace PartsInventory.ViewModels.Main
       private readonly IAPIController _apiController;
       private readonly ILogger<InvoiceParserViewModel> _logger;
       private readonly IMessageService _messageService;
+      private readonly IAPIBuffer _apiBuffer;
 
       public event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent = (s, e) => { };
       //private InvoiceModel? _selectedInvoice = null;
@@ -59,7 +61,8 @@ namespace PartsInventory.ViewModels.Main
          IOptions<APISettings> apiSettings,
          IAPIController apiController,
          ILogger<InvoiceParserViewModel> logger,
-         IMessageService messageService)
+         IMessageService messageService,
+         IAPIBuffer apiBuffer)
       {
          _mainVM = mainVM;
          _dirSettings = dirSettings;
@@ -67,6 +70,7 @@ namespace PartsInventory.ViewModels.Main
          _apiController = apiController;
          _logger = logger;
          _messageService = messageService;
+         _apiBuffer = apiBuffer;
 
          OpenInvoicesCmd = new(OpenInvoices);
          OpenInvoiceCmd = new(OpenInvoice);
@@ -103,6 +107,7 @@ namespace PartsInventory.ViewModels.Main
             });
          }
       }
+
       private async void OpenInvoice()
       {
          OpenFileDialog dialog = new()
@@ -232,7 +237,6 @@ namespace PartsInventory.ViewModels.Main
 
       private async void AddTempInvoice()
       {
-         //var inv = _apiController.PostInvoiceTest2();
          if (TempInvoice is null)
             return;
          if (MainVM.User is null)
@@ -256,20 +260,26 @@ namespace PartsInventory.ViewModels.Main
       {
          if (MainVM.User is null || SelectedInvoices is null)
             return;
-         var updatedParts = new List<PartModel>();
+         var newParts = new List<PartModel>();
          var allparts = SelectedInvoices.SelectMany(x => !x.IsAddedToParts ? x.PartModels : new());
          foreach (var part in allparts)
          {
+            if (!part.AddToInventory)
+               continue;
             var newPart = PartModel.ConvertInvoicePart(part);
             if (MainVM.User.Parts.FirstOrDefault(p => part.Reference == p.Reference?.ToString() || part.PartNumber == p.PartNumber) is PartModel foundPart)
             {
                newPart = PartModel.CopyTo(foundPart);
                newPart.Quantity = foundPart.Quantity + part.Quantity;
+               _apiBuffer.UpdateModel(newPart);
             }
-            updatedParts.Add(newPart);
+            else
+            {
+               newParts.Add(newPart);
+            }
          }
 
-         await MainVM.AddParts(updatedParts);
+         await MainVM.AddParts(newParts);
       }
 
       private void This_AddToPartsEvent(object? sender, AddInvoiceToPartsEventArgs e)
@@ -299,6 +309,15 @@ namespace PartsInventory.ViewModels.Main
             MainVM.User.InvoiceIDs.Remove(SelectedInvoices[0].Id);
             _messageService.AddMessage($"Deleted Invoice {SelectedInvoices[0].OrderNumber}");
             SelectedInvoices.RemoveAt(0);
+         }
+      }
+
+      public void UpdatePart(InvoicePartModel part)
+      {
+         var foundInvoice = MainVM.User.Invoices.FirstOrDefault(x => x.PartModels.Contains(part));
+         if (foundInvoice != null)
+         {
+            _apiBuffer.UpdateModel(foundInvoice);
          }
       }
       #endregion

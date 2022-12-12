@@ -21,6 +21,7 @@ public class InvoicePartModel : BaseModel
    public string Reference { get; set; } = null!;
    public uint Backorder { get; set; }
    public decimal UnitPrice { get; set; }
+   private bool _addtoInventory = true;
    #endregion
 
    #region Constructors
@@ -35,5 +36,15 @@ public class InvoicePartModel : BaseModel
    #region Other Props
    [JsonIgnore]
    public decimal ExtendedPrice => UnitPrice * Quantity;
+
+   public bool AddToInventory
+   {
+      get => _addtoInventory;
+      set
+      {
+         _addtoInventory = value;
+         OnPropertyChanged();
+      }
+   }
    #endregion
 }

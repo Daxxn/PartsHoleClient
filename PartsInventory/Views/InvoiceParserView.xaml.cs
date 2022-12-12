@@ -45,4 +45,15 @@ public partial class InvoiceParserView : UserControl
          }
       }
    }
+
+   private void CheckBox_LostFocus(object sender, RoutedEventArgs e)
+   {
+      if (sender is CheckBox cb)
+      {
+         if (cb.DataContext is InvoicePartModel part)
+         {
+            VM.UpdatePart(part);
+         }
+      }
+   }
 }

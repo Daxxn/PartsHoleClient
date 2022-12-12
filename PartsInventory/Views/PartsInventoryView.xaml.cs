@@ -41,15 +41,15 @@ public partial class PartsInventoryView : UserControl
       {
          if (btn.DataContext is PartModel part)
          {
-            if (part.Datasheet?.Path is null)
+            if (part.DatasheetUrl?.Path is null)
                return;
-            if (!part.Datasheet.Path.IsFile)
+            if (!part.DatasheetUrl.Path.IsFile)
             {
                ProcessStartInfo proc = new()
                {
                   //FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
                   FileName = "explorer.exe",
-                  Arguments = part.Datasheet.Path.AbsoluteUri,
+                  Arguments = part.DatasheetUrl.Path.AbsoluteUri,
                };
                Process.Start(proc);
             }
@@ -67,7 +67,7 @@ public partial class PartsInventoryView : UserControl
                return;
             OpenFileDialog dialog = new()
             {
-               Title = $"Browse for {part.PartNumber} Datasheet",
+               Title = $"Browse for {part.PartNumber} DatasheetUrl",
                Filter = "PDF|*.pdf|All Files|*.*",
                InitialDirectory = PathSettings.Default.DatasheetsPath,
                Multiselect = false,
@@ -76,7 +76,7 @@ public partial class PartsInventoryView : UserControl
 
             if (dialog.ShowDialog() == true)
             {
-               part.Datasheet = new(dialog.FileName);
+               part.DatasheetUrl = new(dialog.FileName);
                VM.OpenDatasheet(sender, part);
             }
          }

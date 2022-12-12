@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 using CSVParserLibrary.Models;
 
@@ -21,7 +22,7 @@ namespace PartsInventory.Models.Inventory.Main
       private decimal _unitPrice = 0;
       private uint _backorder = 0;
 
-      private Datasheet? _datasheet = null;
+      private Datasheet? _datasheetUrl = null;
       private string[]? _tags = null;
 
       [BsonRepresentation(BsonType.ObjectId)]
@@ -98,7 +99,7 @@ namespace PartsInventory.Models.Inventory.Main
                   UnitPrice = ParseDec(lines[i]);
                   break;
                case 6:
-                  Datasheet = new(lines[i].Trim());
+                  DatasheetUrl = new(lines[i].Trim());
                   break;
                case 7:
                // TODO - Add tags later
@@ -311,15 +312,22 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
-      [CSVProperty("Datasheet")]
-      public Datasheet? Datasheet
+      [CSVProperty("DatasheetUrl")]
+      [JsonIgnore]
+      public Datasheet? DatasheetUrl
       {
-         get => _datasheet;
+         get => _datasheetUrl;
          set
          {
-            _datasheet = value;
+            _datasheetUrl = value;
             OnPropertyChanged();
          }
+      }
+
+      public string? Datasheet
+      {
+         get => _datasheetUrl?.Display;
+         set => _datasheetUrl = new(value);
       }
 
       public BinModel BinLocation

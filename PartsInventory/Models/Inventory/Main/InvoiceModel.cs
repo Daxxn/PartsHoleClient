@@ -20,8 +20,6 @@ namespace PartsInventory.Models.Inventory.Main
       private ObservableCollection<InvoicePartModel> _parts = new();
       private SupplierType _supplierType = SupplierType.NA;
       private bool _isAddedToParts = false;
-
-      //public List<string> PartIDs => _parts.Select(p => p.Id).ToList();
       #endregion
 
       #region Constructors
@@ -62,8 +60,6 @@ namespace PartsInventory.Models.Inventory.Main
          }
       }
 
-      //[BsonIgnore]
-      //[JsonIgnore]
       public SupplierType SupplierType
       {
          get => _supplierType;
@@ -73,15 +69,6 @@ namespace PartsInventory.Models.Inventory.Main
             OnPropertyChanged();
          }
       }
-
-      //public int Supplier
-      //{
-      //   get => (int)_supplierType;
-      //   set
-      //   {
-      //      _supplierType = (SupplierType)value;
-      //   }
-      //}
 
       public string Path
       {

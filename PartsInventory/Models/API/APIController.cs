@@ -257,9 +257,9 @@ namespace PartsInventory.Models.API
       {
          try
          {
-            var newParts = parts.Select(x => PartApiModel.FromModel(x));
+            var newParts = parts.Select(x => PartApiModel.FromModel(x)).ToArray();
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many", Method.Post)
-               .AddJsonBody(parts);
+               .AddJsonBody(newParts);
             return await SendRequest<IEnumerable<PartModel>>(request);
          }
          catch (Exception e)
@@ -395,7 +395,7 @@ namespace PartsInventory.Models.API
       {
          try
          {
-            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}/{invoice.Id}", Method.Put)
+            var request = new RestRequest($"{_apiSettings.Value.InvoicesEndpoint}", Method.Put)
                .AddJsonBody(invoice);
             return await SendRequest<bool>(request);
          }

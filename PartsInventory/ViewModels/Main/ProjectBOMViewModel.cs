@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,10 +24,13 @@ namespace PartsInventory.ViewModels.Main
       #region Local Props
       private readonly IMainViewModel _mainViewModel;
       private readonly IAbstractFactory<ICSVParser> _parserFactory;
+      private ICSVParserOptions _parserOptions;
+
       private ProjectModel? _project = null;
       private BOMModel? _bom = null;
       private int _currentTab = 0;
-      private ICSVParserOptions _parserOptions;
+
+      private ObservableCollection<PartModel>? _matchingParts = null;
 
       #region Commands
       public Command ParseProjectCmd { get; init; }
@@ -103,6 +107,7 @@ namespace PartsInventory.ViewModels.Main
                var parser = _parserFactory.Create();
                var result = parser.ParseFile<BOMItemModel>(dialog.FileName, _parserOptions);
                BOM.Parts = new(result.Values);
+               FindParts();
             }
             catch (Exception e)
             {
@@ -134,12 +139,10 @@ namespace PartsInventory.ViewModels.Main
 
       private void Allocate()
       {
-         //if (Project is null)
-         //   return;
-         //if (Project.BOM is null)
-         //   return;
-         //if (User is null)
-         //   return;
+         if (Project is null || BOM is null || MainVM.User is null)
+            return;
+
+
 
          //Project.PartModels = new();
          //foreach (var bom in Project.BOM.PartModels)

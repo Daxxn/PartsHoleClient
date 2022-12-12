@@ -41,7 +41,6 @@ namespace PartsInventory.Models.API.Models
       #region Methods
       public PartModel ToModel()
       {
-         var reference = Reference is null ? new() : new PartNumber(Reference);
          var datasheet = new Datasheet(Datasheet);
          return new PartModel()
          {
@@ -49,11 +48,11 @@ namespace PartsInventory.Models.API.Models
             AllocatedQty = AllocatedQty,
             Backorder = Backorder,
             UnitPrice = UnitPrice,
-            Datasheet = datasheet,
+            DatasheetUrl = datasheet,
             Description = Description,
             PartNumber = PartNumber,
             Quantity = Quantity,
-            Reference = reference,
+            Reference = Reference is null ? null : new(Reference),
             Slippage = Slippage,
             SupplierPartNumber = SupplierPartNumber,
             Tags = Tags,
@@ -69,7 +68,7 @@ namespace PartsInventory.Models.API.Models
             AllocatedQty = model.AllocatedQty,
             Backorder = model.Backorder,
             UnitPrice = model.UnitPrice,
-            Datasheet = model.Datasheet?.Path?.AbsolutePath,
+            Datasheet = model.DatasheetUrl?.Path?.AbsolutePath,
             Description = model.Description,
             PartNumber = model.PartNumber,
             Quantity = model.Quantity,

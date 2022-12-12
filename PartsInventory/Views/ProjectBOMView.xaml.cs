@@ -36,14 +36,14 @@ public partial class ProjectBOMView : UserControl
       {
          if (btn.DataContext is PartModel comp)
          {
-            if (comp.Datasheet?.Path is null)
+            if (comp.DatasheetUrl?.Path is null)
                return;
-            if (comp.Datasheet.IsGoodPath)
+            if (comp.DatasheetUrl.IsGoodPath)
             {
                ProcessStartInfo proc = new()
                {
                   FileName = "explorer.exe",
-                  Arguments = comp.Datasheet.Path.AbsoluteUri,
+                  Arguments = comp.DatasheetUrl.Path.AbsoluteUri,
                };
                Process.Start(proc);
             }

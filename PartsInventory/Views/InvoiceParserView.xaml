@@ -96,6 +96,14 @@
                     AutoGenerateColumns="False"
                   >
                     <DataGrid.Columns>
+                      <DataGridTemplateColumn Header="Add To Inv">
+                        <DataGridTemplateColumn.CellTemplate>
+                          <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=AddToInventory}" LostFocus="CheckBox_LostFocus"/>
+                          </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                      </DataGridTemplateColumn>
+                      <!--<DataGridCheckBoxColumn Header="Add to Inv" Binding="{Binding Path=AddToInventory}"/>-->
                       <DataGridTextColumn Header="Qty" MinWidth="30" FontSize="16" Binding="{Binding Path=Quantity, Mode=OneWay}"/>
                       <DataGridTextColumn Header="MFG Part #" MinWidth="120" Binding="{Binding Path=PartNumber, Mode=OneWay}"/>
                       <DataGridTextColumn Header="My Part #" MinWidth="120" Binding="{Binding Path=Reference, Mode=OneWay}"/>

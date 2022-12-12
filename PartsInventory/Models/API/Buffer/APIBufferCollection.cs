@@ -11,8 +11,33 @@ namespace PartsInventory.Models.API.Buffer
    public class APIBufferCollection
    {
       #region Local Props
-      public BufferModel this[string id] { get => Buffer[new(id)]; set => Buffer[new(id)] = value; }
-      public BufferModel this[PriorityKey key] { get => Buffer[key]; set => Buffer[key] = value; }
+      public BufferModel? this[string id]
+      {
+         get
+         {
+            var newKey = new PriorityKey(id);
+            return Buffer.ContainsKey(newKey) ? Buffer[newKey] : null;
+         }
+         set
+         {
+            if (value is null)
+               return;
+            Buffer[new(id)] = value;
+         }
+      }
+      public BufferModel? this[PriorityKey key]
+      {
+         get
+         {
+            return Buffer.ContainsKey(key) ? Buffer[key] : null;
+         }
+         set
+         {
+            if (value is null)
+               return;
+            Buffer[key] = value;
+         }
+      }
       private Dictionary<PriorityKey, BufferModel> Buffer { get; set; } = new();
       #endregion
 

@@ -19,6 +19,7 @@ namespace PartsInventory.ViewModels
       Command AddTempInvoiceCmd { get; init; }
       Command DeleteInvoiceCmd { get; init; }
       ObservableCollection<InvoiceModel>? SelectedInvoices { get; set; }
+      void UpdatePart(InvoicePartModel part);
 
       event EventHandler<AddInvoiceToPartsEventArgs> AddToPartsEvent;
    }
