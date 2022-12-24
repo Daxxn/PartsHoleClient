@@ -8,6 +8,7 @@ using PartsInventory.Models.API;
 using PartsInventory.Models.Enums;
 using PartsInventory.Models.Extensions;
 using PartsInventory.Models.Inventory.Main;
+using PartsInventory.Utils.Messager;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -16,9 +17,9 @@ namespace PartsInventory.ViewModels.Main
       #region Local Props
       private readonly IMainViewModel _mainVM;
       private readonly IAPIController _apiController;
+      private readonly IMessageService _messageService;
 
       private PartModel? _selectedPart = null;
-      private ObservableCollection<PartModel>? _selectedParts = null;
       private PartNumber? _newPartNum = new();
       private PartNumber? _selectedPartNumber = null;
 
@@ -36,12 +37,18 @@ namespace PartsInventory.ViewModels.Main
       #endregion
 
       #region Constructors
-      public PartNumberGeneratorViewModel(IMainViewModel mainVM, IPartsInventoryViewModel partsVM, IAPIController apiController)
+      public PartNumberGeneratorViewModel(
+         IMainViewModel mainVM,
+         IPartsInventoryViewModel partsVM,
+         IAPIController apiController,
+         IMessageService msgService
+         )
       {
          _mainVM = mainVM;
          _apiController = apiController;
+         _messageService = msgService;
 
-         partsVM.SelectedPartsChanged += SelectedPartsChanged_Inv;
+         //partsVM.SelectedPartsChanged += SelectedPartsChanged_Inv;
          NewCmd = new(New);
          ClearCmd = new(() => NewPartNumber = null);
          AssignToSelectedCmd = new(AssignToSelectedPart);
@@ -66,6 +73,7 @@ namespace PartsInventory.ViewModels.Main
             return;
          }
          MainVM.User.PartNumbers.Add(newPartNumber);
+         SelectedPartNumber = newPartNumber;
          NewPartNumber = new();
       }
 
@@ -76,18 +84,23 @@ namespace PartsInventory.ViewModels.Main
       {
          if (SelectedPart is null)
             return;
-         if (NewPartNumber is null)
+         if (SelectedPartNumber is null)
             return;
-         SelectedPart.Reference = NewPartNumber;
+         SelectedPart.Reference = SelectedPartNumber;
          if (await _apiController.UpdatePart(SelectedPart))
          {
             NewPartNumber = new PartNumber();
+         }
+         else
+         {
+            _messageService.AddMessage("Unable to update part number.", Severity.Error);
          }
       }
 
       private async void Remove()
       {
-         if (SelectedPartNumber is null) return;
+         if (SelectedPartNumber is null)
+            return;
          if (await _apiController.DeletePartNumber(SelectedPartNumber.Id))
          {
             MainVM.User.PartNumbers.Remove(SelectedPartNumber);
@@ -100,25 +113,25 @@ namespace PartsInventory.ViewModels.Main
                }
             });
             //MainVM.User.PartModels.Where(x => x.Reference?.Equals(SelectedPartNumber) == true).ToList().ForEach(part => part.Reference = null);
-            SelectedPartNumber= null;
+            SelectedPartNumber = null;
          }
       }
 
       #region Events
-      /// <summary>
-      /// Triggered when the selected parts in the <see cref="IPartsInventoryViewModel"/> change.
-      /// </summary>
-      /// <param name="sender">The <see cref="IPartsInventoryViewModel"/></param>
-      /// <param name="e">The list of selected <see cref="PartModel"/>s.</param>
-      public void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e)
-      {
-         if (e is null)
-         {
-            SelectedParts = null;
-            return;
-         }
-         SelectedParts = new(e);
-      }
+      ///// <summary>
+      ///// Triggered when the selected parts in the <see cref="IPartsInventoryViewModel"/> change.
+      ///// </summary>
+      ///// <param name="sender">The <see cref="IPartsInventoryViewModel"/></param>
+      ///// <param name="e">The list of selected <see cref="PartModel"/>s.</param>
+      //public void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e)
+      //{
+      //   if (e is null)
+      //   {
+      //      MainVM.SelectedParts = null;
+      //      return;
+      //   }
+      //   MainVM.SelectedParts = new(e);
+      //}
 
       /// <summary>
       /// !! OLD !!
@@ -136,16 +149,6 @@ namespace PartsInventory.ViewModels.Main
       public IMainViewModel MainVM
       {
          get => _mainVM;
-      }
-
-      public ObservableCollection<PartModel>? SelectedParts
-      {
-         get => _selectedParts;
-         set
-         {
-            _selectedParts = value;
-            OnPropertyChanged();
-         }
       }
 
       public PartModel? SelectedPart

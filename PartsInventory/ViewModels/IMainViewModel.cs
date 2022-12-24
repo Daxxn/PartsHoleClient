@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using MVVMLibrary;
@@ -14,6 +15,7 @@ namespace PartsInventory.ViewModels;
 public interface IMainViewModel
 {
    IUserModel User { get; set; }
+   public ObservableCollection<PartModel>? SelectedParts { get; set; }
    string AspectRatio { get; set; }
    double MonitorSize { get; set; }
    Command OpenCmd { get; init; }

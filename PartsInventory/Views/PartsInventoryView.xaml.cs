@@ -100,11 +100,11 @@ public partial class PartsInventoryView : UserControl
       {
          if (dg.SelectedItems.Count > 0)
          {
-            VM.SelectedParts = new(dg.SelectedItems.Cast<PartModel>());
+            VM.MainVM.SelectedParts = new(dg.SelectedItems.Cast<PartModel>());
          }
          else
          {
-            VM.SelectedParts = null;
+            VM.MainVM.SelectedParts = null;
          }
       }
    }

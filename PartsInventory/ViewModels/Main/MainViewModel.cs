@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -34,6 +35,8 @@ namespace PartsInventory.ViewModels.Main
       private IUserModel _user;
 
       private int _msgCount = 0;
+
+      private ObservableCollection<PartModel>? _selectedParts = null;
 
       #region Events
       #endregion
@@ -295,6 +298,15 @@ namespace PartsInventory.ViewModels.Main
          }
       }
 
+      public ObservableCollection<PartModel>? SelectedParts
+      {
+         get => _selectedParts;
+         set
+         {
+            _selectedParts = value;
+            OnPropertyChanged();
+         }
+      }
       #endregion
    }
 }

@@ -45,7 +45,7 @@
 
         <ListView
           Grid.Row="6" Grid.ColumnSpan="2"
-          ItemsSource="{Binding Path=SelectedParts}"
+          ItemsSource="{Binding Path=MainVM.SelectedParts}"
           SelectedItem="{Binding Path=SelectedPart}"
           Grid.IsSharedSizeScope="True"
         >

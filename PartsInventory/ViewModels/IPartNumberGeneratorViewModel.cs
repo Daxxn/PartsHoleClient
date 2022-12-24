@@ -14,11 +14,10 @@ public interface IPartNumberGeneratorViewModel
    Command ClearCmd { get; init; }
    Command NewCmd { get; init; }
    PartNumber? NewPartNumber { get; set; }
-   ObservableCollection<PartModel>? SelectedParts { get; set; }
    PartNumberSubCategory[]? SelectedSubCategories { get; set; }
    PartNumberSubCategory SubCategory { get; set; }
    PartNumberCategory Category { get; set; }
 
    void PartNumberCreated_PNTemp(object sender, PartNumber e);
-   void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e);
+   //void SelectedPartsChanged_Inv(object sender, IEnumerable<PartModel>? e);
 }
