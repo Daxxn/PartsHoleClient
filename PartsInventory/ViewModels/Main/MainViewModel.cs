@@ -18,6 +18,8 @@ using PartsInventory.Models.Inventory.Main;
 using PartsInventory.Resources.Settings;
 using PartsInventory.Utils.Messager;
 
+using IModel = PartsInventory.Models.Inventory.IModel;
+
 namespace PartsInventory.ViewModels.Main
 {
    public class MainViewModel : ViewModel, IMainViewModel
@@ -138,18 +140,18 @@ namespace PartsInventory.ViewModels.Main
          return success;
       }
 
-      public async Task<bool> AddParts(IEnumerable<PartModel> part)
+      public async Task<bool> AddParts(IEnumerable<PartModel> parts)
       {
-         var newParts = await _apiController.CreateParts(part);
-         if (newParts == null)
+         var newPartCount = await _apiController.CreateParts(parts);
+         if (newPartCount == 0)
             return false;
-         foreach (var npart in newParts)
+         foreach (var part in parts)
          {
-            if (npart != null)
+            if (part != null)
             {
-               if (await _apiController.AddModelToUser(User.Id, npart.Id, ModelIDSelector.PARTS))
+               if (await _apiController.AddModelToUser(User.Id, part.Id, ModelIDSelector.PARTS))
                {
-                  User.Parts.Add(npart);
+                  User.Parts.Add(part);
                }
                else
                {
@@ -252,7 +254,7 @@ namespace PartsInventory.ViewModels.Main
          var foundBin = await _apiController.GetBin("637a138439776a35867213dc");
       }
 
-      public void UpdateAPI(BaseModel model)
+      public void UpdateAPI(IModel model)
       {
          _apiBuffer.UpdateModel(model);
       }

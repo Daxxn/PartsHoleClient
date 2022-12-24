@@ -18,6 +18,7 @@ namespace PartsInventory.Resources.Settings
       public string BinLocFileName { get; set; } = null!;
       public string KiCADProjects { get; set; } = null!;
       public string BOMs { get; set; } = null!;
+      public string Symbols { get; set; } = null!;
       public string ElectricalCalcExe { get; set; } = null!;
       public string SaturnPCBExe { get; set; } = null!;
       public Tools[] ExtraTools { get; set; } = null!;

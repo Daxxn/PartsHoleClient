@@ -79,7 +79,7 @@ namespace PartsInventory.Models.BOM
       #endregion
 
       #region Methods
-      public new void ParseProp(string prop, string value)
+      public void ParseProp(string prop, string value)
       {
          switch (prop)
          {

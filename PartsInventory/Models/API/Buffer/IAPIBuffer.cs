@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using PartsInventory.Models.Inventory.Main;
+using PartsInventory.Models.Inventory;
 
 namespace PartsInventory.Models.API.Buffer;
 
@@ -14,7 +10,7 @@ public interface IAPIBuffer
    /// Adds the provided model to the update buffer. If the model already exists, replaces the old model.
    /// </summary>
    /// <param name="model">Model to add</param>
-   void UpdateModel(BaseModel model);
+   void UpdateModel(IModel model);
    /// <summary>
    /// Force the buffer to send all data to the api. Waits for the API to finish all updates before returning.
    /// <para/>

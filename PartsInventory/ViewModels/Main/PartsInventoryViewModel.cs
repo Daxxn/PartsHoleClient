@@ -8,7 +8,10 @@ using MVVMLibrary;
 
 using PartsInventory.Models.API;
 using PartsInventory.Models.Events;
+using PartsInventory.Models.Inventory;
 using PartsInventory.Models.Inventory.Main;
+
+using IModel = PartsInventory.Models.Inventory.IModel;
 
 namespace PartsInventory.ViewModels.Main
 {
@@ -119,7 +122,7 @@ namespace PartsInventory.ViewModels.Main
             return false;
          }));
       }
-      public void UpdateAPI(BaseModel model)
+      public void UpdateAPI(IModel model)
       {
          MainVM.UpdateAPI(model);
       }

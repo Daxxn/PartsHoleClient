@@ -48,7 +48,8 @@ namespace PartsInventory
          BinsView binsView,
          NewPartView newPartView,
          PartNumberTemplateDialog partNumTempDialog,
-         PartSearchDialog searchDialog)
+         PartSearchDialog searchDialog,
+         SymbolLibraryView symbolLibView)
       {
          VM = mainVM;
          _dirSettings = dirSettings;
@@ -67,6 +68,7 @@ namespace PartsInventory
          PassivesViewTab.Content = passView;
          PackagesViewTab.Content = pkgView;
          BinsViewTab.Content = binsView;
+         SymbolLibViewTab.Content = symbolLibView;
       }
 
       private void MainWindow_Loaded(object sender, RoutedEventArgs e)

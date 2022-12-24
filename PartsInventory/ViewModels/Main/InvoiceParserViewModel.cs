@@ -317,6 +317,11 @@ namespace PartsInventory.ViewModels.Main
          var foundInvoice = MainVM.User.Invoices.FirstOrDefault(x => x.PartModels.Contains(part));
          if (foundInvoice != null)
          {
+            var index = foundInvoice.PartModels.IndexOf(part);
+            if (index >= 0)
+            {
+               foundInvoice.PartModels[index] = part;
+            }
             _apiBuffer.UpdateModel(foundInvoice);
          }
       }

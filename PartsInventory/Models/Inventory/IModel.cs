@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PartsInventory.Models.Inventory
 {
-    public interface IModel
-    {
-    }
+   public interface IModel
+   {
+      public string Id { get; set; }
+   }
 }

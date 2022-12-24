@@ -86,7 +86,7 @@ namespace PartsInventory.Models.API
       /// </summary>
       /// <param name="parts">Array of new <see cref="PartModel"/>.</param>
       /// <returns>Array of <seealso cref="bool"/> with each index matching the <paramref name="parts"/> array.</returns>
-      Task<IEnumerable<PartModel>?> CreateParts(IEnumerable<PartModel> parts);
+      Task<int> CreateParts(IEnumerable<PartModel> parts);
       /// <summary>
       /// Updates a changed <paramref name="part"/>
       /// <para>

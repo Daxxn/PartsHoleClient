@@ -10,6 +10,7 @@
       "BinLocFileName": "BinLocations.json",
       "KiCADProjects": "C:\\Users\\Daxxn\\Documents\\Electrical\\KiCAD\\Designs",
       "BOMs": "C:\\Users\\Daxxn\\Documents\\Electrical\\Project BOMs",
+      "Symbols": "F:\\Electrical\\KiCad\\Libraries\\Symbols",
       "ExtraTools": [
          {
             "Key": "ElectricalCalc",

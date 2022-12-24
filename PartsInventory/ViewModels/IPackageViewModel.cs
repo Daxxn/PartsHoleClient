@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 using PartsInventory.Models.Inventory;
 
-namespace PartsInventory.ViewModels
+namespace PartsInventory.ViewModels;
+
+public interface IPackageViewModel
 {
-   public interface IPackageViewModel
-   {
-      IMainViewModel MainVM { get; }
-   }
+   IMainViewModel MainVM { get; }
 }

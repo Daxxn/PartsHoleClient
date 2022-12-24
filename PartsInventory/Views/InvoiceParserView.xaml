@@ -99,7 +99,7 @@
                       <DataGridTemplateColumn Header="Add To Inv">
                         <DataGridTemplateColumn.CellTemplate>
                           <DataTemplate>
-                            <CheckBox IsChecked="{Binding Path=AddToInventory}" LostFocus="CheckBox_LostFocus"/>
+                            <CheckBox IsChecked="{Binding Path=AddToInventory, UpdateSourceTrigger=PropertyChanged}" Checked="CheckBox_Checked"/>
                           </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                       </DataGridTemplateColumn>

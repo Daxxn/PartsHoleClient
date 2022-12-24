@@ -64,6 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CSharpLibraries\KiCADParserLibrary\KiCADParserLibrary\KiCADParserLibrary.csproj" />
     <ProjectReference Include="..\..\PartsHoleAPI\PartsHoleRestLibrary\PartsHoleRestLibrary.csproj" />
   </ItemGroup>
 

@@ -3,6 +3,8 @@ using System.Windows;
 
 using CSVParserLibrary;
 
+using KiCADParserLibrary.Symbols.VModels;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -95,6 +97,7 @@ namespace PartsInventory
          services.AddSingleton<PartsInventoryView>();
          services.AddSingleton<ProjectBOMView>();
          services.AddSingleton<BinsView>();
+         services.AddSingleton<SymbolLibraryView>();
 
          // Dialog Windows
          services.AddSingleton<PartNumberTemplateDialog>();
@@ -117,6 +120,7 @@ namespace PartsInventory
          services.AddSingleton<IPackageViewModel, PackageViewModel>();
          services.AddSingleton<INewPartViewModel, NewPartViewModel>();
          services.AddSingleton<IBinsViewModel, BinsViewModel>();
+         services.AddSingleton<ISymbolLibraryViewModel, SymbolLibraryViewModel>();
       }
 
       private static void ConnectModelServices(IServiceCollection services)
@@ -124,12 +128,13 @@ namespace PartsInventory
          services.AddSingleton<IAPIController, APIController>();
          services.AddSingleton<IUserModel, UserModel>();
          services.AddAbstractFactory<ICSVParser, CSVParser>();
+         services.AddAbstractFactory<ISymbolParser, SymbolParser>();
          services.AddSingleton<ICSVParserOptions, CSVParserOptions>();
       }
 
       private static void ConnectUtilServices(IServiceCollection services)
       {
-         services.AddSingleton<IAPIBuffer, APIBuffer>();
+         services.AddSingleton<IAPIBuffer, SimpleAPIBuffer>();
          services.AddSingleton<IMessageService, MessageService>();
       }
       #endregion

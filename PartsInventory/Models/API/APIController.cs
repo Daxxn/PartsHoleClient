@@ -253,19 +253,19 @@ namespace PartsInventory.Models.API
          }
       }
 
-      public async Task<IEnumerable<PartModel>?> CreateParts(IEnumerable<PartModel> parts)
+      public async Task<int> CreateParts(IEnumerable<PartModel> parts)
       {
          try
          {
             var newParts = parts.Select(x => PartApiModel.FromModel(x)).ToArray();
             var request = new RestRequest($"{_apiSettings.Value.PartsEndpoint}/many", Method.Post)
                .AddJsonBody(newParts);
-            return await SendRequest<IEnumerable<PartModel>>(request);
+            return await SendRequest<int>(request);
          }
          catch (Exception e)
          {
             _messageService.AddMessage($"API POST Error: {e.Message}", Severity.Error);
-            return null;
+            return 0;
          }
       }
 

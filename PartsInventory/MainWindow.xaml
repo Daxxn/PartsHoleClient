@@ -62,6 +62,7 @@
       <TabItem Header="Passives" x:Name="PassivesViewTab"/>
       <TabItem Header="Packages" x:Name="PackagesViewTab"/>
       <TabItem Header="BINs" x:Name="BinsViewTab"/>
+      <TabItem Header="Symbols" x:Name="SymbolLibViewTab"/>
     </TabControl>
 
     <TextBlock Grid.Row="2" FontSize="14" FontWeight="DemiBold" Padding="4" Text="{Binding Path=MessageService.Message}" Background="{Binding Path=MessageService.SeverityColor}"/>

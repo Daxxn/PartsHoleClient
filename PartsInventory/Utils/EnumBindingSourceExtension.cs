@@ -19,7 +19,7 @@ namespace PartsInventory.Utils
             {
                if (value is null)
                {
-                  Type enumType = Nullable.GetUnderlyingType(value) ?? value;
+                  Type enumType = Nullable.GetUnderlyingType(value!) ?? value!;
                   if (!enumType.IsEnum) throw new ArgumentException("Type must be for an Enum.");
                }
 

@@ -30,8 +30,6 @@ namespace PartsInventory.ViewModels.Main
       private BOMModel? _bom = null;
       private int _currentTab = 0;
 
-      private ObservableCollection<PartModel>? _matchingParts = null;
-
       #region Commands
       public Command ParseProjectCmd { get; init; }
       public Command ClearProjectCmd { get; init; }

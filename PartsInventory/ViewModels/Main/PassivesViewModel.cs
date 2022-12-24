@@ -130,7 +130,7 @@ namespace PartsInventory.ViewModels.Main
       {
          PassiveSearchProp.Value => double.TryParse(SearchText, out double val) ? list.Where(x => x.Value == val) : null,
          PassiveSearchProp.Tolerance => double.TryParse(SearchText, out double val) ? list.Where(x => x.Tolerance == val) : null,
-         PassiveSearchProp.Desc => SearchText != null ? list.Where(x => x.Description.Contains(SearchText)) : null,
+         PassiveSearchProp.Desc => SearchText != null ? list.Where(x => x.Description!.Contains(SearchText)) : null,
          _ => null
       };
 

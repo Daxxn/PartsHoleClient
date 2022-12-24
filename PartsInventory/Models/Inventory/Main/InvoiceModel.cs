@@ -16,7 +16,6 @@ namespace PartsInventory.Models.Inventory.Main
       #region Local Props
       private uint _orderNumber = 0;
       private string _path = "";
-      private decimal _subTotal = 0;
       private ObservableCollection<InvoicePartModel> _parts = new();
       private SupplierType _supplierType = SupplierType.NA;
       private bool _isAddedToParts = false;
